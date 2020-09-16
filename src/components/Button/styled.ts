@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+
 import { ButtonProps } from './interface';
 
 export const ButtonStyled = styled.button<ButtonProps>`
@@ -29,6 +30,12 @@ export const ButtonStyled = styled.button<ButtonProps>`
         background: ${(props) => props.theme.colors.secondary};
         color: ${(props) => props.theme.colors.tertiary};
       `;
+    else if (props.color === 'secondary-outline')
+      return css`
+        background: transparent;
+        border: 2px solid ${(props) => props.theme.colors.secondary};
+        color: ${(props) => props.theme.colors.secondary};
+      `;
   }}
 
   &:hover {
@@ -37,5 +44,9 @@ export const ButtonStyled = styled.button<ButtonProps>`
 
   @media (min-width: 700px) {
     max-width: 24rem;
+  }
+
+  a {
+    color: inherit;
   }
 `;

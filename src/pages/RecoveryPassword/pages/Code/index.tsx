@@ -1,9 +1,9 @@
 import React from 'react';
 
-import PageDefault from '../../components/PageDefault';
-import FormField from '../../components/FormField';
+import PageDefault from '../../../../components/PageDefault';
+import FormField from '../../../../components/FormField';
 
-import useForm from '../../hooks/useForm';
+import useForm from '../../../../hooks/useForm';
 
 import { Title, FieldSetWrapper, ReSendEmail, Button } from './styled';
 

@@ -19,7 +19,7 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   width: 100%;
-  height: 3.2rem;
+  height: 4rem;
   border: 2px solid ${(props) => props.theme.colors.secondary};
   background: ${(props) => props.theme.colors.tertiary};
   padding: 0 14px;
