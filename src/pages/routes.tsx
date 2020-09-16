@@ -11,6 +11,10 @@ import AuthorizedAuthorUpdate from './Authorized/Author/pages/Update';
 import AuthorizedAuthorNew from './Authorized/Author/pages/New';
 import AuthorizedAuthor from './Authorized/Author';
 
+import AuthorizedArticleUpdate from './Authorized/Article/pages/Update';
+import AuthorizedArticleNew from './Authorized/Article/pages/New';
+import AuthorizedArticle from './Authorized/Article';
+
 import NotFound from './NotFound';
 
 function Routes() {
@@ -25,6 +29,10 @@ function Routes() {
         <Route path="/authorized/author/update" component={AuthorizedAuthorUpdate} />
         <Route path="/authorized/author/new" component={AuthorizedAuthorNew} />
         <Route path="/authorized/author" component={AuthorizedAuthor} />
+
+        <Route path="/authorized/article/update" component={AuthorizedArticleUpdate} />
+        <Route path="/authorized/article/new" component={AuthorizedArticleNew} />
+        <Route path="/authorized/article" component={AuthorizedArticle} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

@@ -22,6 +22,6 @@ export const Logo = styled.img`
 `;
 
 export const Text = styled.h6`
-  font-size: 2.4rem;
+  font: 600 2.4rem 'Roboto', sans-serif;
   color: ${(props) => props.theme.colors.primary};
 `;
