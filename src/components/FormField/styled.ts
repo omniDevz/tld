@@ -32,7 +32,7 @@ export const Input = styled.input`
 export const InputActive = styled.label`
   transform: scale(0.32);
   transform-origin: left;
-  top: -60%;
+  top: -50%;
   left: 16px;
   font-size: 32px;
   padding: 0 16px;

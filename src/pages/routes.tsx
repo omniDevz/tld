@@ -26,12 +26,21 @@ function Routes() {
         <Route path="/recoveryPassword/New" component={RecoveryPasswordNew} />
         <Route path="/recoveryPassword" component={RecoveryPassword} />
 
-        <Route path="/authorized/author/update" component={AuthorizedAuthorUpdate} />
+        <Route
+          path="/authorized/author/update/:authorId"
+          component={AuthorizedAuthorUpdate}
+        />
         <Route path="/authorized/author/new" component={AuthorizedAuthorNew} />
         <Route path="/authorized/author" component={AuthorizedAuthor} />
 
-        <Route path="/authorized/article/update" component={AuthorizedArticleUpdate} />
-        <Route path="/authorized/article/new" component={AuthorizedArticleNew} />
+        <Route
+          path="/authorized/article/update"
+          component={AuthorizedArticleUpdate}
+        />
+        <Route
+          path="/authorized/article/new"
+          component={AuthorizedArticleNew}
+        />
         <Route path="/authorized/article" component={AuthorizedArticle} />
         <Route component={NotFound} />
       </Switch>

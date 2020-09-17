@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import PageDefault from '../../components/PageDefault';
 import FormField from '../../components/FormField';
@@ -44,7 +45,11 @@ function Login() {
       <LinkRecoveryPassword to="/recoveryPassword" title="Recupere sua senha">
         Esqueceu a Senha?
       </LinkRecoveryPassword>
-      <Button color="primary-outline" to="authorized/article/">Entrar</Button>
+      <Button color="primary-outline">
+        <Link to="/authorized/article" title="Entrar na plataforma">
+          Entrar
+        </Link>
+      </Button>
     </PageDefault>
   );
 }

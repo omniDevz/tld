@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const FooterWrapper = styled.footer`
   width: 100%;
   height: 164px;
-  background: ${(props) => props.theme.colors.secondary};
+  background: ${(props) => props.theme.colors.tertiary};
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -20,11 +20,13 @@ export const ListSocialMedia = styled.ul`
 
 export const SocialMedia = styled.li``;
 
-export const LinkExternal = styled.a``;
+export const LinkExternal = styled.a`
+  color: inherit;
+`;
 
 export const Description = styled.p`
-  color: ${(props) => props.theme.colors.tertiary};
+  color: ${(props) => props.theme.colors.secondary};
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 24px;
 `;

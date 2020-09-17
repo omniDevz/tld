@@ -1,4 +1,6 @@
 import React from 'react';
+import { ToastProvider } from 'react-toast-notifications';
+
 import { ThemeProvider, DefaultTheme } from 'styled-components';
 import usePersistedState from './hooks/usePersistedState';
 
@@ -13,7 +15,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <DefaultStyles />
-      <Routes />
+      <ToastProvider>
+        <Routes />
+      </ToastProvider>
     </ThemeProvider>
   );
 }

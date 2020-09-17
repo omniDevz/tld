@@ -15,7 +15,8 @@ const ArticleNew: React.FC = () => {
     title: '',
     description: '',
     link: '',
-    author: ''
+    author: '',
+    date: ''
   };
 
   const { handleChange, values } = useForm(valuesInitials);
@@ -34,7 +35,7 @@ const ArticleNew: React.FC = () => {
         name="description"
         value={values.description}
         onChange={handleChange}
-        />
+      />
       <FormField
         label="Link"
         name="link"
@@ -47,6 +48,13 @@ const ArticleNew: React.FC = () => {
         name="author"
         value={values.author}
         onChange={handleChange}
+      />
+      <FormField
+        label="Data de publicação"
+        name="date"
+        value={values.date}
+        onChange={handleChange}
+        type="date"
       />
     </Form>
     <Button color="primary">Salvar</Button>

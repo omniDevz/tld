@@ -15,6 +15,7 @@ export const Footer = styled.footer`
   color: ${(props) => props.theme.colors.secondary};
   padding: 24px;
   font-size: 1.6rem;
+  font-weight: 500;
   width: 100%;
   text-align: center;
 `;
