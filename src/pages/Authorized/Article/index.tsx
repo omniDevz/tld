@@ -28,7 +28,7 @@ const Article: React.FC = () => {
   const { handleChange, values } = useForm(valuesInitials);
 
   return (
-    <PageDefaultProf type="back" text="Autores">
+    <PageDefaultProf type="back" text="Artigos">
     <Form>
       <FormField
         label="Filtro"

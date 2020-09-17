@@ -48,7 +48,7 @@ const PageHeader: React.FC<HeaderProps> = ({ type, teacherOn, text }) => {
                 </Button>
                 <Button
                   color="primary-outline"
-                  to="/teacher/books"
+                  to="/teacher/article"
                   title="Ir para página de artigos recomendados"
                 >
                   Artigos

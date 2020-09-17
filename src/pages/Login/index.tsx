@@ -44,7 +44,7 @@ function Login() {
       <LinkRecoveryPassword to="/recoveryPassword" title="Recupere sua senha">
         Esqueceu a Senha?
       </LinkRecoveryPassword>
-      <Button color="primary-outline">Entrar</Button>
+      <Button color="primary-outline" to="authorized/article/">Entrar</Button>
     </PageDefault>
   );
 }
