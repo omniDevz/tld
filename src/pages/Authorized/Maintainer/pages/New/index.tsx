@@ -1,79 +1,275 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import Button from '../../../../../components/Button';
-import FormField from '../../../../../components/FormField';
+import useForm from '../../../../../hooks/useForm';
 import PageDefaultProf from '../../../../../components/PageDefaultProf';
 
-import useForm from '../../../../../hooks/useForm';
-import api from '../../../../../services/api';
+import StepOne from './components/StepOne';
+import StepTwo from './components/StepTwo';
+import StepTree from './components/StepTree';
 
-import { Form } from './styled';
+import imgConfirm from '../../../../../assets/images/confirm.svg';
 
-const AuthorNew: React.FC = () => {
+import { Steps, ConfirmContainer, Image } from './styled';
+
+function NewRegister() {
   const valuesInitials = {
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
+    cpf: '',
+    birthDate: '',
+    genre: 'M',
+    email: '',
+    username: '',
+    password: '',
   };
+  const [cep, setCep] = useState<string>('');
+  const [country, setCountry] = useState<string>('');
+  const [state, setState] = useState<string>('');
+  const [city, setCity] = useState<string>('');
+  const [neighborhood, setNeighborhood] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [numberAddress, setNumberAddress] = useState<string>('');
+
+  const history = useHistory();
+  const [step, setStep] = useState<0 | 1 | 2 | 3>(1);
+  const [registerConfirm, setRegisterConfirm] = useState<Boolean>(false);
 
   const { handleChange, values } = useForm(valuesInitials);
-
   const { addToast } = useToasts();
-  const history = useHistory();
 
-  function handleRegisterAuthor() {
-    api
-      .post('/autor', {
-        Nome: values.firstname,
-        Sobrenome: values.lastname,
-        UltimoUsuarioAlteracao: 1,
-      })
-      .then(({ status, data }) => {
-        if (status === 206) {
-          addToast(data, {
+  function validationStep(stepValidation: number) {
+    switch (stepValidation) {
+      case 1:
+        if (values.firstName === '') {
+          addToast('Preencha o primeiro nome', {
             appearance: 'warning',
             autoDismiss: true,
           });
-          return;
+          document.getElementById('id_firstName')?.focus();
+          return false;
         }
+        if (values.firstName.length <= 2) {
+          addToast('Primeiro nome deve conter no mínimo três caracteres', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_firstName')?.focus();
+          return false;
+        }
+        if (values.lastName === '') {
+          addToast('Preencha o sobrenome', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_lastName')?.focus();
+          return false;
+        }
+        if (values.cpf === '') {
+          addToast('Preencha o CPF', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_cpf')?.focus();
+          return false;
+        }
+        if (values.cpf.length !== 11) {
+          addToast('Informe seu CPF corretamente', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_cpf')?.focus();
+          return false;
+        }
+        if (values.dateOfBirth === '') {
+          addToast('Preencha a data de aniversário', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_dateOfBirth')?.focus();
+          return false;
+        }
+        if (values.genre === '') {
+          addToast('Selecione seu genêro sexual', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return false;
+        }
+        if (values.email === '') {
+          addToast('Preencha o e-mail', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_email')?.focus();
+          return false;
+        }
+        break;
+      case 2:
+        const anyFieldHasValueInFone = Boolean(
+          values.ddd.length + values.number.length
+        );
 
-        addToast('Autor cadastrado com sucesso', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-        history.push('/authorized/author');
-      })
-      .catch(({ response }) => {
-        const { data } = response;
-        addToast(data, {
-          appearance: 'error',
-          autoDismiss: true,
-        });
-      });
+        if (!anyFieldHasValueInFone) return true;
+
+        if (values.countryCode === '') {
+          addToast('Preencha p código de discagem', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_countryCode')?.focus();
+          return false;
+        }
+        if (values.ddd === '') {
+          addToast('Preencha o DDD', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_ddd')?.focus();
+          return false;
+        }
+        if (values.number === '') {
+          addToast('Preencha o número de telefone', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_number')?.focus();
+          return false;
+        }
+        break;
+      case 3:
+        const anyFieldContainValueInAddress = Boolean(
+          cep.length +
+            country.length +
+            state.length +
+            city.length +
+            neighborhood.length +
+            address.length +
+            numberAddress.length
+        );
+
+        if (!anyFieldContainValueInAddress) return true;
+
+        if (cep === '') {
+          addToast('Preencha o CEP', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_cep')?.focus();
+          return false;
+        }
+        if (country === '') {
+          addToast('Preencha o país', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_country')?.focus();
+          return false;
+        }
+        if (state === '') {
+          addToast('Preencha o estado', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_state')?.focus();
+          return false;
+        }
+        if (city === '') {
+          addToast('Preencha a cidade', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_city')?.focus();
+          return false;
+        }
+        if (neighborhood === '') {
+          addToast('Preencha o bairro', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_neighborhood')?.focus();
+          return false;
+        }
+        if (address === '') {
+          addToast('Preencha o endereço', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_address')?.focus();
+          return false;
+        }
+        if (numberAddress === '') {
+          addToast('Preencha o número de endereço', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_numberAddress')?.focus();
+          return false;
+        }
+        break;
+      case 4:
+        if (values.username === '') {
+          addToast('Preencha o nome de usuário', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_username')?.focus();
+          return false;
+        }
+        if (values.password === '') {
+          addToast('Preencha a senha do usuário', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_password')?.focus();
+          return false;
+        }
+        break;
+    }
+
+    return true;
+  }
+
+  function handleStep(step: 1 | 2 | 3, to: 0 | 1 | 2 | 3) {
+    if (step < to && !validationStep(step)) return null;
+
+    setStep(to);
+    return null;
+  }
+
+  function handleConfirmRegister() {
+    setRegisterConfirm(true);
+
+    setTimeout(() => {
+      setRegisterConfirm(false);
+      history.push('/');
+    }, 2200);
   }
 
   return (
-    <PageDefaultProf type="back" text="Novo autor">
-      <Form>
-        <FormField
-          label="Nome"
-          name="firstname"
-          value={values.firstname}
-          onChange={handleChange}
+    <PageDefaultProf text="Novo mantenedor" type="back">
+      <Steps step={step}>
+        <StepOne
+          handleStep={handleStep}
+          handleChange={handleChange}
+          values={values}
         />
-        <FormField
-          label="Sobrenome"
-          name="lastname"
-          value={values.lastname}
-          onChange={handleChange}
+        <StepTwo
+          handleStep={handleStep}
+          handleChange={handleChange}
+          values={values}
         />
-      </Form>
-      <Button color="primary" onClick={handleRegisterAuthor}>
-        Salvar
-      </Button>
+        <StepTree
+          handleStep={handleStep}
+          handleConfirmRegister={handleConfirmRegister}
+        />
+      </Steps>
+      <ConfirmContainer registerConfirm={registerConfirm}>
+        <Image src={imgConfirm} alt="" />
+      </ConfirmContainer>
     </PageDefaultProf>
   );
-};
+}
 
-export default AuthorNew;
+export default NewRegister;

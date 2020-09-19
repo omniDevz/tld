@@ -16,7 +16,7 @@ export const RadioButtonContainer = styled.div`
 export const Label = styled.label`
   border: 2.5px solid ${(props) => props.theme.colors.secondary};
   padding: 0.8rem 1.2rem;
-  opacity: 0.48;
+  opacity: 0.68;
   transition: all 240ms ease-in-out;
   cursor: pointer;
   font-size: 1.6rem;
