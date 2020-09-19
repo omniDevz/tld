@@ -8,6 +8,7 @@ declare module 'styled-components' {
       secondary: string;
       tertiary: string;
 
+      secondaryOpacity64: string;
       gray: string;
       black: string;
     };

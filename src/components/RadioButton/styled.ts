@@ -20,6 +20,7 @@ export const Label = styled.label`
   transition: all 240ms ease-in-out;
   cursor: pointer;
   font-size: 1.6rem;
+  font-weight: 600;
   display: flex;
   justify-content: center;
   text-align: center;

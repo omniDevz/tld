@@ -2,8 +2,10 @@ import { ChangeEvent } from 'react';
 
 export interface StepTwoProps {
   values: {
-    username: string;
-    password: string;
+    typeFone: string;
+    countryCode: string;
+    ddd: string;
+    number: string;
   };
   handleChange: FunctionComponentElement;
   handleStep: function(

@@ -13,7 +13,7 @@ import imgConfirm from '../../../../../assets/images/confirm.svg';
 
 import { Steps, ConfirmContainer, Image } from './styled';
 
-function NewRegister() {
+function MaintainerNew() {
   const valuesInitials = {
     firstName: '',
     lastName: '',
@@ -21,6 +21,10 @@ function NewRegister() {
     birthDate: '',
     genre: 'M',
     email: '',
+    typeFone: 'F',
+    countryCode: '',
+    ddd: '',
+    number: '',
     username: '',
     password: '',
   };
@@ -33,7 +37,7 @@ function NewRegister() {
   const [numberAddress, setNumberAddress] = useState<string>('');
 
   const history = useHistory();
-  const [step, setStep] = useState<0 | 1 | 2 | 3>(1);
+  const [step, setStep] = useState<0 | 1 | 2 | 3>(2);
   const [registerConfirm, setRegisterConfirm] = useState<Boolean>(false);
 
   const { handleChange, values } = useForm(valuesInitials);
@@ -272,4 +276,4 @@ function NewRegister() {
   );
 }
 
-export default NewRegister;
+export default MaintainerNew;

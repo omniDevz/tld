@@ -1,6 +1,7 @@
 import React from 'react';
 
 import FormField from '../../../../../../../components/FormField';
+import RadioButton from '../../../../../../../components/RadioButton';
 
 import backgroundNewRegister from '../../../../../../../assets/images/backgroundNewRegisterStepTwo.svg';
 
@@ -10,7 +11,8 @@ import {
   Legend,
   ButtonWrapper,
   Button,
-  TwoFields,
+  ContainerRadiosButtons,
+  ThreeColumns,
 } from './styled';
 
 import { StepTwoProps } from './interface';
@@ -27,22 +29,48 @@ const StepTwo: React.FC<StepTwoProps> = ({
       onSubmit={() => handleStep(2, 3)}
     >
       <Fieldset>
-        <Legend>Dados Pessoais</Legend>
-        <TwoFields>
-          <FormField
-            label="Usuário"
-            name="username"
-            value={values.username}
+        <Legend>Telefone</Legend>
+        <ContainerRadiosButtons>
+          <RadioButton
+            name="typeFone"
+            options={[
+              {
+                label: 'Fixo',
+                value: 'F',
+              },
+              {
+                label: 'Celular',
+                value: 'C',
+              },
+            ]}
             onChange={handleChange}
+            value={values.typeFone}
+          />
+        </ContainerRadiosButtons>
+        <ThreeColumns>
+          <FormField
+            label=""
+            name="countryCode"
+            value={values.countryCode}
+            onChange={handleChange}
+            prefix="+"
           />
           <FormField
-            label="Senha"
-            name="password"
-            value={values.password}
-            type="password"
+            label=""
+            name="ddd"
+            value={values.ddd}
             onChange={handleChange}
+            type="number"
+            prefix="0"
           />
-        </TwoFields>
+          <FormField
+            label="Número"
+            name="number"
+            value={values.number}
+            onChange={handleChange}
+            type="number"
+          />
+        </ThreeColumns>
       </Fieldset>
       <ButtonWrapper>
         <Button onClick={() => handleStep(2, 3)} color="primary">
