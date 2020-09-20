@@ -8,6 +8,7 @@ import RecoveryPasswordNew from './RecoveryPassword/pages/New';
 import RecoveryPassword from './RecoveryPassword';
 
 import AuthorizedFinallyRegister from './Authorized/FinallyRegister';
+import AuthorizedAccount from './Authorized/Account';
 
 import AuthorizedAuthorUpdate from './Authorized/Author/pages/Update';
 import AuthorizedAuthorNew from './Authorized/Author/pages/New';
@@ -36,6 +37,8 @@ function Routes() {
           path="/authorized/finallyRegister"
           component={AuthorizedFinallyRegister}
         />
+        <Route path="/authorized/account" component={AuthorizedAccount} />
+
         <Route
           path="/authorized/author/update/:authorId"
           component={AuthorizedAuthorUpdate}

@@ -39,13 +39,7 @@ const PageHeader: React.FC<HeaderProps> = ({ type, teacherOn, text }) => {
                 >
                   Home
                 </Button>
-                <Button
-                  color="primary-outline"
-                  to="/authorized/quizzes"
-                  title="Ir para página de quizzes"
-                >
-                  Quizzes
-                </Button>
+
                 <Button
                   color="primary-outline"
                   to="/authorized/article"
@@ -73,6 +67,13 @@ const PageHeader: React.FC<HeaderProps> = ({ type, teacherOn, text }) => {
                   title="Ir para página da turma"
                 >
                   Turma
+                </Button>
+                <Button
+                  color="primary-outline"
+                  to="/authorized/maintainer"
+                  title="Ir para página de mantenedores"
+                >
+                  Mantenedores
                 </Button>
                 <Button
                   color="primary-outline"
