@@ -10,7 +10,14 @@ import PageDefaultProf from '../../../../../components/PageDefaultProf';
 import useForm from '../../../../../hooks/useForm';
 import api from '../../../../../services/api';
 
-import { Form, TwoFields, Fieldset, ButtonsWrapper } from './styled';
+import {
+  Form,
+  TwoFields,
+  ThreeFields,
+  Fieldset,
+  ButtonsWrapper,
+  HalfContainer,
+} from './styled';
 
 import { ParamsProps } from './interface';
 import RadioButton from '../../../../../components/RadioButton';
@@ -94,6 +101,49 @@ const MaintainerUpdate: React.FC = () => {
               value={values.email}
               onChange={handleChange}
             />
+          </Fieldset>
+        </Collapse>
+        <Collapse label="Telefone">
+          <Fieldset>
+            <HalfContainer>
+              <RadioButton
+                options={[
+                  {
+                    label: 'Fixo',
+                    value: 'F',
+                  },
+                  {
+                    label: 'Celular',
+                    value: 'C',
+                  },
+                ]}
+                name="typeFone"
+                value={values.typeFone}
+                onChange={handleChange}
+              />
+            </HalfContainer>
+            <ThreeFields>
+              <FormField
+                label=""
+                name="countryCode"
+                value={values.countryCode}
+                onChange={handleChange}
+                prefix="+"
+              />
+              <FormField
+                label=""
+                name="ddd"
+                value={values.ddd}
+                onChange={handleChange}
+                prefix="0"
+              />
+              <FormField
+                label="Número"
+                name="number"
+                value={values.number}
+                onChange={handleChange}
+              />
+            </ThreeFields>
           </Fieldset>
         </Collapse>
       </Form>

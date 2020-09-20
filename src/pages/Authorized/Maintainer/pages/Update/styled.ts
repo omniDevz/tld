@@ -9,7 +9,7 @@ export const Form = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 1.6rem;
+  row-gap: 2.4rem;
   flex: 1;
 
   ${CheckButtonWrapper} {
@@ -28,6 +28,19 @@ export const Fieldset = styled.div`
 `;
 
 export const TwoFields = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1.2rem;
+`;
+
+export const ThreeFields = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 3fr;
+  column-gap: 0.8rem;
+`;
+
+export const HalfContainer = styled.div`
+  width: 50%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 1.2rem;
