@@ -53,6 +53,11 @@ export const HalfContainer = styled.div`
   column-gap: 1.2rem;
 `;
 
+export const ButtonsAccessWrapper = styled.div`
+  margin-top: 0.8rem;
+  margin-bottom: 2.4rem;
+`;
+
 export const ButtonsWrapper = styled.div`
   margin: 2.4rem 0;
   display: flex;

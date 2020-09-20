@@ -6,6 +6,8 @@ import Button from '../../../../../components/Button';
 import Collapse from '../../../../../components/Collapse';
 import FormField from '../../../../../components/FormField';
 import PageDefaultProf from '../../../../../components/PageDefaultProf';
+import RadioButton from '../../../../../components/RadioButton';
+import Select from '../../../../../components/Select';
 
 import useForm from '../../../../../hooks/useForm';
 import validations from '../../../../../utils/validations';
@@ -22,19 +24,18 @@ import {
   ThreeFields,
   Fieldset,
   ButtonsWrapper,
+  ButtonsAccessWrapper,
   HalfContainer,
   CEPContainer,
 } from './styled';
 
-import { ParamsProps } from './interface';
-import RadioButton from '../../../../../components/RadioButton';
 import {
+  ParamsProps,
   AllCitiesProps,
   AllCountriesProps,
   AllStatiesProps,
   OptionsSelect,
-} from '../New/components/StepThree/interface';
-import Select from '../../../../../components/Select';
+} from './interface';
 
 const MaintainerUpdate: React.FC = () => {
   const valuesInitials = {
@@ -50,6 +51,8 @@ const MaintainerUpdate: React.FC = () => {
     number: '',
     username: '',
     password: '',
+    passwordNew: '',
+    passwordConfirm: '',
   };
   const [cep, setCep] = useState<string>('');
   const [country, setCountry] = useState<string>('');
@@ -383,6 +386,43 @@ const MaintainerUpdate: React.FC = () => {
               />
             </TwoFields>
           </Fieldset>
+        </Collapse>
+
+        <Collapse label="Dados de acesso">
+          <Fieldset>
+            <FormField
+              label="Usuário"
+              name="username"
+              value={values.username}
+              onChange={handleChange}
+            />
+          </Fieldset>
+          <ButtonsAccessWrapper>
+            <Button color="primary-outline">Trocar usuário</Button>
+          </ButtonsAccessWrapper>
+          <Fieldset>
+            <FormField
+              label="Senha atual"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+            />
+            <FormField
+              label="Nova senha"
+              name="passwordNew"
+              value={values.passwordNew}
+              onChange={handleChange}
+            />
+            <FormField
+              label="Confirmar senha"
+              name="passwordConfirm"
+              value={values.passwordConfirm}
+              onChange={handleChange}
+            />
+          </Fieldset>
+          <ButtonsAccessWrapper>
+            <Button color="primary-outline">Trocar usuário</Button>
+          </ButtonsAccessWrapper>
         </Collapse>
       </Form>
       <ButtonsWrapper>
