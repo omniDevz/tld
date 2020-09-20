@@ -9,7 +9,8 @@ export const Steps = styled.section<StepProps>`
   min-height: 240px;
 
   ${({ step }) => css`
-    form {
+    form,
+    article {
       position: absolute;
       top: 0;
       left: 0;

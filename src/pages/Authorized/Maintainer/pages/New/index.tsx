@@ -7,7 +7,7 @@ import PageDefaultProf from '../../../../../components/PageDefaultProf';
 
 import StepOne from './components/StepOne';
 import StepTwo from './components/StepTwo';
-import StepTree from './components/StepTree';
+import StepThree from './components/StepThree';
 
 import imgConfirm from '../../../../../assets/images/confirm.svg';
 
@@ -37,7 +37,7 @@ function MaintainerNew() {
   const [numberAddress, setNumberAddress] = useState<string>('');
 
   const history = useHistory();
-  const [step, setStep] = useState<0 | 1 | 2 | 3>(2);
+  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(3);
   const [registerConfirm, setRegisterConfirm] = useState<Boolean>(false);
 
   const { handleChange, values } = useForm(valuesInitials);
@@ -235,7 +235,7 @@ function MaintainerNew() {
     return true;
   }
 
-  function handleStep(step: 1 | 2 | 3, to: 0 | 1 | 2 | 3) {
+  function handleStep(step: 1 | 2 | 3 | 4, to: 0 | 1 | 2 | 3 | 4) {
     if (step < to && !validationStep(step)) return null;
 
     setStep(to);
@@ -264,9 +264,26 @@ function MaintainerNew() {
           handleChange={handleChange}
           values={values}
         />
-        <StepTree
+        <StepThree
           handleStep={handleStep}
-          handleConfirmRegister={handleConfirmRegister}
+          values={{
+            cep,
+            country,
+            state,
+            city,
+            neighborhood,
+            address,
+            numberAddress,
+          }}
+          setValues={{
+            setCep,
+            setCountry,
+            setState,
+            setCity,
+            setNeighborhood,
+            setAddress,
+            setNumberAddress,
+          }}
         />
       </Steps>
       <ConfirmContainer registerConfirm={registerConfirm}>
