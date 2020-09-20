@@ -26,6 +26,7 @@ const Select: React.FC<SelectProps> = ({
         placeholder=""
         value={valueSelected}
         onChange={onChange}
+        autoComplete="false"
       />
       <Text htmlFor={fieldId}>{label}</Text>
     </SelectWrapper>

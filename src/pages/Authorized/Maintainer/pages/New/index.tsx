@@ -265,6 +265,7 @@ function MaintainerNew() {
           values={values}
         />
         <StepThree
+          handleConfirmRegister={handleConfirmRegister}
           handleStep={handleStep}
           values={{
             cep,

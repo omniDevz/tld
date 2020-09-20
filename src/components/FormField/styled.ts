@@ -44,14 +44,13 @@ export const Text = styled.label<TextProps>`
   font-weight: 600;
 
   padding: 1.4rem 1.2rem;
-  border-radius: 1.2rem;
 
   transition: 240ms ease-in-out;
 
   ${({ type }) =>
     type === 'date' &&
     css`
-      background: ${(props) => props.theme.colors.secondary};
+      background: ${(props) => props.theme.colors.tertiary};
     `}
 
   ${({ hasLabel }) =>

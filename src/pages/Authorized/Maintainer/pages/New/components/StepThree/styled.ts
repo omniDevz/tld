@@ -66,6 +66,8 @@ export const TwoFields = styled.div`
 `;
 
 export const ButtonsWrapper = styled.div`
+  display: flex;
+  column-gap: 1.6rem;
   margin-bottom: 2.4rem;
   width: 100%;
 

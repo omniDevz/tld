@@ -29,6 +29,7 @@ import {
 } from './interface';
 
 const StepThree: React.FC<StepThreeProps> = ({
+  handleConfirmRegister,
   handleStep,
   values,
   setValues,
@@ -262,11 +263,11 @@ const StepThree: React.FC<StepThreeProps> = ({
       </Fieldset>
 
       <ButtonsWrapper>
-        <Button onClick={() => handleStep(3, 4)} color="primary">
-          Continuar
-        </Button>
         <Button onClick={() => handleStep(3, 2)} color="primary-outline">
           Voltar
+        </Button>
+        <Button onClick={handleConfirmRegister} color="primary">
+          Enviar
         </Button>
       </ButtonsWrapper>
     </Form>
