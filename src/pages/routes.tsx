@@ -7,6 +7,8 @@ import RecoveryPasswordCode from './RecoveryPassword/pages/Code';
 import RecoveryPasswordNew from './RecoveryPassword/pages/New';
 import RecoveryPassword from './RecoveryPassword';
 
+import AuthorizedFinallyRegister from './Authorized/FinallyRegister';
+
 import AuthorizedAuthorUpdate from './Authorized/Author/pages/Update';
 import AuthorizedAuthorNew from './Authorized/Author/pages/New';
 import AuthorizedAuthor from './Authorized/Author';
@@ -30,6 +32,10 @@ function Routes() {
         <Route path="/recoveryPassword/New" component={RecoveryPasswordNew} />
         <Route path="/recoveryPassword" component={RecoveryPassword} />
 
+        <Route
+          path="/authorized/finallyRegister"
+          component={AuthorizedFinallyRegister}
+        />
         <Route
           path="/authorized/author/update/:authorId"
           component={AuthorizedAuthorUpdate}
