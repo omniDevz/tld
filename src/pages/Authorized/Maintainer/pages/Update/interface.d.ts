@@ -1,3 +1,3 @@
 export interface ParamsProps {
-  id: string;
+  maintainerId: string;
 }

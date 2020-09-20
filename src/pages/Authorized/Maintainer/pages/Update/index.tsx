@@ -3,42 +3,99 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../../../components/Button';
+import Collapse from '../../../../../components/Collapse';
 import FormField from '../../../../../components/FormField';
 import PageDefaultProf from '../../../../../components/PageDefaultProf';
 
+import useForm from '../../../../../hooks/useForm';
 import api from '../../../../../services/api';
 
-import { Form, ButtonsWrapper } from './styled';
+import { Form, TwoFields, Fieldset, ButtonsWrapper } from './styled';
 
 import { ParamsProps } from './interface';
+import RadioButton from '../../../../../components/RadioButton';
 
 const MaintainerUpdate: React.FC = () => {
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
+  const valuesInitials = {
+    firstName: '',
+    lastName: '',
+    cpf: '',
+    birthDate: '',
+    genre: 'M',
+    email: '',
+    typeFone: 'F',
+    countryCode: '',
+    ddd: '',
+    number: '',
+    username: '',
+    password: '',
+  };
 
-  let { id } = useParams<ParamsProps>();
+  const { handleChange, values } = useForm(valuesInitials);
+  let { maintainerId } = useParams<ParamsProps>();
   const { addToast } = useToasts();
   const history = useHistory();
 
   return (
-    <PageDefaultProf type="back" text="Alterar autor">
+    <PageDefaultProf type="back" text="Alterar mantenedor">
       <Form>
-        <FormField
-          label="Nome"
-          name="firstname"
-          value={firstname}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setFirstname(e.target.value)
-          }
-        />
-        <FormField
-          label="Sobrenome"
-          name="lastname"
-          value={lastname}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setLastname(e.target.value)
-          }
-        />
+        <Collapse label="Dados pessoais">
+          <Fieldset>
+            <TwoFields>
+              <FormField
+                label="Nome"
+                name="firstname"
+                value={values.firstname}
+                onChange={handleChange}
+              />
+              <FormField
+                label="Sobrenome"
+                name="lastname"
+                value={values.lastname}
+                onChange={handleChange}
+              />
+            </TwoFields>
+            <TwoFields>
+              <FormField
+                label="CPF"
+                name="cpf"
+                value={values.cpf}
+                onChange={handleChange}
+              />
+              <FormField
+                label="Data nascimento"
+                name="birthDate"
+                value={values.birthDate}
+                onChange={handleChange}
+              />
+            </TwoFields>
+            <RadioButton
+              options={[
+                {
+                  label: 'Masculino',
+                  value: 'M',
+                },
+                {
+                  label: 'Feminino',
+                  value: 'F',
+                },
+                {
+                  label: 'Outro',
+                  value: 'O',
+                },
+              ]}
+              name="genre"
+              value={values.genre}
+              onChange={handleChange}
+            />
+            <FormField
+              label="E-mail"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+            />
+          </Fieldset>
+        </Collapse>
       </Form>
       <ButtonsWrapper>
         <Button color="primary-outline">Excluir</Button>

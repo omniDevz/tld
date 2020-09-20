@@ -48,7 +48,7 @@ function Routes() {
         <Route path="/authorized/article" component={AuthorizedArticle} />
 
         <Route
-          path="/authorized/maintainer/update"
+          path="/authorized/maintainer/update/:maintainerId"
           component={AuthorizedMaintainerUpdate}
         />
         <Route
