@@ -27,6 +27,13 @@ export const Fieldset = styled.div`
   row-gap: 0.8rem;
 `;
 
+export const CEPContainer = styled.div`
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  align-items: center;
+  width: 80%;
+`;
+
 export const TwoFields = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;

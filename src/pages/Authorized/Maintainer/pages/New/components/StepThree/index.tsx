@@ -5,6 +5,8 @@ import Button from '../../../../../../../components/Button';
 import FormField from '../../../../../../../components/FormField';
 import Select from '../../../../../../../components/Select';
 
+import validations from '../../../../../../../utils/validations';
+
 import {
   apiCountries,
   apiViaCep,
@@ -57,13 +59,6 @@ const StepThree: React.FC<StepThreeProps> = ({
   });
   const { addToast } = useToasts();
 
-  function validationEmptyValue(value: string, id: string) {
-    if (value !== '') return true;
-
-    document.getElementById(id)?.focus();
-    return false;
-  }
-
   function handleCep() {
     if (values.cep.length < 8) {
       alert('Informe o CEP corretamente');
@@ -83,16 +78,16 @@ const StepThree: React.FC<StepThreeProps> = ({
         setValues.setCountry('Brasil');
 
         setValues.setState(uf);
-        if (!validationEmptyValue(uf, 'id_state')) return null;
+        if (!validations.EmptyValue(uf, 'id_state')) return null;
 
         setValues.setCity(localidade);
-        if (!validationEmptyValue(localidade, 'id_city')) return null;
+        if (!validations.EmptyValue(localidade, 'id_city')) return null;
 
         setValues.setNeighborhood(bairro);
-        if (!validationEmptyValue(bairro, 'id_neighborhood')) return null;
+        if (!validations.EmptyValue(bairro, 'id_neighborhood')) return null;
 
         setValues.setAddress(logradouro);
-        if (!validationEmptyValue(logradouro, 'id_address')) return null;
+        if (!validations.EmptyValue(logradouro, 'id_address')) return null;
 
         document.getElementById('id_numberAddress')?.focus();
       })

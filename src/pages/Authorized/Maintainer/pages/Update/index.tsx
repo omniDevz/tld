@@ -8,7 +8,13 @@ import FormField from '../../../../../components/FormField';
 import PageDefaultProf from '../../../../../components/PageDefaultProf';
 
 import useForm from '../../../../../hooks/useForm';
-import api from '../../../../../services/api';
+import validations from '../../../../../utils/validations';
+
+import api, {
+  apiCountries,
+  apiLocations,
+  apiViaCep,
+} from '../../../../../services/api';
 
 import {
   Form,
@@ -17,10 +23,18 @@ import {
   Fieldset,
   ButtonsWrapper,
   HalfContainer,
+  CEPContainer,
 } from './styled';
 
 import { ParamsProps } from './interface';
 import RadioButton from '../../../../../components/RadioButton';
+import {
+  AllCitiesProps,
+  AllCountriesProps,
+  AllStatiesProps,
+  OptionsSelect,
+} from '../New/components/StepThree/interface';
+import Select from '../../../../../components/Select';
 
 const MaintainerUpdate: React.FC = () => {
   const valuesInitials = {
@@ -37,11 +51,147 @@ const MaintainerUpdate: React.FC = () => {
     username: '',
     password: '',
   };
+  const [cep, setCep] = useState<string>('');
+  const [country, setCountry] = useState<string>('');
+  const [state, setState] = useState<string>('');
+  const [city, setCity] = useState<string>('');
+  const [neighborhood, setNeighborhood] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [numberAddress, setNumberAddress] = useState<string>('');
+  const [countries, setCountries] = useState<OptionsSelect>({
+    options: [],
+  });
+
+  const [staties, setStaties] = useState<OptionsSelect>({
+    options: [
+      {
+        label: '',
+        value: '',
+      },
+    ],
+  });
+
+  const [cities, setCities] = useState<OptionsSelect>({
+    options: [
+      {
+        label: '',
+        value: '',
+      },
+    ],
+  });
 
   const { handleChange, values } = useForm(valuesInitials);
   let { maintainerId } = useParams<ParamsProps>();
   const { addToast } = useToasts();
   const history = useHistory();
+
+  function handleCep() {
+    if (values.cep.length < 8) {
+      alert('Informe o CEP corretamente');
+      return null;
+    }
+
+    apiViaCep
+      .get(`/${values.cep.replace('-', '')}/json`)
+      .then(({ data }) => {
+        if (data.erro) {
+          alert('Confirme o campo de cep, algo está incorreto');
+          return null;
+        }
+
+        const { uf, localidade, bairro, logradouro } = data;
+
+        setCountry('Brasil');
+
+        setState(uf);
+        if (!validations.EmptyValue(uf, 'id_state')) return null;
+
+        setCity(localidade);
+        if (!validations.EmptyValue(localidade, 'id_city')) return null;
+
+        setNeighborhood(bairro);
+        if (!validations.EmptyValue(bairro, 'id_neighborhood')) return null;
+
+        setAddress(logradouro);
+        if (!validations.EmptyValue(logradouro, 'id_address')) return null;
+
+        document.getElementById('id_numberAddress')?.focus();
+      })
+      .catch(() => {
+        addToast('Informe o CEP corretamente', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      });
+  }
+
+  useEffect(() => {
+    apiCountries
+      .get('')
+      .then(({ data }) => {
+        const optionsCountries = data.map((country: AllCountriesProps) => {
+          const optionsNameCountryInPortugueseBr = {
+            value: country.translations.br,
+            label: country.translations.br,
+          };
+          return optionsNameCountryInPortugueseBr;
+        });
+        setCountries({
+          options: optionsCountries,
+        });
+      })
+      .catch(({ response }) => {
+        console.error(response);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (values.country !== 'Brasil') return;
+
+    apiLocations
+      .get('/estados')
+      .then(({ data }) => {
+        const optionsStaties = data.map((state: AllStatiesProps) => {
+          const optionsNameStaties = {
+            value: state.sigla,
+            label: state.sigla,
+          };
+
+          return optionsNameStaties;
+        });
+
+        setStaties({
+          options: optionsStaties,
+        });
+      })
+      .catch(({ response }) => {
+        console.error(response);
+      });
+  }, [values.country]);
+
+  useEffect(() => {
+    if (values.country !== 'Brasil') return;
+
+    apiLocations
+      .get(`/estados/${values.state}/municipios`)
+      .then(({ data }) => {
+        const optionsCities = data.map((city: AllCitiesProps) => {
+          const optionsNameCity = {
+            value: city.nome,
+            label: city.nome,
+          };
+
+          return optionsNameCity;
+        });
+
+        setCities({
+          options: optionsCities,
+        });
+      })
+      .catch(({ response }) => {
+        console.error(response);
+      });
+  }, [values.state, values.country]);
 
   return (
     <PageDefaultProf type="back" text="Alterar mantenedor">
@@ -144,6 +294,94 @@ const MaintainerUpdate: React.FC = () => {
                 onChange={handleChange}
               />
             </ThreeFields>
+          </Fieldset>
+        </Collapse>
+        <Collapse label="Endereço">
+          <Fieldset>
+            <CEPContainer>
+              <FormField
+                label="CEP"
+                name="cep"
+                value={cep}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setCep(e.target.value)
+                }
+              />
+              <Button color="secondary" onClick={handleCep}>
+                Buscar
+              </Button>
+            </CEPContainer>
+            <TwoFields>
+              <Select
+                name="country"
+                label="País"
+                onChange={(e: any) => setCountry(e.value)}
+                value={country}
+                options={countries.options}
+              />
+              {country === 'Brasil' ? (
+                <Select
+                  name="state"
+                  label="UF"
+                  onChange={(e: any) => setState(e.value)}
+                  value={state}
+                  options={staties.options}
+                />
+              ) : (
+                <FormField
+                  label="UF"
+                  name="state"
+                  value={state}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setState(e.target.value)
+                  }
+                />
+              )}
+            </TwoFields>
+            {country === 'Brasil' ? (
+              <Select
+                name="city"
+                label="Cidade"
+                onChange={(e: any) => setCity(e.value)}
+                value={city}
+                options={cities.options}
+              />
+            ) : (
+              <FormField
+                label="Cidade"
+                name="city"
+                value={city}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setCity(e.target.value)
+                }
+              />
+            )}
+            <FormField
+              label="Bairro"
+              name="neighborhood"
+              value={neighborhood}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setNeighborhood(e.target.value)
+              }
+            />
+            <TwoFields>
+              <FormField
+                label="Endereço"
+                name="address"
+                value={address}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setAddress(e.target.value)
+                }
+              />
+              <FormField
+                label="Nº"
+                name="numberAddress"
+                value={numberAddress}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setNumberAddress(e.target.value)
+                }
+              />
+            </TwoFields>
           </Fieldset>
         </Collapse>
       </Form>
