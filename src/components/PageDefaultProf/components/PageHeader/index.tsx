@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
 import Button from '../../../Button';
 
@@ -8,9 +9,54 @@ import { HeaderWrapper, Navigation, Menu, LinkList } from './styled';
 
 import { HeaderProps } from './interface';
 
+const links = [
+  {
+    route: 'home',
+    title: 'Ir para página inicial',
+    text: 'Home',
+  },
+  {
+    route: 'article',
+    title: 'Ir para página de artigos recomendados',
+    text: 'Artigos',
+  },
+  {
+    route: 'author',
+    title: 'Ir para página de autores',
+    text: 'Autores',
+  },
+  {
+    route: 'live',
+    title: 'Assistir live do professor',
+    text: 'Live',
+  },
+  {
+    route: 'student',
+    title: 'Ir para página de alunos',
+    text: 'Alunos',
+  },
+  {
+    route: 'classes',
+    title: 'Ir para página da turma',
+    text: 'Tume',
+  },
+  {
+    route: 'maintainer',
+    title: 'Ir para página de mantenedores',
+    text: 'Mantenedores',
+  },
+  {
+    route: 'account',
+    title: 'Ir para página de perfil',
+    text: 'Perfil',
+  },
+];
+
 const PageHeader: React.FC<HeaderProps> = ({ type, teacherOn, text }) => {
   const howType = type === undefined ? 'icon' : type;
   const hasTeacherOn = Boolean(teacherOn);
+  const { url } = useRouteMatch();
+  const routeActive = url.replace('/authorized/', '');
 
   function handleToggleMenu() {
     const menu = document.getElementById('menu');
@@ -32,63 +78,18 @@ const PageHeader: React.FC<HeaderProps> = ({ type, teacherOn, text }) => {
           <LinkList>
             {hasTeacherOn && (
               <>
-                <Button
-                  color="primary-outline"
-                  to="/authorized/home"
-                  title="Ir para página inicial"
-                >
-                  Home
-                </Button>
-
-                <Button
-                  color="primary-outline"
-                  to="/authorized/article"
-                  title="Ir para página de artigos recomendados"
-                >
-                  Artigos
-                </Button>
-                <Button
-                  color="primary-outline"
-                  to="/authorized/author"
-                  title="Ir para página de autores"
-                >
-                  Autores
-                </Button>
-                <Button
-                  color="primary-outline"
-                  to="/authorized/live"
-                  title="Assistir live do professor"
-                >
-                  Live
-                </Button>
-                <Button
-                  color="primary-outline"
-                  to="/authorized/student"
-                  title="Ir para página de alunos"
-                >
-                  Alunos
-                </Button>
-                <Button
-                  color="primary-outline"
-                  to="/authorized/classes"
-                  title="Ir para página da turma"
-                >
-                  Turma
-                </Button>
-                <Button
-                  color="primary-outline"
-                  to="/authorized/maintainer"
-                  title="Ir para página de mantenedores"
-                >
-                  Mantenedores
-                </Button>
-                <Button
-                  color="primary-outline"
-                  to="/authorized/account"
-                  title="Ir para página de perfil"
-                >
-                  Perfil
-                </Button>
+                {links
+                  .filter(({ route }) => route !== routeActive)
+                  .map((link) => (
+                    <Button
+                      key={link.route}
+                      color="primary-outline"
+                      to={`/authorized/${link.route}`}
+                      title={link.title}
+                    >
+                      {link.text}
+                    </Button>
+                  ))}
               </>
             )}
           </LinkList>

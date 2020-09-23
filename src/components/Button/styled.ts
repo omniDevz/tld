@@ -27,6 +27,14 @@ export const ButtonStyled = styled.button<ButtonProps>`
   }}
 
   ${(props) => {
+    if (Boolean(props.disabled)) {
+      return css`
+        opacity: 0.42;
+      `;
+    }
+  }}
+
+  ${(props) => {
     if (props.color === 'primary')
       return css`
         background: ${(props) => props.theme.colors.primary};

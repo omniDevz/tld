@@ -3,4 +3,5 @@ export interface ButtonProps {
   onClick?: function();
   to?: string;
   title?: string;
+  disabled?: boolean = false;
 }
