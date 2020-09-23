@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
 
+export interface LabelProps {
+  type: string;
+}
+
 export interface InputProps {
   hasValue: boolean;
   hasChildren: boolean;
@@ -15,6 +19,6 @@ export interface FormFieldProps {
   name: string;
   label: string;
   onChange: FunctionComponentElement;
-  type?: string;
+  type?: 'textarea' | 'text' | 'number' | 'date' | string;
   prefix?: string;
 }

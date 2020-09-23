@@ -1,16 +1,12 @@
 import styled, { css } from 'styled-components';
 
-import { InputProps, TextProps } from './interface';
+import { InputProps, TextProps, LabelProps } from './interface';
 
 export const FormFieldWrapper = styled.div`
   width: 100%;
-
-  textarea {
-    min-height: 150px;
-  }
 `;
 
-export const Label = styled.label`
+export const Label = styled.label<LabelProps>`
   position: relative;
   width: 100%;
 
@@ -18,12 +14,21 @@ export const Label = styled.label`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 4.2rem;
+
   box-shadow: var(--box-shadow);
 
   border: 2.5px solid ${(props) => props.theme.colors.secondary};
 
   padding: 0 1.4rem;
+
+  ${(props) =>
+    props.type === 'textarea'
+      ? css`
+          height: 8rem;
+        `
+      : css`
+          height: 4.2rem;
+        `}
 `;
 
 export const Text = styled.label<TextProps>`
@@ -76,6 +81,49 @@ export const Text = styled.label<TextProps>`
 `;
 
 export const Input = styled.input<InputProps>`
+  color: ${(props) => props.theme.colors.secondary};
+  font-size: 2rem;
+  font-weight: 600;
+  padding-top: 0.8rem;
+
+  outline: 0;
+  width: 100%;
+  background: transparent;
+  border: none;
+
+  resize: none;
+
+  &:focus {
+    + ${Text} {
+      color: ${(props) => props.theme.colors.secondary};
+      z-index: 1;
+      left: 1.6rem;
+      top: 0;
+      transform: scale(0.8) translateY(-1.5rem);
+
+      &:before {
+        transform: scaleX(1);
+      }
+    }
+  }
+  ${({ hasValue }) =>
+    hasValue &&
+    css`
+      + ${Text} {
+        color: ${(props) => props.theme.colors.secondary};
+        z-index: 1;
+        left: 0;
+        top: 0;
+        transform: scale(0.8) translateY(-1.5rem);
+
+        &:before {
+          transform: scaleX(1);
+        }
+      }
+    `};
+`;
+
+export const Textarea = styled.textarea<InputProps>`
   color: ${(props) => props.theme.colors.secondary};
   font-size: 2rem;
   font-weight: 600;

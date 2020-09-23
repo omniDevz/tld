@@ -22,6 +22,9 @@ import AuthorizedMaintainerUpdate from './Authorized/Maintainer/pages/Update';
 import AuthorizedMaintainerNew from './Authorized/Maintainer/pages/New';
 import AuthorizedMaintainer from './Authorized/Maintainer';
 
+import AuthorizedStudentDetail from './Authorized/Student/pages/Detail';
+import AuthorizedStudent from './Authorized/Student';
+
 import NotFound from './NotFound';
 
 function Routes() {
@@ -65,6 +68,12 @@ function Routes() {
           component={AuthorizedMaintainerNew}
         />
         <Route path="/authorized/maintainer" component={AuthorizedMaintainer} />
+
+        <Route
+          path="/authorized/student/:studentId"
+          component={AuthorizedStudentDetail}
+        />
+        <Route path="/authorized/student" component={AuthorizedStudent} />
 
         <Route component={NotFound} />
       </Switch>

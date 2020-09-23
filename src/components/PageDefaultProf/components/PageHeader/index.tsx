@@ -63,6 +63,13 @@ const PageHeader: React.FC<HeaderProps> = ({ type, teacherOn, text }) => {
                 </Button>
                 <Button
                   color="primary-outline"
+                  to="/authorized/student"
+                  title="Ir para página de alunos"
+                >
+                  Alunos
+                </Button>
+                <Button
+                  color="primary-outline"
                   to="/authorized/classes"
                   title="Ir para página da turma"
                 >

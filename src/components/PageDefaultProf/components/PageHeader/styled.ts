@@ -35,7 +35,7 @@ export const Menu = styled.div`
 export const Navigation = styled.nav`
   flex: 1;
   width: 100%;
-  padding-top: 7.2rem;
+  padding-top: 5.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
