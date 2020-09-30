@@ -3,7 +3,7 @@ import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../components/Button';
 import FormField from '../../../components/FormField';
-import PageDefaultProf from '../../../components/PageDefaultProf';
+import PageAuthorized from '../../../components/PageAuthorized';
 
 import useForm from '../../../hooks/useForm';
 
@@ -32,8 +32,8 @@ const Author: React.FC = () => {
           (author: AuthorApiProps) => {
             const newAuthor: AuthorProps = {
               authorId: author.autorId,
-              firstname: author.nome,
-              lastname: author.sobrenome,
+              firstName: author.nome,
+              lastName: author.sobrenome,
               inactive: author.inativo,
               lastUserUpdate: author.ultimoUsuarioAlteracao,
             };
@@ -54,7 +54,7 @@ const Author: React.FC = () => {
   }, [addToast]);
 
   return (
-    <PageDefaultProf type="back" text="Autores">
+    <PageAuthorized type="back" text="Autores">
       <Form>
         <FormField
           label="Filtro"
@@ -72,7 +72,7 @@ const Author: React.FC = () => {
       >
         Cadastrar autor
       </Button>
-    </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 

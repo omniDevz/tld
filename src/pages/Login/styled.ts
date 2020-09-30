@@ -7,7 +7,7 @@ export const Title = styled.h3`
   padding: 12rem 24px 32px;
   font-size: 3.2rem;
   font-weight: 700;
-  text-align: center;
+  text-align: left;
 `;
 
 export const Form = styled.form``;
@@ -31,7 +31,24 @@ export const LinkRecoveryPassword = styled(Link)`
 export const Button = styled(ButtonStyled)`
   margin-top: auto;
   margin-left: auto;
-  margin-right: 24px;
   margin-bottom: 8px;
   width: calc(50% - 12px);
+`;
+
+export const WrapperButton = styled.div`
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 24px;
+
+  ${Button} {
+    width: 100%;
+  }
+`;
+
+export const TypesLogin = styled.div`
+  margin-top: 42vh;
+  display: flex;
+  padding: 0 24px;
 `;

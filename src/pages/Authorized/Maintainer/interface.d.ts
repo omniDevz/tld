@@ -1,4 +1,4 @@
-export interface MantainerProps {
+export interface MaintainerProps {
   id: number;
   name: string;
   email: string;

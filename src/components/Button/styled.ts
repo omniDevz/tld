@@ -37,6 +37,7 @@ export const ButtonStyled = styled.button<ButtonProps>`
   ${(props) => {
     if (props.color === 'primary')
       return css`
+        border: 2px solid ${(props) => props.theme.colors.primary};
         background: ${(props) => props.theme.colors.primary};
         color: ${(props) => props.theme.colors.tertiary};
       `;
@@ -48,6 +49,7 @@ export const ButtonStyled = styled.button<ButtonProps>`
       `;
     else if (props.color === 'secondary')
       return css`
+        border: 2px solid ${(props) => props.theme.colors.secondary};
         background: ${(props) => props.theme.colors.secondary};
         color: ${(props) => props.theme.colors.tertiary};
       `;

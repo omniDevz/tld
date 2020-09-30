@@ -1,5 +1,5 @@
-import { MantainerProps } from '../../interface';
+import { MaintainerProps } from '../../interface';
 
 export interface ListProps {
-  list: MantainerProps[];
+  list: MaintainerProps[];
 }

@@ -1,8 +1,8 @@
 export interface AuthorProps {
   authorId: number;
   inactive: boolean;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   lastUserUpdate: number;
 }
 

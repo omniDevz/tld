@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from '../../../components/Button';
 import FormField from '../../../components/FormField';
-import PageDefaultProf from '../../../components/PageDefaultProf';
+import PageAuthorized from '../../../components/PageAuthorized';
 import useForm from '../../../hooks/useForm';
 
 import { Form, Fieldset, Legend, Description } from './styled';
@@ -17,7 +17,7 @@ const Article: React.FC = () => {
   const { handleChange, values } = useForm(valuesInitials);
 
   return (
-    <PageDefaultProf type="back" text="Finalinar cadastro">
+    <PageAuthorized type="back" text="Finalinar cadastro">
       <Form>
         <Fieldset>
           <Legend>Primeiro acesso</Legend>
@@ -43,7 +43,7 @@ const Article: React.FC = () => {
         </Fieldset>
       </Form>
       <Button color="primary">Finalizar</Button>
-    </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 

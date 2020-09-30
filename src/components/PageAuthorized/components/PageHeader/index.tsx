@@ -38,7 +38,7 @@ const links = [
   {
     route: 'classes',
     title: 'Ir para página da turma',
-    text: 'Tume',
+    text: 'Turma',
   },
   {
     route: 'maintainer',

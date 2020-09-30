@@ -25,7 +25,7 @@ import {
 import {
   StepThreeProps,
   AllCountriesProps,
-  AllStatiesProps,
+  AllStatesProps,
   AllCitiesProps,
   OptionsSelect,
 } from './interface';
@@ -40,7 +40,7 @@ const StepThree: React.FC<StepThreeProps> = ({
     options: [],
   });
 
-  const [staties, setStaties] = useState<OptionsSelect>({
+  const [states, setStates] = useState<OptionsSelect>({
     options: [
       {
         label: '',
@@ -125,17 +125,17 @@ const StepThree: React.FC<StepThreeProps> = ({
     apiLocations
       .get('/estados')
       .then(({ data }) => {
-        const optionsStaties = data.map((state: AllStatiesProps) => {
-          const optionsNameStaties = {
+        const optionsStates = data.map((state: AllStatesProps) => {
+          const optionsNameStates = {
             value: state.sigla,
             label: state.sigla,
           };
 
-          return optionsNameStaties;
+          return optionsNameStates;
         });
 
-        setStaties({
-          options: optionsStaties,
+        setStates({
+          options: optionsStates,
         });
       })
       .catch(({ response }) => {
@@ -198,7 +198,7 @@ const StepThree: React.FC<StepThreeProps> = ({
               label="UF"
               onChange={(e: any) => setValues.setState(e.value)}
               value={values.state}
-              options={staties.options}
+              options={states.options}
             />
           ) : (
             <FormField

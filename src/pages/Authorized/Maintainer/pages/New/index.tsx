@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
 import useForm from '../../../../../hooks/useForm';
-import PageDefaultProf from '../../../../../components/PageDefaultProf';
+import PageAuthorized from '../../../../../components/PageAuthorized';
 
 import StepOne from './components/StepOne';
 import StepTwo from './components/StepTwo';
@@ -252,7 +252,7 @@ function MaintainerNew() {
   }
 
   return (
-    <PageDefaultProf text="Novo mantenedor" type="back">
+    <PageAuthorized text="Novo mantenedor" type="back">
       <Steps step={step}>
         <StepOne
           handleStep={handleStep}
@@ -290,7 +290,7 @@ function MaintainerNew() {
       <ConfirmContainer registerConfirm={registerConfirm}>
         <Image src={imgConfirm} alt="" />
       </ConfirmContainer>
-    </PageDefaultProf>
+    </PageAuthorized>
   );
 }
 

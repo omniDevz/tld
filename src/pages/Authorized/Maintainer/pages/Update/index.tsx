@@ -5,14 +5,14 @@ import { useToasts } from 'react-toast-notifications';
 import Button from '../../../../../components/Button';
 import Collapse from '../../../../../components/Collapse';
 import FormField from '../../../../../components/FormField';
-import PageDefaultProf from '../../../../../components/PageDefaultProf';
+import PageAuthorized from '../../../../../components/PageAuthorized';
 import RadioButton from '../../../../../components/RadioButton';
 import Select from '../../../../../components/Select';
 
 import useForm from '../../../../../hooks/useForm';
 import validations from '../../../../../utils/validations';
 
-import api, {
+import {
   apiCountries,
   apiLocations,
   apiViaCep,
@@ -33,7 +33,7 @@ import {
   ParamsProps,
   AllCitiesProps,
   AllCountriesProps,
-  AllStatiesProps,
+  AllStatesProps,
   OptionsSelect,
 } from './interface';
 
@@ -65,7 +65,7 @@ const MaintainerUpdate: React.FC = () => {
     options: [],
   });
 
-  const [staties, setStaties] = useState<OptionsSelect>({
+  const [states, setStates] = useState<OptionsSelect>({
     options: [
       {
         label: '',
@@ -84,9 +84,7 @@ const MaintainerUpdate: React.FC = () => {
   });
 
   const { handleChange, values } = useForm(valuesInitials);
-  let { maintainerId } = useParams<ParamsProps>();
   const { addToast } = useToasts();
-  const history = useHistory();
 
   function handleCep() {
     if (values.cep.length < 8) {
@@ -154,17 +152,17 @@ const MaintainerUpdate: React.FC = () => {
     apiLocations
       .get('/estados')
       .then(({ data }) => {
-        const optionsStaties = data.map((state: AllStatiesProps) => {
-          const optionsNameStaties = {
+        const optionsStates = data.map((state: AllStatesProps) => {
+          const optionsNameStates = {
             value: state.sigla,
             label: state.sigla,
           };
 
-          return optionsNameStaties;
+          return optionsNameStates;
         });
 
-        setStaties({
-          options: optionsStaties,
+        setStates({
+          options: optionsStates,
         });
       })
       .catch(({ response }) => {
@@ -197,21 +195,21 @@ const MaintainerUpdate: React.FC = () => {
   }, [values.state, values.country]);
 
   return (
-    <PageDefaultProf type="back" text="Alterar mantenedor">
+    <PageAuthorized type="back" text="Alterar mantenedor">
       <Form>
         <Collapse label="Dados pessoais">
           <Fieldset>
             <TwoFields>
               <FormField
                 label="Nome"
-                name="firstname"
-                value={values.firstname}
+                name="firstName"
+                value={values.firstName}
                 onChange={handleChange}
               />
               <FormField
                 label="Sobrenome"
-                name="lastname"
-                value={values.lastname}
+                name="lastName"
+                value={values.lastName}
                 onChange={handleChange}
               />
             </TwoFields>
@@ -328,7 +326,7 @@ const MaintainerUpdate: React.FC = () => {
                   label="UF"
                   onChange={(e: any) => setState(e.value)}
                   value={state}
-                  options={staties.options}
+                  options={states.options}
                 />
               ) : (
                 <FormField
@@ -429,7 +427,7 @@ const MaintainerUpdate: React.FC = () => {
         <Button color="primary-outline">Excluir</Button>
         <Button color="primary">Salvar</Button>
       </ButtonsWrapper>
-    </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 

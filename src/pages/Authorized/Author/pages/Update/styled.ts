@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CheckButtonWrapper } from '../../../../../components/CheckButton/styled';
+
 import { FormFieldWrapper } from '../../../../../components/FormField/styled';
 
 export const Form = styled.form`
@@ -10,10 +10,6 @@ export const Form = styled.form`
   align-items: center;
   row-gap: 1.6rem;
   flex: 1;
-
-  ${CheckButtonWrapper} {
-    justify-content: flex-end;
-  }
 
   ${FormFieldWrapper} {
     width: 100%;

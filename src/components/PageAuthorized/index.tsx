@@ -4,9 +4,9 @@ import PageHeader from './components/PageHeader';
 
 import { Main, Footer } from './styled';
 
-import { PageDefaultProfProps } from './interface';
+import { PageAuthorizedProps } from './interface';
 
-const PageDefaultProf: React.FC<PageDefaultProfProps> = ({
+const PageAuthorized: React.FC<PageAuthorizedProps> = ({
   children,
   type,
   text,
@@ -20,4 +20,4 @@ const PageDefaultProf: React.FC<PageDefaultProfProps> = ({
   );
 };
 
-export default PageDefaultProf;
+export default PageAuthorized;

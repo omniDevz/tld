@@ -1,4 +1,4 @@
-export interface PageDefaultProfProps {
+export interface PageAuthorizedProps {
   type: 'icon' | 'back';
   text?: string;
 }

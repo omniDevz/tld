@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { CheckButtonWrapper } from '../../../components/CheckButton/styled';
 
 export const Form = styled.form`
   margin-top: 3.2rem;
@@ -15,15 +14,11 @@ export const ListArticles = styled.ul`
 
 export const ItemArticle = styled.li`
   margin-bottom: 1.6rem;
-  padding: .8rem 1.6rem;
+  padding: 0.8rem 1.6rem;
   border: 2px solid ${(props) => props.theme.colors.secondary};
 
   &:last-child {
     margin-bottom: 0;
-  }
-
-  ${CheckButtonWrapper} {
-    justify-content: flex-end;
   }
 `;
 
@@ -44,9 +39,9 @@ export const Name = styled.p`
   color: ${(props) => props.theme.colors.primary};
 `;
 
-export const Recomendations = styled.p`
+export const Recommendations = styled.p`
   font-size: 1.6rem;
-  margin: .8rem 0;
+  margin: 0.8rem 0;
 `;
 
 export const FooterArticle = styled.div`
@@ -55,7 +50,7 @@ export const FooterArticle = styled.div`
   align-items: center;
   margin-top: 1.6rem;
 
-  ${Recomendations} {
+  ${Recommendations} {
     margin: 0;
   }
 `;
@@ -63,8 +58,4 @@ export const FooterArticle = styled.div`
 export const Infos = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-export const Actions = styled.div`
-  display: flex;
 `;

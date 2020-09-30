@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../components/Button';
 import FormField from '../../../components/FormField';
-import PageDefaultProf from '../../../components/PageDefaultProf';
+import PageAuthorized from '../../../components/PageAuthorized';
 import List from './components/List';
 
 import useForm from '../../../hooks/useForm';
 
-import api from '../../../services/api';
-
 import { Form, RadioButtonWrapper } from './styled';
 
-import { MantainerProps } from './interface';
+import { MaintainerProps } from './interface';
 import RadioButton from '../../../components/RadioButton';
 
 const data = [
@@ -24,13 +22,15 @@ const data = [
   },
 ];
 
-const Mantainer: React.FC = () => {
+const Maintainer: React.FC = () => {
   const valuesInitials = {
     search: '',
   };
 
   const { handleChange, values } = useForm(valuesInitials);
-  const [listMantainers, setListMantainers] = useState<MantainerProps[]>(data);
+  const [listMaintainers, setListMaintainers] = useState<MaintainerProps[]>(
+    data
+  );
   const [typeFilter, setTypeFilter] = useState('');
 
   const { addToast } = useToasts();
@@ -40,7 +40,7 @@ const Mantainer: React.FC = () => {
   }
 
   return (
-    <PageDefaultProf type="back" text="Mantenedores">
+    <PageAuthorized type="back" text="Mantenedores">
       <Form>
         <FormField
           label="Filtro"
@@ -71,7 +71,7 @@ const Mantainer: React.FC = () => {
           onChange={handleTypeFilter}
         />
       </RadioButtonWrapper>
-      <List list={listMantainers} />
+      <List list={listMaintainers} />
       <Button
         color="primary-outline"
         to="/authorized/maintainer/new"
@@ -79,8 +79,8 @@ const Mantainer: React.FC = () => {
       >
         Cadastrar mantenedor
       </Button>
-    </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 
-export default Mantainer;
+export default Maintainer;

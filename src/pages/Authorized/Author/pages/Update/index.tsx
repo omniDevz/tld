@@ -4,7 +4,7 @@ import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../../../components/Button';
 import FormField from '../../../../../components/FormField';
-import PageDefaultProf from '../../../../../components/PageDefaultProf';
+import PageAuthorized from '../../../../../components/PageAuthorized';
 
 import api from '../../../../../services/api';
 
@@ -13,8 +13,8 @@ import { Form, ButtonsWrapper } from './styled';
 import { ParamsProps } from './interface';
 
 const AuthorUpdate: React.FC = () => {
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
 
   let { authorId } = useParams<ParamsProps>();
   const { addToast } = useToasts();
@@ -40,8 +40,8 @@ const AuthorUpdate: React.FC = () => {
     api
       .put('/autor', {
         AutorId: authorId,
-        Nome: firstname,
-        Sobrenome: lastname,
+        Nome: firstName,
+        Sobrenome: lastName,
         UltimoUsuarioAlteracao: 1,
       })
       .then(({ status, data }) => {
@@ -96,20 +96,20 @@ const AuthorUpdate: React.FC = () => {
   }
 
   return (
-    <PageDefaultProf type="back" text="Alterar autor">
+    <PageAuthorized type="back" text="Alterar autor">
       <Form>
         <FormField
           label="Nome"
-          name="firstname"
-          value={firstname}
+          name="firstName"
+          value={firstName}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setFirstname(e.target.value)
           }
         />
         <FormField
           label="Sobrenome"
-          name="lastname"
-          value={lastname}
+          name="lastName"
+          value={lastName}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setLastname(e.target.value)
           }
@@ -123,7 +123,7 @@ const AuthorUpdate: React.FC = () => {
           Salvar
         </Button>
       </ButtonsWrapper>
-    </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 

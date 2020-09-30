@@ -9,18 +9,17 @@ import {
   Infos,
   Name,
   Description,
-  LevelAcess,
+  LevelAccess,
 } from './styled';
 
 import { ListProps } from './interface';
-import CheckButton from '../../../../../components/CheckButton';
 
 const List: React.FC<ListProps> = ({ list }) => {
   return (
     <ListMaintainers>
       {list &&
         list.map(({ id, name, email, level }) => {
-          const labelLevelAcess = level === 0 ? 'Administrador' : 'Professor';
+          const labelLevelAccess = level === 0 ? 'Administrador' : 'Professor';
 
           return (
             <ItemMaintainer key={id}>
@@ -36,7 +35,7 @@ const List: React.FC<ListProps> = ({ list }) => {
                   >
                     <FiEdit />
                   </Link>
-                  <LevelAcess>{labelLevelAcess}</LevelAcess>
+                  <LevelAccess>{labelLevelAccess}</LevelAccess>
                 </Infos>
               </HeaderMaintainer>
             </ItemMaintainer>

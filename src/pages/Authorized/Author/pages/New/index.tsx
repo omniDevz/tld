@@ -4,7 +4,7 @@ import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../../../components/Button';
 import FormField from '../../../../../components/FormField';
-import PageDefaultProf from '../../../../../components/PageDefaultProf';
+import PageAuthorized from '../../../../../components/PageAuthorized';
 
 import useForm from '../../../../../hooks/useForm';
 import api from '../../../../../services/api';
@@ -13,8 +13,8 @@ import { Form } from './styled';
 
 const AuthorNew: React.FC = () => {
   const valuesInitials = {
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
   };
 
   const { handleChange, values } = useForm(valuesInitials);
@@ -25,8 +25,8 @@ const AuthorNew: React.FC = () => {
   function handleRegisterAuthor() {
     api
       .post('/autor', {
-        Nome: values.firstname,
-        Sobrenome: values.lastname,
+        Nome: values.firstName,
+        Sobrenome: values.lastName,
         UltimoUsuarioAlteracao: 1,
       })
       .then(({ status, data }) => {
@@ -54,25 +54,25 @@ const AuthorNew: React.FC = () => {
   }
 
   return (
-    <PageDefaultProf type="back" text="Novo autor">
+    <PageAuthorized type="back" text="Novo autor">
       <Form>
         <FormField
           label="Nome"
-          name="firstname"
-          value={values.firstname}
+          name="firstName"
+          value={values.firstName}
           onChange={handleChange}
         />
         <FormField
           label="Sobrenome"
-          name="lastname"
-          value={values.lastname}
+          name="lastName"
+          value={values.lastName}
           onChange={handleChange}
         />
       </Form>
       <Button color="primary" onClick={handleRegisterAuthor}>
         Salvar
       </Button>
-    </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 

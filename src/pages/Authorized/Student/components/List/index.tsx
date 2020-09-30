@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { ListStudents, ItemStudent, Infos, Name, Description } from './styled';
 
 import { ListProps } from './interface';
-import CheckButton from '../../../../../components/CheckButton';
 
 const List: React.FC<ListProps> = ({ list }) => {
   return (

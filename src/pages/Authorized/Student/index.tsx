@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../components/Button';
 import FormField from '../../../components/FormField';
-import PageDefaultProf from '../../../components/PageDefaultProf';
+import PageAuthorized from '../../../components/PageAuthorized';
 import List from './components/List';
 
 import useForm from '../../../hooks/useForm';
 
-import api from '../../../services/api';
-
 import { Form } from './styled';
 
 import { StudentProps } from './interface';
-import RadioButton from '../../../components/RadioButton';
 
 const data = [
   {
@@ -33,14 +30,12 @@ const Student: React.FC = () => {
   const [listStudents, setListStudents] = useState<StudentProps[]>(data);
   const [typeFilter, setTypeFilter] = useState('');
 
-  const { addToast } = useToasts();
-
   function handleTypeFilter(e: React.ChangeEvent<HTMLInputElement>) {
     setTypeFilter(e.target.value);
   }
 
   return (
-    <PageDefaultProf type="back" text="Alunos">
+    <PageAuthorized type="back" text="Alunos">
       <Form>
         <FormField
           label="Filtro"
@@ -51,7 +46,7 @@ const Student: React.FC = () => {
         <Button color="secondary-outline">Filtrar</Button>
       </Form>
       <List list={listStudents} />
-    </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 

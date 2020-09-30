@@ -4,8 +4,7 @@ import { FiEdit } from 'react-icons/fi';
 
 import Button from '../../../components/Button';
 import FormField from '../../../components/FormField';
-import CheckButton from '../../../components/CheckButton';
-import PageDefaultProf from '../../../components/PageDefaultProf';
+import PageAuthorized from '../../../components/PageAuthorized';
 import useForm from '../../../hooks/useForm';
 
 import {
@@ -14,10 +13,9 @@ import {
   ItemArticle,
   HeaderArticle,
   Name,
-  Recomendations,
+  Recommendations,
   FooterArticle,
   Infos,
-  Actions
 } from './styled';
 
 const Article: React.FC = () => {
@@ -28,45 +26,43 @@ const Article: React.FC = () => {
   const { handleChange, values } = useForm(valuesInitials);
 
   return (
-    <PageDefaultProf type="back" text="Artigos">
-    <Form>
-      <FormField
-        label="Filtro"
-        name="search"
-        value={values.search}
-        onChange={handleChange}
+    <PageAuthorized type="back" text="Artigos">
+      <Form>
+        <FormField
+          label="Filtro"
+          name="search"
+          value={values.search}
+          onChange={handleChange}
         />
-      <Button color="secondary-outline">Filtrar</Button>
-    </Form>
-    <ListArticles>
-      <ItemArticle>
-        <HeaderArticle>
-          <Name>Como fazer pão</Name>
-            <Link to="/authorized/article/update" title="Editar dados do artigo">
+        <Button color="secondary-outline">Filtrar</Button>
+      </Form>
+      <ListArticles>
+        <ItemArticle>
+          <HeaderArticle>
+            <Name>Como fazer pão</Name>
+            <Link
+              to="/authorized/article/update"
+              title="Editar dados do artigo"
+            >
               <FiEdit />
             </Link>
-        </HeaderArticle>
-        <Recomendations>
-          Que tal aprender a fazer um pãozin neste artigo totalmente em inglês?
-        </Recomendations>
+          </HeaderArticle>
+          <Recommendations>
+            Que tal aprender a fazer um pão neste artigo totalmente em inglês?
+          </Recommendations>
 
           <FooterArticle>
             <Infos>
-              <Recomendations><b>2</b> acessos</Recomendations>
-              <Recomendations><b>fulano</b></Recomendations>
+              <Recommendations>
+                <b>2</b> acessos
+              </Recommendations>
+              <Recommendations>
+                <b>fulano</b>
+              </Recommendations>
             </Infos>
-            <Actions>
-              <CheckButton
-                label="Ativo"
-                checked={true}
-                name="active"
-                value={values.active}
-                onChange={handleChange}
-              />
-            </Actions>
           </FooterArticle>
-      </ItemArticle>
-    </ListArticles>
+        </ItemArticle>
+      </ListArticles>
       <Button
         color="primary-outline"
         to="/authorized/article/new"
@@ -74,7 +70,7 @@ const Article: React.FC = () => {
       >
         Cadastrar artigo
       </Button>
-  </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 

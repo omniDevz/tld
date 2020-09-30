@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { CheckButtonWrapper } from '../../../../../components/CheckButton/styled';
-
 export const ListAuthors = styled.ul`
   flex: 1;
   padding: 3.2rem 0;
@@ -15,10 +13,6 @@ export const ItemAuthor = styled.li`
   &:last-child {
     margin-bottom: 0;
   }
-
-  ${CheckButtonWrapper} {
-    justify-content: flex-end;
-  }
 `;
 
 export const HeaderAuthor = styled.div`
@@ -27,8 +21,8 @@ export const HeaderAuthor = styled.div`
   justify-content: space-between;
 
   svg {
-    height: 2.4rem;
     width: 2.4rem;
+    height: 2.4rem;
     color: ${(props) => props.theme.colors.secondary};
   }
 `;

@@ -2,15 +2,11 @@ import React from 'react';
 
 import Button from '../../../../../components/Button';
 import FormField from '../../../../../components/FormField';
-import CheckButton from '../../../../../components/CheckButton';
-import PageDefaultProf from '../../../../../components/PageDefaultProf';
+import PageAuthorized from '../../../../../components/PageAuthorized';
 
 import useForm from '../../../../../hooks/useForm';
 
-import {
-  Form,
-  ButtonsWrapper
-} from './styled';
+import { Form, ButtonsWrapper } from './styled';
 
 const ArticleUpdate: React.FC = () => {
   const valuesInitials = {
@@ -23,7 +19,7 @@ const ArticleUpdate: React.FC = () => {
   const { handleChange, values } = useForm(valuesInitials);
 
   return (
-    <PageDefaultProf type="back" text="Alterar artigo">
+    <PageAuthorized type="back" text="Alterar artigo">
       <Form>
         <FormField
           label="Título"
@@ -36,7 +32,7 @@ const ArticleUpdate: React.FC = () => {
           name="description"
           value={values.description}
           onChange={handleChange}
-          />
+        />
         <FormField
           label="Link"
           name="link"
@@ -50,19 +46,12 @@ const ArticleUpdate: React.FC = () => {
           value={values.author}
           onChange={handleChange}
         />
-        <CheckButton
-          label="Ativo"
-          checked={true}
-          name="active"
-          value={values.active}
-          onChange={handleChange}
-        />
       </Form>
       <ButtonsWrapper>
         <Button color="primary-outline">Excluir</Button>
         <Button color="primary">Salvar</Button>
       </ButtonsWrapper>
-  </PageDefaultProf>
+    </PageAuthorized>
   );
 };
 
