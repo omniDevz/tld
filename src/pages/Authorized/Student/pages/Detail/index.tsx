@@ -93,13 +93,13 @@ const MaintainerDetail: React.FC = () => {
   }
 
   function handleCep() {
-    if (values.cep.length < 8) {
+    if (cep.length < 8) {
       alert('Informe o CEP corretamente');
       return null;
     }
 
     apiViaCep
-      .get(`/${values.cep.replace('-', '')}/json`)
+      .get(`/${cep.replace('-', '')}/json`)
       .then(({ data }) => {
         if (data.erro) {
           alert('Confirme o campo de cep, algo está incorreto');
@@ -153,7 +153,7 @@ const MaintainerDetail: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (values.country !== 'Brasil') return;
+    if (country !== 'Brasil') return;
 
     apiLocations
       .get('/estados')
@@ -174,13 +174,13 @@ const MaintainerDetail: React.FC = () => {
       .catch(({ response }) => {
         console.error(response);
       });
-  }, [values.country]);
+  }, [country]);
 
   useEffect(() => {
-    if (values.country !== 'Brasil') return;
+    if (country !== 'Brasil') return;
 
     apiLocations
-      .get(`/estados/${values.state}/municipios`)
+      .get(`/estados/${state}/municipios`)
       .then(({ data }) => {
         const optionsCities = data.map((city: AllCitiesProps) => {
           const optionsNameCity = {
@@ -198,7 +198,7 @@ const MaintainerDetail: React.FC = () => {
       .catch(({ response }) => {
         console.error(response);
       });
-  }, [values.state, values.country]);
+  }, [state, country]);
 
   return (
     <PageAuthorized type="back" text="Sobre o aluno">
