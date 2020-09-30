@@ -35,16 +35,16 @@ const Header: React.FC<HeaderProps> = ({
             <FiLogOut />
           </Button>
         ) : (
-          <Link to="/teacher/home" title="Ir para Home">
+          <Link to="/authorized/home" title="Ir para Home">
             <Button>
-              <Logo src={logoImg} alt="Logo English Quiz" />
+              <Logo src={logoImg} alt="Logo Thomaz Language Platform" />
             </Button>
           </Link>
         )
       ) : (
         <Link to="/" title="Ir para Home">
           <Button>
-            <Logo src={logoImg} alt="Logo English Quiz" />
+            <Logo src={logoImg} alt="Logo Thomaz Language Platform" />
           </Button>
         </Link>
       )}

@@ -84,13 +84,13 @@ const Account: React.FC = () => {
   const { addToast } = useToasts();
 
   function handleCep() {
-    if (values.cep.length < 8) {
+    if (cep.length < 8) {
       alert('Informe o CEP corretamente');
       return null;
     }
 
     apiViaCep
-      .get(`/${values.cep.replace('-', '')}/json`)
+      .get(`/${cep.replace('-', '')}/json`)
       .then(({ data }) => {
         if (data.erro) {
           alert('Confirme o campo de cep, algo está incorreto');
@@ -144,7 +144,7 @@ const Account: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (values.country !== 'Brasil') return;
+    if (country !== 'Brasil') return;
 
     apiLocations
       .get('/estados')
@@ -165,13 +165,13 @@ const Account: React.FC = () => {
       .catch(({ response }) => {
         console.error(response);
       });
-  }, [values.country]);
+  }, [country]);
 
   useEffect(() => {
-    if (values.country !== 'Brasil') return;
+    if (country !== 'Brasil') return;
 
     apiLocations
-      .get(`/estados/${values.state}/municipios`)
+      .get(`/estados/${state}/municipios`)
       .then(({ data }) => {
         const optionsCities = data.map((city: AllCitiesProps) => {
           const optionsNameCity = {
@@ -189,7 +189,7 @@ const Account: React.FC = () => {
       .catch(({ response }) => {
         console.error(response);
       });
-  }, [values.state, values.country]);
+  }, [state, country]);
 
   return (
     <PageAuthorized type="back" text="Meu perfil">
@@ -314,16 +314,16 @@ const Account: React.FC = () => {
             </CEPContainer>
             <TwoFields>
               <Select
-                name="country"
                 label="País"
+                name="country"
                 onChange={(e: any) => setCountry(e.value)}
                 value={country}
                 options={countries.options}
               />
               {country === 'Brasil' ? (
                 <Select
-                  name="state"
                   label="UF"
+                  name="state"
                   onChange={(e: any) => setState(e.value)}
                   value={state}
                   options={states.options}
