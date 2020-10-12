@@ -398,49 +398,11 @@ const MaintainerDetail: React.FC = () => {
             </TwoFields>
           </Fieldset>
         </Collapse>
-
-        <Collapse label="Dados de acesso">
-          <Fieldset>
-            <FormField
-              label="Usuário"
-              name="username"
-              value={values.username}
-              onChange={handleChange}
-            />
-          </Fieldset>
-          <ButtonsAccessWrapper>
-            <Button color="primary-outline">Trocar usuário</Button>
-          </ButtonsAccessWrapper>
-          <Fieldset>
-            <FormField
-              label="Senha atual"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-            />
-            <FormField
-              label="Nova senha"
-              name="passwordNew"
-              value={values.passwordNew}
-              onChange={handleChange}
-            />
-            <FormField
-              label="Confirmar senha"
-              name="passwordConfirm"
-              value={values.passwordConfirm}
-              onChange={handleChange}
-            />
-          </Fieldset>
-          <ButtonsAccessWrapper>
-            <Button color="primary-outline">Trocar usuário</Button>
-          </ButtonsAccessWrapper>
-        </Collapse>
       </Form>
       <ButtonsWrapper>
         <Button color="primary-outline" onClick={handleBack}>
           Voltar
         </Button>
-        <Button color="primary">Salvar</Button>
       </ButtonsWrapper>
     </PageAuthorized>
   );
