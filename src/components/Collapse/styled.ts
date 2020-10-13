@@ -8,6 +8,7 @@ export const CollapseHeader = styled.div`
   width: 100%;
   padding: 0.8rem;
   border-bottom: 2px solid ${(props) => props.theme.colors.primary};
+  cursor: pointer;
 
   svg {
     width: 2.8rem;

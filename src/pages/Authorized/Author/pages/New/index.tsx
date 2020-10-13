@@ -44,9 +44,9 @@ const AuthorNew: React.FC = () => {
         });
         history.push('/authorized/author');
       })
-      .catch(({ response }) => {
-        const { data } = response;
-        addToast(data, {
+      .catch((err) => {
+        console.log(err);
+        addToast('Houve algum erro inesperado, tente novamente mais tarde', {
           appearance: 'error',
           autoDismiss: true,
         });

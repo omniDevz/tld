@@ -10,7 +10,7 @@ import RadioButton from '../../../../../components/RadioButton';
 import Select from '../../../../../components/Select';
 
 import useForm from '../../../../../hooks/useForm';
-import validations from '../../../../../utils/validations';
+import util from '../../../../../utils/util';
 
 import {
   apiCountries,
@@ -105,16 +105,16 @@ const MaintainerUpdate: React.FC = () => {
         setCountry('Brasil');
 
         setState(uf);
-        if (!validations.EmptyValue(uf, 'id_state')) return null;
+        if (!util.emptyValue(uf, 'id_state')) return null;
 
         setCity(localidade);
-        if (!validations.EmptyValue(localidade, 'id_city')) return null;
+        if (!util.emptyValue(localidade, 'id_city')) return null;
 
         setNeighborhood(bairro);
-        if (!validations.EmptyValue(bairro, 'id_neighborhood')) return null;
+        if (!util.emptyValue(bairro, 'id_neighborhood')) return null;
 
         setAddress(logradouro);
-        if (!validations.EmptyValue(logradouro, 'id_address')) return null;
+        if (!util.emptyValue(logradouro, 'id_address')) return null;
 
         document.getElementById('id_numberAddress')?.focus();
       })

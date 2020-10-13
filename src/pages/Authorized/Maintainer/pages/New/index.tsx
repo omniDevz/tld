@@ -12,6 +12,7 @@ import StepThree from './components/StepThree';
 import imgConfirm from '../../../../../assets/images/confirm.svg';
 
 import { Steps, ConfirmContainer, Image } from './styled';
+import api from '../../../../../services/api';
 
 function MaintainerNew() {
   const valuesInitials = {
@@ -37,7 +38,7 @@ function MaintainerNew() {
   const [numberAddress, setNumberAddress] = useState<string>('');
 
   const history = useHistory();
-  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(3);
+  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(1);
   const [registerConfirm, setRegisterConfirm] = useState<Boolean>(false);
 
   const { handleChange, values } = useForm(valuesInitials);
@@ -95,7 +96,7 @@ function MaintainerNew() {
           return false;
         }
         if (values.genre === '') {
-          addToast('Selecione seu genêro sexual', {
+          addToast('Selecione seu gênero sexual', {
             appearance: 'warning',
             autoDismiss: true,
           });
@@ -240,6 +241,22 @@ function MaintainerNew() {
 
     setStep(to);
     return null;
+  }
+
+  function handleSubmitMaintainer() {
+    api
+      .post('/administrador/', {})
+      .then()
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na busca de munícipios, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
   }
 
   function handleConfirmRegister() {

@@ -17,7 +17,7 @@ const Article: React.FC = () => {
   const { handleChange, values } = useForm(valuesInitials);
 
   return (
-    <PageAuthorized type="back" text="Finalinar cadastro">
+    <PageAuthorized type="back" text="Finalizar cadastro">
       <Form>
         <Fieldset>
           <Legend>Primeiro acesso</Legend>

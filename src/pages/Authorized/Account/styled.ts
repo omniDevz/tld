@@ -19,7 +19,7 @@ export const Form = styled.form`
 export const Fieldset = styled.div`
   display: grid;
   flex-direction: column;
-  row-gap: 0.8rem;
+  row-gap: 1.2rem;
 `;
 
 export const CEPContainer = styled.div`

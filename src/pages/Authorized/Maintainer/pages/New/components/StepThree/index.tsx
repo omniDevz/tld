@@ -5,8 +5,6 @@ import Button from '../../../../../../../components/Button';
 import FormField from '../../../../../../../components/FormField';
 import Select from '../../../../../../../components/Select';
 
-import validations from '../../../../../../../utils/validations';
-
 import {
   apiCountries,
   apiViaCep,
@@ -29,6 +27,7 @@ import {
   AllCitiesProps,
   OptionsSelect,
 } from './interface';
+import util from '../../../../../../../utils/util';
 
 const StepThree: React.FC<StepThreeProps> = ({
   handleConfirmRegister,
@@ -78,16 +77,16 @@ const StepThree: React.FC<StepThreeProps> = ({
         setValues.setCountry('Brasil');
 
         setValues.setState(uf);
-        if (!validations.EmptyValue(uf, 'id_state')) return null;
+        if (!util.emptyValue(uf, 'id_state')) return null;
 
         setValues.setCity(localidade);
-        if (!validations.EmptyValue(localidade, 'id_city')) return null;
+        if (!util.emptyValue(localidade, 'id_city')) return null;
 
         setValues.setNeighborhood(bairro);
-        if (!validations.EmptyValue(bairro, 'id_neighborhood')) return null;
+        if (!util.emptyValue(bairro, 'id_neighborhood')) return null;
 
         setValues.setAddress(logradouro);
-        if (!validations.EmptyValue(logradouro, 'id_address')) return null;
+        if (!util.emptyValue(logradouro, 'id_address')) return null;
 
         document.getElementById('id_numberAddress')?.focus();
       })

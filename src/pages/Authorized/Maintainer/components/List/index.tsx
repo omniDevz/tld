@@ -15,26 +15,31 @@ import {
 import { ListProps } from './interface';
 
 const List: React.FC<ListProps> = ({ list }) => {
+  const levelAccessLogged = 2;
+
   return (
     <ListMaintainers>
       {list &&
-        list.map(({ id, name, email, level }) => {
-          const labelLevelAccess = level === 0 ? 'Administrador' : 'Professor';
+        list.map(({ adminId, name, email, levelAccess }) => {
+          const labelLevelAccess =
+            levelAccess < 2 ? 'Administrador' : 'Professor';
 
           return (
-            <ItemMaintainer key={id}>
+            <ItemMaintainer key={adminId}>
               <HeaderMaintainer>
                 <Infos>
                   <Name>{name}</Name>
                   <Description>{email}</Description>
                 </Infos>
                 <Infos>
-                  <Link
-                    to={`/authorized/maintainer/update/${id}`}
-                    title={`Editar dados de ${name}`}
-                  >
-                    <FiEdit />
-                  </Link>
+                  {levelAccessLogged >= levelAccess && (
+                    <Link
+                      to={`/authorized/maintainer/update/${adminId}`}
+                      title={`Editar dados de ${name}`}
+                    >
+                      <FiEdit />
+                    </Link>
+                  )}
                   <LevelAccess>{labelLevelAccess}</LevelAccess>
                 </Infos>
               </HeaderMaintainer>
