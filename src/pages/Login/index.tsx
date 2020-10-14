@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 
 import PageDefault from '../../components/PageDefault';
 import FormField from '../../components/FormField';
 
 import useForm from '../../hooks/useForm';
-
-import api from '../../services/api';
+import { useAuth } from '../../contexts/auth';
 
 import {
   LinkRecoveryPassword,
@@ -19,7 +17,7 @@ import {
 } from './styled';
 import { useToasts } from 'react-toast-notifications';
 
-function Login() {
+const Login = () => {
   const valuesInitials = {
     username: '',
     password: '',
@@ -28,7 +26,7 @@ function Login() {
   const [levelAccess, setLevelAccess] = useState(0);
   const { handleChange, values } = useForm(valuesInitials);
   const { addToast } = useToasts();
-  const history = useHistory();
+  const { signIn } = useAuth();
 
   function handleLevelAccess(level: number) {
     if (levelAccess === 0) {
@@ -39,33 +37,19 @@ function Login() {
   }
 
   function handleLogin() {
-    const levelInApi = levelAccess === 1 ? 'Administrador' : 'Professor';
-
-    api
-      .post(`/${levelInApi}/ValidarLogin${levelInApi}`, {
-        Usuario: values.username,
-        Senha: values.password,
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.status === 206) {
-          addToast(response.data, {
-            appearance: 'warning',
-            autoDismiss: true,
-          });
-          return;
-        }
-
-        addToast('Logado com sucesso', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-        history.push('/authorized/article');
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    signIn(values.username, values.password, levelAccess);
   }
+
+  useEffect(() => {
+    if (window.location.href.search('tokenExpired') <= 0) return;
+
+    addToast('Sua autenticação expirou, efetue o login novamente', {
+      appearance: 'info',
+      autoDismiss: true,
+    });
+
+    document.getElementById('id_username')?.focus();
+  }, []);
 
   return (
     <PageDefault>
@@ -121,6 +105,6 @@ function Login() {
       )}
     </PageDefault>
   );
-}
+};
 
 export default Login;
