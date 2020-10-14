@@ -35,6 +35,7 @@ import {
   OptionsSelect,
   IAdministratorApi,
 } from './interface';
+import { useAuth } from '../../../contexts/auth';
 
 const Account: React.FC = () => {
   const [personId, setPersonId] = useState(0);
@@ -84,6 +85,8 @@ const Account: React.FC = () => {
   });
 
   const { addToast } = useToasts();
+
+  const { user } = useAuth();
   const userId = 2;
 
   function handleCep() {
@@ -221,7 +224,7 @@ const Account: React.FC = () => {
 
   useEffect(() => {
     api
-      .get(`/administrador/${userId}`)
+      .get(`/administrador/${user?.adminId}`)
       .then(({ data }) => {
         const userApi = data as IAdministratorApi;
 
@@ -255,7 +258,7 @@ const Account: React.FC = () => {
       });
   }, []);
 
-  function handleUpdateProfile() {
+  function handleUpdateAdministrator() {
     api
       .put('/administrador/', {
         administradorId: userId,
@@ -563,7 +566,7 @@ const Account: React.FC = () => {
       </Form>
       <ButtonsWrapper>
         <Button color="primary-outline">Excluir</Button>
-        <Button color="primary" onClick={handleUpdateProfile}>
+        <Button color="primary" onClick={handleUpdateAdministrator}>
           Salvar
         </Button>
       </ButtonsWrapper>

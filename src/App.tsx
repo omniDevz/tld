@@ -5,7 +5,7 @@ import { ThemeProvider, DefaultTheme } from 'styled-components';
 import usePersistedState from './hooks/usePersistedState';
 import { AuthProvider } from './contexts/auth';
 
-import Routes from './pages/routes';
+import Routes from './routes';
 
 import dark from './assets/styles/themes/dark';
 import DefaultStyles from './assets/styles/default';

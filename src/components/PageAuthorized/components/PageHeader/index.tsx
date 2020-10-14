@@ -56,7 +56,7 @@ const PageHeader: React.FC<HeaderProps> = ({ type, teacherOn, text }) => {
   const howType = type === undefined ? 'icon' : type;
   const hasTeacherOn = Boolean(teacherOn);
   const { url } = useRouteMatch();
-  const routeActive = url.replace('/authorized/', '');
+  const routeActive = url.replace('/', '');
 
   function handleToggleMenu() {
     const menu = document.getElementById('menu');
@@ -84,7 +84,7 @@ const PageHeader: React.FC<HeaderProps> = ({ type, teacherOn, text }) => {
                     <Button
                       key={link.route}
                       color="primary-outline"
-                      to={`/authorized/${link.route}`}
+                      to={`/${link.route}`}
                       title={link.title}
                     >
                       {link.text}

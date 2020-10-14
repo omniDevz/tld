@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FiMenu, FiX, FiArrowLeft, FiLogOut } from 'react-icons/fi';
 
+import { useAuth } from '../../../../../../contexts/auth';
+
 import logoImg from '../../../../../../assets/images/logoBlack.svg';
 
 import { HeaderContainer, Logo, Button, Text } from './styled';
@@ -10,14 +12,16 @@ import { HeaderProps } from './interface';
 
 const Header: React.FC<HeaderProps> = ({
   isMenuIcon,
-  title,
-  onClick,
   teacher,
+  onClick,
+  title,
   type,
   text,
 }) => {
   const hasText = Boolean(text);
   const history = useHistory();
+
+  const { signOut } = useAuth();
 
   function handleBackNavigation() {
     history.goBack();
@@ -25,22 +29,14 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <HeaderContainer>
-      {teacher ? (
-        type === 'back' ? (
-          <Button onClick={handleBackNavigation}>
-            <FiArrowLeft />
-          </Button>
-        ) : type === 'exit' ? (
-          <Button>
-            <FiLogOut />
-          </Button>
-        ) : (
-          <Link to="/authorized/home" title="Ir para Home">
-            <Button>
-              <Logo src={logoImg} alt="Logo Thomaz Language Platform" />
-            </Button>
-          </Link>
-        )
+      {type === 'back' ? (
+        <Button onClick={handleBackNavigation}>
+          <FiArrowLeft />
+        </Button>
+      ) : type === 'exit' ? (
+        <Button onClick={signOut}>
+          <FiLogOut />
+        </Button>
       ) : (
         <Link to="/" title="Ir para Home">
           <Button>

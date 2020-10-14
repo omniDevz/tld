@@ -3,7 +3,7 @@ const util = {
     return value.replace(/\D/g, '');
   },
   removeHoursDateTimeApi(value: string) {
-    return value.replace('T00:00:00', '');
+    return value.slice(10);
   },
   includesToLowerCase(valueOne: string, valueTwo: string): boolean {
     return valueOne.toLowerCase().includes(valueTwo.toLowerCase());

@@ -30,16 +30,6 @@ export const AuthProvider: React.FC = ({ children }) => {
     loadStoriedData();
   }, []);
 
-  const notAuthorization = () => {
-    addToast('Sua sessão foi expirada, efetue o login novamente', {
-      appearance: 'success',
-      autoDismiss: true,
-    });
-
-    storage.removeValuesJTW();
-    window.location.href = '/login';
-  };
-
   async function signIn(
     username: string,
     password: string,
