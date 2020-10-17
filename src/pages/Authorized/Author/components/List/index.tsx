@@ -10,14 +10,14 @@ const List: React.FC<ListProps> = ({ list }) => {
   return (
     <ListAuthors>
       {list &&
-        list.map(({ authorId, lastName, firstName, inactive }) => (
+        list.map(({ authorId, lastName, firstName }) => (
           <ItemAuthor key={authorId}>
             <HeaderAuthor>
               <Name>
                 {firstName} {lastName}
               </Name>
               <Link
-                to={`/authorized/author/update/${authorId}`}
+                to={`/author/update/${authorId}`}
                 title={`Editar dados de ${firstName} ${lastName}`}
               >
                 <FiEdit />

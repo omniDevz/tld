@@ -22,7 +22,7 @@ const AuthorUpdate: React.FC = () => {
 
   useEffect(() => {
     api
-      .get(`/autor/${authorId}`)
+      .get(`autor/${authorId}`)
       .then(({ data }) => {
         setFirstName(data.nome);
         setLastName(data.sobrenome);
@@ -38,7 +38,7 @@ const AuthorUpdate: React.FC = () => {
 
   function handleUpdateAuthor() {
     api
-      .put('/autor', {
+      .put('autor', {
         AutorId: authorId,
         Nome: firstName,
         Sobrenome: lastName,
@@ -57,7 +57,7 @@ const AuthorUpdate: React.FC = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-        history.push('/authorized/author');
+        history.push('/author');
       })
       .catch((err) => {
         console.log(err);
@@ -70,7 +70,7 @@ const AuthorUpdate: React.FC = () => {
 
   function handleDeleteAuthor() {
     api
-      .delete(`/autor/${authorId}`)
+      .delete(`autor/${authorId}`)
       .then(({ status, data }) => {
         if (status === 206) {
           addToast(data, {
@@ -84,7 +84,7 @@ const AuthorUpdate: React.FC = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-        history.push('/authorized/author');
+        history.push('/author');
       })
       .catch((err) => {
         console.log(err);

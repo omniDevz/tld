@@ -1,5 +1,5 @@
-import { AuthorProps } from '../../interface';
+import { IAuthor } from '../../interface';
 
 export interface ListProps {
-  list: AuthorProps[];
+  list: IAuthor[];
 }

@@ -4,6 +4,7 @@ import { useToasts } from 'react-toast-notifications';
 import Button from '../../../components/Button';
 import FormField from '../../../components/FormField';
 import PageAuthorized from '../../../components/PageAuthorized';
+import List from './components/List';
 
 import useForm from '../../../hooks/useForm';
 
@@ -11,8 +12,8 @@ import api from '../../../services/api';
 
 import { Form } from './styled';
 
-import { AuthorProps, AuthorApiProps } from './interface';
-import List from './components/List';
+import { IAuthor, IAuthorApi } from './interface';
+import util from '../../../utils/util';
 
 const Author: React.FC = () => {
   const valuesInitials = {
@@ -20,27 +21,25 @@ const Author: React.FC = () => {
   };
 
   const { handleChange, values } = useForm(valuesInitials);
-  const [listAuthors, setListAuthors] = useState<AuthorProps[]>([]);
+  const [listAuthors, setListAuthors] = useState<IAuthor[]>([]);
 
   const { addToast } = useToasts();
 
-  useEffect(() => {
+  function handleGetListAuthors() {
     api
-      .get('/autor')
+      .get('autor')
       .then(({ data }) => {
-        const authorFromApi: AuthorProps[] = data.map(
-          (author: AuthorApiProps) => {
-            const newAuthor: AuthorProps = {
-              authorId: author.autorId,
-              firstName: author.nome,
-              lastName: author.sobrenome,
-              inactive: author.inativo,
-              lastUserUpdate: author.ultimoUsuarioAlteracao,
-            };
+        const authorFromApi: IAuthor[] = data.map((author: IAuthorApi) => {
+          const newAuthor: IAuthor = {
+            authorId: author.autorId,
+            firstName: author.nome,
+            lastName: author.sobrenome,
+            inactive: author.inativo,
+            lastUserUpdate: author.ultimoUsuarioAlteracao,
+          };
 
-            return newAuthor;
-          }
-        );
+          return newAuthor;
+        });
 
         setListAuthors(authorFromApi);
       })
@@ -51,7 +50,16 @@ const Author: React.FC = () => {
           autoDismiss: true,
         });
       });
-  }, [addToast]);
+  }
+
+  useEffect(handleGetListAuthors, []);
+
+  function handleFilterAuthors(author: IAuthor) {
+    return util.includesToArray(
+      [author.firstName, author.lastName],
+      values.search
+    );
+  }
 
   return (
     <PageAuthorized type="back" text="Autores">
@@ -62,14 +70,14 @@ const Author: React.FC = () => {
           value={values.search}
           onChange={handleChange}
         />
-        <Button color="secondary-outline">Filtrar</Button>
+        <Button color="secondary-outline" onClick={handleGetListAuthors}>
+          Filtrar
+        </Button>
       </Form>
-      <List list={listAuthors} />
-      <Button
-        color="primary-outline"
-        to="/authorized/author/new"
-        title="Cadastrar autor"
-      >
+
+      <List list={listAuthors.filter(handleFilterAuthors)} />
+
+      <Button color="primary-outline" to="/author/new" title="Cadastrar autor">
         Cadastrar autor
       </Button>
     </PageAuthorized>

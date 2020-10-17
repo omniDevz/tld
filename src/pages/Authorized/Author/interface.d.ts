@@ -1,4 +1,4 @@
-export interface AuthorProps {
+export interface IAuthor {
   authorId: number;
   inactive: boolean;
   firstName: string;
@@ -6,7 +6,7 @@ export interface AuthorProps {
   lastUserUpdate: number;
 }
 
-export interface AuthorApiProps {
+export interface IAuthorApi {
   autorId: number;
   inativo: boolean;
   nome: string;

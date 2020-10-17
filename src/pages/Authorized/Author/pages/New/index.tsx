@@ -24,7 +24,7 @@ const AuthorNew: React.FC = () => {
 
   function handleRegisterAuthor() {
     api
-      .post('/autor', {
+      .post('autor', {
         Nome: values.firstName,
         Sobrenome: values.lastName,
         UltimoUsuarioAlteracao: 1,
@@ -42,7 +42,7 @@ const AuthorNew: React.FC = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-        history.push('/authorized/author');
+        history.push('/author');
       })
       .catch((err) => {
         console.log(err);

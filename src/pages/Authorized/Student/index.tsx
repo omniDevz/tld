@@ -7,12 +7,12 @@ import PageAuthorized from '../../../components/PageAuthorized';
 import List from './components/List';
 
 import useForm from '../../../hooks/useForm';
+import util from '../../../utils/util';
+import api from '../../../services/api';
 
 import { Form } from './styled';
 
 import { IStudent, IStudentApi } from './interface';
-import util from '../../../utils/util';
-import api from '../../../services/api';
 
 const Student: React.FC = () => {
   const valuesInitials = {
@@ -24,7 +24,7 @@ const Student: React.FC = () => {
 
   const { addToast } = useToasts();
 
-  useEffect(() => {
+  function handleGetListStudents() {
     api
       .get('aluno')
       .then(({ data }) => {
@@ -50,7 +50,9 @@ const Student: React.FC = () => {
           }
         );
       });
-  }, [addToast]);
+  }
+
+  useEffect(handleGetListStudents, []);
 
   function handleFilterStudent(student: IStudent) {
     return util.includesToArray(
@@ -68,7 +70,9 @@ const Student: React.FC = () => {
           value={values.search}
           onChange={handleChange}
         />
-        <Button color="secondary-outline">Filtrar</Button>
+        <Button color="secondary-outline" onClick={handleGetListStudents}>
+          Filtrar
+        </Button>
       </Form>
       <List list={listStudents.filter(handleFilterStudent)} />
     </PageAuthorized>
