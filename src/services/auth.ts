@@ -65,6 +65,8 @@ export async function signIn(
       token: response.data.token,
       dateExpires: response.data.dataExpiracao,
       status: response.status,
+      levelAccess: response.data.usuario.administrador.nivelAcesso,
+      personId: response.data.usuario.administrador.pessoaId,
     } as UserProps;
   }
 
@@ -119,6 +121,8 @@ export async function signIn(
       token: response.data.token,
       dateExpires: response.data.dataExpiracao,
       status: response.status,
+      levelAccess: response.data.usuario.nivelAcesso,
+      personId: response.data.usuario.pessoaId,
     } as UserProps;
   }
 

@@ -17,7 +17,6 @@ import api, {
 } from '../../../services/api';
 
 import {
-  ButtonsAccessWrapper,
   ButtonsWrapper,
   HalfContainer,
   CEPContainer,
@@ -29,13 +28,17 @@ import {
 } from './styled';
 
 import {
-  AllCitiesProps,
   AllCountriesProps,
+  IAdministratorApi,
+  AllCitiesProps,
   AllStatesProps,
   OptionsSelect,
-  IAdministratorApi,
+  ITeacherApi,
+  IPersonApi,
 } from './interface';
+
 import { useAuth } from '../../../contexts/auth';
+import mask from '../../../utils/mask';
 
 const Account: React.FC = () => {
   const [personId, setPersonId] = useState(0);
@@ -45,10 +48,10 @@ const Account: React.FC = () => {
   const [birthDate, setBirthDate] = useState('');
   const [genre, setGenre] = useState('M');
   const [email, setEmail] = useState('');
-  const [typeFone, setTypeFone] = useState('F');
+  const [typePhone, setTypePhone] = useState('F');
   const [countryCode, setCountryCode] = useState('');
   const [ddd, setDdd] = useState('');
-  const [fone, setFone] = useState('');
+  const [phone, setPhone] = useState('');
   const [cep, setCep] = useState('');
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
@@ -62,8 +65,16 @@ const Account: React.FC = () => {
   const [passwordBack, setPasswordBack] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [levelAccess, setLevelAccess] = useState(0);
+
+  const [personApi, setPersonApi] = useState<IPersonApi>({} as IPersonApi);
+
   const [countries, setCountries] = useState<OptionsSelect>({
-    options: [],
+    options: [
+      {
+        label: '',
+        value: '',
+      },
+    ],
   });
 
   const [states, setStates] = useState<OptionsSelect>({
@@ -86,8 +97,7 @@ const Account: React.FC = () => {
 
   const { addToast } = useToasts();
 
-  const { user } = useAuth();
-  const userId = 2;
+  const { user, signOut } = useAuth();
 
   function handleCep() {
     if (cep.length < 8) {
@@ -222,62 +232,152 @@ const Account: React.FC = () => {
       });
   }, [state, country]);
 
-  useEffect(() => {
+  function handleSetPersonByApi(person: IPersonApi) {
+    setPersonId(person.pessoaId);
+    setFirstName(person.nome);
+    setLastName(person.sobrenome);
+    setCpf(mask.cpf(person.cpf));
+    console.log(util.removeHoursDateTimeApi(person.dataNascimento));
+    setBirthDate(util.removeHoursDateTimeApi(person.dataNascimento));
+    setGenre(person.sexo);
+    setEmail(person.email);
+
+    if (person.telefone) {
+      const { telefone: phone } = person;
+      setTypePhone(phone.tipoTelefone);
+      setCountryCode(String(phone.codigoDiscagem));
+      setDdd(String(phone.ddd));
+      setPhone(String(phone.numeroTelefone));
+    }
+
+    if (person.endereco) {
+      const { endereco: addressApi } = person;
+
+      setCep(String(addressApi.cep));
+      setAddress(addressApi.logradouro);
+      setNeighborhood(addressApi.bairro);
+      setCity(addressApi.cidade);
+      setState(addressApi.estado);
+      setCountry(addressApi.pais);
+      setNumberAddress(String(person.numero));
+    }
+
+    setUsername(person.usuario);
+    setPasswordBack(person.senha);
+  }
+
+  function getDataAdministrator() {
     api
       .get(`/administrador/${user?.adminId}`)
       .then(({ data }) => {
         const userApi = data as IAdministratorApi;
 
-        setPersonId(userApi.pessoa.pessoaId);
-        setFirstName(userApi.pessoa.nome);
-        setLastName(userApi.pessoa.sobrenome);
-        setCpf(userApi.pessoa.cpf);
-        console.log(util.removeHoursDateTimeApi(userApi.pessoa.dataNascimento));
-        setBirthDate(
-          util.removeHoursDateTimeApi(userApi.pessoa.dataNascimento)
-        );
-        setGenre(userApi.pessoa.sexo);
-        setEmail(userApi.pessoa.email);
-        setTypeFone('');
-        setCountryCode('');
-        setDdd('');
-        setNumberAddress(String(userApi.pessoa.numero));
-        setUsername(userApi.pessoa.usuario);
-        setPasswordBack(userApi.pessoa.senha);
+        handleSetPersonByApi(userApi.pessoa);
         setLevelAccess(userApi.nivelAcesso);
       })
       .catch((err) => {
         console.log(err);
         addToast(
-          'Houve algum erro inesperado na busca de munícipios, tente novamente mais tarde',
+          'Houve algum erro inesperado ao obter seus dados, tente novamente mais tarde',
           {
             appearance: 'error',
             autoDismiss: true,
           }
         );
       });
-  }, []);
+  }
 
-  function handleUpdateAdministrator() {
+  function getDataTeacher() {
     api
-      .put('/administrador/', {
-        administradorId: userId,
-        nivelAcesso: levelAccess,
-        ultimoUsuarioAlteracao: userId,
-        pessoa: {
-          pessoaId: personId,
-          nome: firstName,
-          sobrenome: lastName,
-          cpf: cpf,
-          dataNascimento: birthDate,
-          sexo: genre,
-          email: email,
-          telefone: null,
-          endereco: null,
-          numero: numberAddress,
-          usuario: username,
-          senha: password === '' ? passwordBack : password,
-          ultimoUsuarioAlteracao: userId,
+      .get(`/professor/${user?.teacherId}`)
+      .then(({ data }) => {
+        const userApi = data as ITeacherApi;
+
+        handleSetPersonByApi(userApi.administrador.pessoa);
+        setLevelAccess(userApi.administrador.nivelAcesso);
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado ao obter seus dados, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function functionTeacherOrAdministrator(
+    functionTeacher: () => void,
+    functionAdministrator: () => void
+  ) {
+    if ((user?.levelAccess || 0) < 2) functionAdministrator();
+    else functionTeacher();
+  }
+
+  useEffect(() => {
+    functionTeacherOrAdministrator(getDataTeacher, getDataAdministrator);
+  }, [user]);
+
+  function handleInstancePersonChangeApi() {
+    const applySetPhone =
+      countryCode.length > 0 &&
+      typePhone.length > 0 &&
+      ddd.length > 0 &&
+      phone.length > 0;
+
+    const applySetAddress =
+      cep.length > 0 &&
+      country.length > 0 &&
+      state.length > 0 &&
+      city.length > 0 &&
+      address.length > 0 &&
+      numberAddress.length > 0;
+
+    setPersonApi({
+      pessoaId: personId,
+      nome: firstName,
+      sobrenome: lastName,
+      cpf: cpf,
+      dataNascimento: birthDate,
+      sexo: genre,
+      email: email,
+      telefone: applySetPhone
+        ? {
+            codigoDiscagem: Number(countryCode),
+            ddd: Number(ddd),
+            numeroTelefone: Number(phone),
+            tipoTelefone: typePhone,
+          }
+        : null,
+      endereco: applySetAddress
+        ? {
+            cep: Number(cep),
+            bairro: neighborhood,
+            cidade: city,
+            estado: state,
+            logradouro: address,
+            pais: country,
+          }
+        : null,
+      numero: Number(numberAddress),
+      usuario: username,
+      senha: password === '' ? passwordBack : password,
+      ultimoUsuarioAlteracao: user?.adminId,
+    });
+  }
+
+  function handleUpdateTeacher() {
+    api
+      .put('/professor/', {
+        professorId: user?.teacherId,
+        ultimoUsuarioAlteracao: user?.personId,
+        administrador: {
+          administradorId: user?.adminId,
+          nivelAcesso: user?.levelAccess,
+          ultimoUsuarioAlteracao: user?.personId,
+          pessoa: personApi,
         },
       })
       .then((response) => {
@@ -297,13 +397,143 @@ const Account: React.FC = () => {
       .catch((err) => {
         console.log(err);
         addToast(
-          'Houve algum erro inesperado na busca de munícipios, tente novamente mais tarde',
+          'Houve algum erro inesperado na atualização do professor, tente novamente mais tarde',
           {
             appearance: 'error',
             autoDismiss: true,
           }
         );
       });
+  }
+
+  function handleUpdateAdministrator() {
+    api
+      .put('/administrador/', {
+        administradorId: user?.adminId,
+        nivelAcesso: user?.levelAccess,
+        ultimoUsuarioAlteracao: user?.personId,
+        pessoa: {
+          pessoaId: personId,
+          nome: firstName,
+          sobrenome: lastName,
+          cpf: cpf,
+          dataNascimento: birthDate,
+          sexo: genre,
+          email: email,
+          telefone: null,
+          endereco: null,
+          numero: numberAddress,
+          usuario: username,
+          senha: password === '' ? passwordBack : password,
+          ultimoUsuarioAlteracao: user?.personId,
+        },
+      })
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return null;
+        }
+
+        addToast('Dados do perfil alterado com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na atualização do administrador, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function handleUpdate() {
+    handleInstancePersonChangeApi();
+
+    functionTeacherOrAdministrator(
+      handleUpdateTeacher,
+      handleUpdateAdministrator
+    );
+  }
+
+  function handleDeleteTeacher() {
+    api
+      .delete(`/professor/${user?.teacherId}`)
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return null;
+        }
+
+        addToast('Sua conta foi removida com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        signOut();
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na remoção de sua conta, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function handleDeleteAdministrator() {
+    api
+      .delete(`/administrador/${user?.adminId}`)
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return null;
+        }
+
+        addToast('Sua conta foi removida com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        signOut();
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na remoção de sua conta, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function handleDelete() {
+    if (!window.confirm('Realmente deseja remover sua conta?')) {
+      return;
+    }
+
+    functionTeacherOrAdministrator(
+      handleDeleteTeacher,
+      handleDeleteAdministrator
+    );
   }
 
   return (
@@ -339,7 +569,7 @@ const Account: React.FC = () => {
                 name="cpf"
                 value={cpf}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCpf(e.target.value)
+                  setCpf(mask.cpf(e.target.value))
                 }
               />
               <FormField
@@ -397,10 +627,10 @@ const Account: React.FC = () => {
                     value: 'C',
                   },
                 ]}
-                name="typeFone"
-                value={typeFone}
+                name="typePhone"
+                value={typePhone}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setTypeFone(e.target.value)
+                  setTypePhone(e.target.value)
                 }
               />
             </HalfContainer>
@@ -426,9 +656,9 @@ const Account: React.FC = () => {
               <FormField
                 label="Número"
                 name="number"
-                value={fone}
+                value={phone}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setFone(e.target.value)
+                  setPhone(e.target.value)
                 }
               />
             </ThreeFields>
@@ -565,8 +795,10 @@ const Account: React.FC = () => {
         </Collapse>
       </Form>
       <ButtonsWrapper>
-        <Button color="primary-outline">Excluir</Button>
-        <Button color="primary" onClick={handleUpdateAdministrator}>
+        <Button color="primary-outline" onClick={handleDelete}>
+          Excluir
+        </Button>
+        <Button color="primary" onClick={handleUpdate}>
           Salvar
         </Button>
       </ButtonsWrapper>

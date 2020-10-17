@@ -25,18 +25,18 @@ const tokenExpired = () => {
   storage.removeValuesJTW();
 };
 
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  function (error) {
-    if (401 === error.response.status) {
-      tokenExpired();
-    } else {
-      return Promise.reject(error);
-    }
-  }
-);
+// api.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   function (error) {
+//     if (401 === error.response.status) {
+//       tokenExpired();
+//     } else {
+//       return Promise.reject(error);
+//     }
+//   }
+// );
 
 api.interceptors.request.use(
   (config) => {

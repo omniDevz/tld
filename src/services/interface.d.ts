@@ -88,6 +88,7 @@ export interface AddressProps {
 
 export interface UserProps {
   adminId: number;
+  personId: number;
   teacherId: number;
   firstName: string;
   lastName: string;
@@ -102,4 +103,5 @@ export interface UserProps {
   token: string;
   dateExpires: string;
   status: number;
+  levelAccess: number;
 }

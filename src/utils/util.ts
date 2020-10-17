@@ -3,7 +3,7 @@ const util = {
     return value.replace(/\D/g, '');
   },
   removeHoursDateTimeApi(value: string) {
-    return value.slice(10);
+    return value.slice(0, 10);
   },
   includesToLowerCase(valueOne: string, valueTwo: string): boolean {
     return valueOne.toLowerCase().includes(valueTwo.toLowerCase());
@@ -21,10 +21,6 @@ const util = {
     const month = `0${date.getMonth() + 1}`.slice(-2);
 
     return `${day}/${month}/${date.getFullYear()}`;
-  },
-  removeUserAndTokenFrom() {
-    localStorage.removeItem('@TLD:user');
-    localStorage.removeItem('@TLD:token');
   },
   emptyValue(value: string, id: string) {
     if (value !== '') return true;
