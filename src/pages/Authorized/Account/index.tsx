@@ -168,7 +168,7 @@ const Account: React.FC = () => {
           }
         );
       });
-  }, []);
+  }, [addToast]);
 
   useEffect(() => {
     if (country !== 'Brasil') return;
@@ -199,7 +199,7 @@ const Account: React.FC = () => {
           }
         );
       });
-  }, [country]);
+  }, [country, addToast]);
 
   useEffect(() => {
     if (country !== 'Brasil') return;
@@ -230,14 +230,13 @@ const Account: React.FC = () => {
           }
         );
       });
-  }, [state, country]);
+  }, [state, country, addToast]);
 
   function handleSetPersonByApi(person: IPersonApi) {
     setPersonId(person.pessoaId);
     setFirstName(person.nome);
     setLastName(person.sobrenome);
     setCpf(mask.cpf(person.cpf));
-    console.log(util.removeHoursDateTimeApi(person.dataNascimento));
     setBirthDate(util.removeHoursDateTimeApi(person.dataNascimento));
     setGenre(person.sexo);
     setEmail(person.email);
@@ -318,7 +317,7 @@ const Account: React.FC = () => {
 
   useEffect(() => {
     functionTeacherOrAdministrator(getDataTeacher, getDataAdministrator);
-  }, [user]);
+  }, [functionTeacherOrAdministrator, getDataAdministrator, getDataTeacher]);
 
   function handleInstancePersonChangeApi() {
     const applySetPhone =

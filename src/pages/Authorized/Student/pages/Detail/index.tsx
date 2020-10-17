@@ -8,8 +8,6 @@ import FormField from '../../../../../components/FormField';
 import PageAuthorized from '../../../../../components/PageAuthorized';
 import RadioButton from '../../../../../components/RadioButton';
 
-import useForm from '../../../../../hooks/useForm';
-
 import util from '../../../../../utils/util';
 
 import api from '../../../../../services/api';
@@ -20,7 +18,6 @@ import {
   ThreeFields,
   Fieldset,
   ButtonsWrapper,
-  ButtonsAccessWrapper,
   HalfContainer,
   CEPContainer,
 } from './styled';
@@ -106,7 +103,7 @@ const MaintainerDetail: React.FC = () => {
           }
         );
       });
-  }, [studentId]);
+  }, [studentId, addToast]);
 
   return (
     <PageAuthorized type="back" text="Sobre o aluno">

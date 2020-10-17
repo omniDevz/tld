@@ -49,7 +49,7 @@ const Login = () => {
     });
 
     document.getElementById('id_username')?.focus();
-  }, []);
+  }, [addToast]);
 
   return (
     <PageDefault>

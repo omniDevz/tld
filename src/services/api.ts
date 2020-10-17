@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import config from '../config';
-import util from '../utils/util';
 import storage from '../utils/storage';
 
 export const apiViaCep = axios.create({

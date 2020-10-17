@@ -26,9 +26,9 @@ const Maintainer: React.FC = () => {
 
   const { addToast } = useToasts();
 
-  useEffect(() => {
+  function handleGetListAdministrators() {
     api
-      .get('/administrador/')
+      .get('administrador')
       .then(({ data }) => {
         const maintainersFromApi = data.map((maintainerApi: IMaintainerApi) => {
           const maintainer: IMaintainer = {
@@ -46,14 +46,16 @@ const Maintainer: React.FC = () => {
       .catch((err) => {
         console.log(err);
         addToast(
-          'Houve algum erro inesperado na busca de munícipios, tente novamente mais tarde',
+          'Houve algum erro inesperado na busca por mantenedores, tente novamente mais tarde',
           {
             appearance: 'error',
             autoDismiss: true,
           }
         );
       });
-  }, [addToast]);
+  }
+
+  useEffect(handleGetListAdministrators, []);
 
   function handleFilterMaintainer(maintainer: IMaintainer) {
     return util.includesToArray(
@@ -62,8 +64,15 @@ const Maintainer: React.FC = () => {
     );
   }
 
-  function handleTypeFilter(e: React.ChangeEvent<HTMLInputElement>) {
-    setTypeFilter(e.target.value);
+  function handleTypeFilter(maintainer: IMaintainer) {
+    switch (typeFilter) {
+      case '0':
+        return maintainer.levelAccess === 1 || maintainer.levelAccess === 0;
+      case '1':
+        return maintainer.levelAccess === 2;
+      default:
+        return true;
+    }
   }
 
   return (
@@ -75,7 +84,9 @@ const Maintainer: React.FC = () => {
           value={values.search}
           onChange={handleChange}
         />
-        <Button color="secondary-outline">Filtrar</Button>
+        <Button color="secondary-outline" onClick={handleGetListAdministrators}>
+          Filtrar
+        </Button>
       </Form>
       <RadioButtonWrapper>
         <RadioButton
@@ -95,17 +106,19 @@ const Maintainer: React.FC = () => {
           ]}
           name="typeFilter"
           value={typeFilter}
-          onChange={handleTypeFilter}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setTypeFilter(e.target.value);
+          }}
         />
       </RadioButtonWrapper>
       <List
-        list={listMaintainers.filter((maintainer) =>
-          handleFilterMaintainer(maintainer)
-        )}
+        list={listMaintainers
+          .filter(handleFilterMaintainer)
+          .filter(handleTypeFilter)}
       />
       <Button
         color="primary-outline"
-        to="/authorized/maintainer/new"
+        to="/maintainer/new"
         title="Cadastrar mantenedor"
       >
         Cadastrar mantenedor

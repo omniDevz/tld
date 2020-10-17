@@ -260,6 +260,8 @@ function MaintainerNew() {
   }
 
   function handleConfirmRegister() {
+    handleSubmitMaintainer();
+
     setRegisterConfirm(true);
 
     setTimeout(() => {

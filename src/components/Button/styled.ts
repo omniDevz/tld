@@ -4,7 +4,7 @@ import { ButtonProps } from './interface';
 
 export const ButtonStyled = styled.button<ButtonProps>`
   text-align: center;
-  width: 90%;
+  width: 100%;
   max-width: 240px;
   font-size: 1.8rem;
   font-weight: 500;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../../../components/Button';
@@ -30,7 +29,6 @@ import {
 } from './styled';
 
 import {
-  ParamsProps,
   AllCitiesProps,
   AllCountriesProps,
   AllStatesProps,
