@@ -10,5 +10,5 @@ export interface RadioButtonProps {
   }[];
   name: string;
   value: string;
-  onChange: FunctionComponentElement;
+  onChange?: FunctionComponentElement;
 }

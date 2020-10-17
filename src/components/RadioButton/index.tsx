@@ -13,7 +13,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
   options,
   name,
   value,
-  onChange,
+  onChange = () => {},
 }) => {
   return (
     <RadioButtonWrapper>

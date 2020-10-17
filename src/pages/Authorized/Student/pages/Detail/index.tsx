@@ -7,15 +7,12 @@ import Collapse from '../../../../../components/Collapse';
 import FormField from '../../../../../components/FormField';
 import PageAuthorized from '../../../../../components/PageAuthorized';
 import RadioButton from '../../../../../components/RadioButton';
-import Select from '../../../../../components/Select';
 
 import useForm from '../../../../../hooks/useForm';
 
-import {
-  apiCountries,
-  apiLocations,
-  apiViaCep,
-} from '../../../../../services/api';
+import util from '../../../../../utils/util';
+
+import api from '../../../../../services/api';
 
 import {
   Form,
@@ -29,176 +26,87 @@ import {
 } from './styled';
 
 import {
-  ParamsProps,
-  AllCitiesProps,
-  AllCountriesProps,
-  AllStatesProps,
-  OptionsSelect,
+  IParamsStudentDetails,
+  IStudentDetailApi,
+  IStudentDetail,
+  IPhone,
+  IAddress,
 } from './interface';
-import util from '../../../../../utils/util';
+import { IAddressApi } from '../../../Account/interface';
 
 const MaintainerDetail: React.FC = () => {
-  const valuesInitials = {
-    firstName: '',
-    lastName: '',
-    cpf: '',
-    birthDate: '',
-    genre: 'M',
-    email: '',
-    comments: '',
-    typeFone: 'F',
-    countryCode: '',
-    ddd: '',
-    number: '',
-    username: '',
-    password: '',
-    passwordNew: '',
-    passwordConfirm: '',
-  };
-  const [cep, setCep] = useState<string>('');
-  const [country, setCountry] = useState<string>('');
-  const [state, setState] = useState<string>('');
-  const [city, setCity] = useState<string>('');
-  const [neighborhood, setNeighborhood] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
-  const [numberAddress, setNumberAddress] = useState<string>('');
-  const [countries, setCountries] = useState<OptionsSelect>({
-    options: [],
-  });
+  const [student, setStudent] = useState<IStudentDetail>({} as IStudentDetail);
+  const [comments, setComments] = useState('');
 
-  const [states, setStates] = useState<OptionsSelect>({
-    options: [
-      {
-        label: '',
-        value: '',
-      },
-    ],
-  });
-
-  const [cities, setCities] = useState<OptionsSelect>({
-    options: [
-      {
-        label: '',
-        value: '',
-      },
-    ],
-  });
-
-  const { handleChange, values } = useForm(valuesInitials);
   const { addToast } = useToasts();
   const history = useHistory();
+
+  const route = useParams();
+  const { studentId } = route as IParamsStudentDetails;
 
   function handleBack() {
     history.goBack();
   }
 
-  function handleCep() {
-    if (cep.length < 8) {
-      alert('Informe o CEP corretamente');
-      return null;
-    }
-
-    apiViaCep
-      .get(`/${cep.replace('-', '')}/json`)
-      .then(({ data }) => {
-        if (data.erro) {
-          alert('Confirme o campo de cep, algo está incorreto');
-          return null;
-        }
-
-        const { uf, localidade, bairro, logradouro } = data;
-
-        setCountry('Brasil');
-
-        setState(uf);
-        if (!util.emptyValue(uf, 'id_state')) return null;
-
-        setCity(localidade);
-        if (!util.emptyValue(localidade, 'id_city')) return null;
-
-        setNeighborhood(bairro);
-        if (!util.emptyValue(bairro, 'id_neighborhood')) return null;
-
-        setAddress(logradouro);
-        if (!util.emptyValue(logradouro, 'id_address')) return null;
-
-        document.getElementById('id_numberAddress')?.focus();
-      })
-      .catch(() => {
-        addToast('Informe o CEP corretamente', {
-          appearance: 'error',
-          autoDismiss: true,
-        });
-      });
-  }
-
   useEffect(() => {
-    apiCountries
-      .get('')
+    api
+      .get(`/aluno/${studentId}`)
       .then(({ data }) => {
-        const optionsCountries = data.map((country: AllCountriesProps) => {
-          const optionsNameCountryInPortugueseBr = {
-            value: country.translations.br,
-            label: country.translations.br,
-          };
-          return optionsNameCountryInPortugueseBr;
-        });
-        setCountries({
-          options: optionsCountries,
-        });
+        const userApi = data as IStudentDetailApi;
+
+        const phone = userApi.pessoa.telefone;
+        const getPhone: IPhone | null = phone
+          ? {
+              countryCode: phone?.codigoDiscagem || 0,
+              ddd: phone?.ddd || 0,
+              number: phone?.numeroTelefone || 0,
+              typeFone: phone?.tipoTelefone || 'C',
+              phoneId: phone?.telefoneId || 0,
+            }
+          : null;
+
+        const addressUser = userApi.pessoa.endereco as IAddressApi;
+        const getAddress: IAddress | null = addressUser
+          ? {
+              address: addressUser.logradouro,
+              cep: addressUser.cep,
+              city: addressUser.cidade,
+              country: addressUser.pais,
+              neighborhood: addressUser.bairro,
+              state: addressUser.estado,
+              addressId: addressUser.enderecoId,
+            }
+          : null;
+
+        const getStudent = {
+          firstName: userApi.pessoa.nome,
+          lastName: userApi.pessoa.sobrenome,
+          cpf: userApi.pessoa.cpf,
+          birthDate: util.removeHoursDateTimeApi(userApi.pessoa.dataNascimento),
+          genre: userApi.pessoa?.sexo || 'O',
+          phone: getPhone,
+          address: getAddress,
+          email: userApi.pessoa.email,
+          numberAddress: userApi.pessoa.numero,
+          studentId: userApi.alunoId,
+          premium: userApi.eAssinante,
+        } as IStudentDetail;
+
+        setComments(userApi.observacao || '');
+
+        setStudent(getStudent);
       })
-      .catch(({ response }) => {
-        console.error(response);
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado ao obter detalhes do aluno, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
       });
-  }, []);
-
-  useEffect(() => {
-    if (country !== 'Brasil') return;
-
-    apiLocations
-      .get('/estados')
-      .then(({ data }) => {
-        const optionsStates = data.map((state: AllStatesProps) => {
-          const optionsNameStates = {
-            value: state.sigla,
-            label: state.sigla,
-          };
-
-          return optionsNameStates;
-        });
-
-        setStates({
-          options: optionsStates,
-        });
-      })
-      .catch(({ response }) => {
-        console.error(response);
-      });
-  }, [country]);
-
-  useEffect(() => {
-    if (country !== 'Brasil') return;
-
-    apiLocations
-      .get(`/estados/${state}/municipios`)
-      .then(({ data }) => {
-        const optionsCities = data.map((city: AllCitiesProps) => {
-          const optionsNameCity = {
-            value: city.nome,
-            label: city.nome,
-          };
-
-          return optionsNameCity;
-        });
-
-        setCities({
-          options: optionsCities,
-        });
-      })
-      .catch(({ response }) => {
-        console.error(response);
-      });
-  }, [state, country]);
+  }, [studentId]);
 
   return (
     <PageAuthorized type="back" text="Sobre o aluno">
@@ -209,28 +117,21 @@ const MaintainerDetail: React.FC = () => {
               <FormField
                 label="Nome"
                 name="firstName"
-                value={values.firstName}
-                onChange={handleChange}
+                value={student.firstName}
               />
               <FormField
                 label="Sobrenome"
                 name="lastName"
-                value={values.lastName}
-                onChange={handleChange}
+                value={student.lastName}
               />
             </TwoFields>
             <TwoFields>
-              <FormField
-                label="CPF"
-                name="cpf"
-                value={values.cpf}
-                onChange={handleChange}
-              />
+              <FormField label="CPF" name="cpf" value={student.cpf || ''} />
               <FormField
                 label="Data nascimento"
                 name="birthDate"
-                value={values.birthDate}
-                onChange={handleChange}
+                value={student.birthDate}
+                type="date"
               />
             </TwoFields>
             <RadioButton
@@ -249,159 +150,118 @@ const MaintainerDetail: React.FC = () => {
                 },
               ]}
               name="genre"
-              value={values.genre}
-              onChange={handleChange}
+              value={student.genre || ''}
             />
-            <FormField
-              label="E-mail"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-            />
-            <FormField
-              label="Observações"
-              name="comments"
-              value={values.comments}
-              onChange={handleChange}
-              type="textarea"
-            />
+            <FormField label="E-mail" name="email" value={student.email} />
           </Fieldset>
         </Collapse>
-        <Collapse label="Telefone">
-          <Fieldset>
-            <HalfContainer>
-              <RadioButton
-                options={[
-                  {
-                    label: 'Fixo',
-                    value: 'F',
-                  },
-                  {
-                    label: 'Celular',
-                    value: 'C',
-                  },
-                ]}
-                name="typeFone"
-                value={values.typeFone}
-                onChange={handleChange}
-              />
-            </HalfContainer>
-            <ThreeFields>
-              <FormField
-                label=""
-                name="countryCode"
-                value={values.countryCode}
-                onChange={handleChange}
-                prefix="+"
-              />
-              <FormField
-                label=""
-                name="ddd"
-                value={values.ddd}
-                onChange={handleChange}
-                prefix="0"
-              />
-              <FormField
-                label="Número"
-                name="number"
-                value={values.number}
-                onChange={handleChange}
-              />
-            </ThreeFields>
-          </Fieldset>
-        </Collapse>
-        <Collapse label="Endereço">
-          <Fieldset>
-            <CEPContainer>
-              <FormField
-                label="CEP"
-                name="cep"
-                value={cep}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCep(e.target.value)
-                }
-              />
-              <Button color="secondary" onClick={handleCep}>
-                Buscar
-              </Button>
-            </CEPContainer>
-            <TwoFields>
-              <Select
-                name="country"
-                label="País"
-                onChange={(e: any) => setCountry(e.value)}
-                value={country}
-                options={countries.options}
-              />
-              {country === 'Brasil' ? (
-                <Select
-                  name="state"
-                  label="UF"
-                  onChange={(e: any) => setState(e.value)}
-                  value={state}
-                  options={states.options}
+
+        {student.phone && (
+          <Collapse label="Telefone">
+            <Fieldset>
+              <HalfContainer>
+                <RadioButton
+                  options={[
+                    {
+                      label: 'Fixo',
+                      value: 'F',
+                    },
+                    {
+                      label: 'Celular',
+                      value: 'C',
+                    },
+                  ]}
+                  name="typeFone"
+                  value={student.phone?.typeFone || ''}
                 />
-              ) : (
+              </HalfContainer>
+              <ThreeFields>
+                <FormField
+                  label=""
+                  name="countryCode"
+                  value={String(student.phone?.countryCode) || ''}
+                  prefix="+"
+                />
+                <FormField
+                  label=""
+                  name="ddd"
+                  value={String(student.phone?.ddd) || ''}
+                  prefix="0"
+                />
+                <FormField
+                  label="Número"
+                  name="number"
+                  value={String(student.phone?.number) || ''}
+                />
+              </ThreeFields>
+            </Fieldset>
+          </Collapse>
+        )}
+
+        {student.address && (
+          <Collapse label="Endereço">
+            <Fieldset>
+              <CEPContainer>
+                <FormField
+                  label="CEP"
+                  name="cep"
+                  value={String(student.address?.cep) || ''}
+                />
+              </CEPContainer>
+              <TwoFields>
+                <FormField
+                  label="País"
+                  name="country"
+                  value={student.address?.country || ''}
+                />
                 <FormField
                   label="UF"
                   name="state"
-                  value={state}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setState(e.target.value)
-                  }
+                  value={student.address?.state || ''}
                 />
-              )}
-            </TwoFields>
-            {country === 'Brasil' ? (
-              <Select
-                name="city"
-                label="Cidade"
-                onChange={(e: any) => setCity(e.value)}
-                value={city}
-                options={cities.options}
-              />
-            ) : (
+              </TwoFields>
               <FormField
                 label="Cidade"
                 name="city"
-                value={city}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCity(e.target.value)
-                }
-              />
-            )}
-            <FormField
-              label="Bairro"
-              name="neighborhood"
-              value={neighborhood}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setNeighborhood(e.target.value)
-              }
-            />
-            <TwoFields>
-              <FormField
-                label="Endereço"
-                name="address"
-                value={address}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setAddress(e.target.value)
-                }
+                value={student.address?.city || ''}
               />
               <FormField
-                label="Nº"
-                name="numberAddress"
-                value={numberAddress}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setNumberAddress(e.target.value)
-                }
+                label="Bairro"
+                name="neighborhood"
+                value={student.address?.neighborhood || ''}
               />
-            </TwoFields>
-          </Fieldset>
-        </Collapse>
+              <TwoFields>
+                <FormField
+                  label="Endereço"
+                  name="address"
+                  value={student.address?.address || ''}
+                />
+                <FormField
+                  label="Nº"
+                  name="numberAddress"
+                  value={String(student.numberAddress) || ''}
+                />
+              </TwoFields>
+            </Fieldset>
+          </Collapse>
+        )}
+
+        <FormField
+          label="Observações"
+          name="comments"
+          value={comments}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setComments(e.target.value)
+          }
+          type="textarea"
+        />
       </Form>
       <ButtonsWrapper>
         <Button color="primary-outline" onClick={handleBack}>
           Voltar
+        </Button>
+        <Button color="primary" onClick={() => {}}>
+          Salvar observações
         </Button>
       </ButtonsWrapper>
     </PageAuthorized>

@@ -15,22 +15,21 @@ const FormField: React.FC<FormFieldProps> = ({
   value,
   name,
   label,
-  onChange,
-  type,
+  onChange = () => {},
+  type = 'text',
   prefix,
 }) => {
   const fieldId = `id_${name}`;
   const hasValue = Boolean(value !== undefined && value.length);
   const hasLabel = Boolean(label.length);
-  const typeInput = type !== undefined ? type : 'text';
-  const isTeaxtarea = type === 'textarea';
+  const isTextarea = type === 'textarea';
   const hasPrefix = prefix !== undefined;
 
   return (
     <FormFieldWrapper>
-      <Label htmlFor={fieldId} type={typeInput}>
+      <Label htmlFor={fieldId} type={type}>
         {hasPrefix && <Prefix htmlFor={fieldId}>{prefix}</Prefix>}
-        {isTeaxtarea ? (
+        {isTextarea ? (
           <Textarea
             id={fieldId}
             hasValue={hasValue}
@@ -48,12 +47,12 @@ const FormField: React.FC<FormFieldProps> = ({
             value={value}
             name={name}
             onChange={onChange}
-            type={typeInput}
+            type={type}
             autoComplete="off"
           />
         )}
 
-        <Text hasLabel={hasLabel} type={typeInput} htmlFor={fieldId}>
+        <Text hasLabel={hasLabel} type={type} htmlFor={fieldId}>
           {label}
         </Text>
       </Label>

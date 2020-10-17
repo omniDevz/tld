@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../components/Button';
@@ -10,16 +10,9 @@ import useForm from '../../../hooks/useForm';
 
 import { Form } from './styled';
 
-import { StudentProps } from './interface';
-
-const data = [
-  {
-    id: 1,
-    name: 'Fulano Panda',
-    email: 'fulano@gmail.com',
-    fone: '+55 (016) 12345-1234',
-  },
-];
+import { IStudent, IStudentApi } from './interface';
+import util from '../../../utils/util';
+import api from '../../../services/api';
 
 const Student: React.FC = () => {
   const valuesInitials = {
@@ -27,11 +20,43 @@ const Student: React.FC = () => {
   };
 
   const { handleChange, values } = useForm(valuesInitials);
-  const [listStudents, setListStudents] = useState<StudentProps[]>(data);
-  const [typeFilter, setTypeFilter] = useState('');
+  const [listStudents, setListStudents] = useState<IStudent[]>([]);
 
-  function handleTypeFilter(e: React.ChangeEvent<HTMLInputElement>) {
-    setTypeFilter(e.target.value);
+  const { addToast } = useToasts();
+
+  useEffect(() => {
+    api
+      .get('aluno')
+      .then(({ data }) => {
+        const students = data.map((studentApi: IStudentApi) => {
+          const student = {
+            email: studentApi.pessoa.email,
+            name: `${studentApi.pessoa.nome} ${studentApi.pessoa.sobrenome}`,
+            id: studentApi.alunoId,
+          } as IStudent;
+
+          return student;
+        });
+
+        setListStudents(students);
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na remoção de sua conta, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }, [addToast]);
+
+  function handleFilterStudent(student: IStudent) {
+    return util.includesToArray(
+      [student.name, student.email, student.phone],
+      values.search
+    );
   }
 
   return (
@@ -45,7 +70,7 @@ const Student: React.FC = () => {
         />
         <Button color="secondary-outline">Filtrar</Button>
       </Form>
-      <List list={listStudents} />
+      <List list={listStudents.filter(handleFilterStudent)} />
     </PageAuthorized>
   );
 };

@@ -10,19 +10,16 @@ const List: React.FC<ListProps> = ({ list }) => {
   return (
     <ListStudents>
       {list &&
-        list.map(({ id, name, email, fone }) => {
+        list.map(({ id, name, email, phone }) => {
           return (
             <ItemStudent key={id}>
               <Infos>
                 <Name>{name}</Name>
                 <Description>{email}</Description>
-                <Description>{fone}</Description>
+                <Description>{phone}</Description>
               </Infos>
               <Infos>
-                <Link
-                  to={`/authorized/student/${id}`}
-                  title={`Editar dados de ${name}`}
-                >
+                <Link to={`/student/${id}`} title={`Editar dados de ${name}`}>
                   <FiClipboard />
                 </Link>
               </Infos>
