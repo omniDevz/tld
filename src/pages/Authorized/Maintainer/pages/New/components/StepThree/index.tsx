@@ -30,7 +30,6 @@ import {
 import util from '../../../../../../../utils/util';
 
 const StepThree: React.FC<StepThreeProps> = ({
-  handleConfirmRegister,
   handleStep,
   values,
   setValues,
@@ -260,8 +259,8 @@ const StepThree: React.FC<StepThreeProps> = ({
         <Button onClick={() => handleStep(3, 2)} color="primary-outline">
           Voltar
         </Button>
-        <Button onClick={handleConfirmRegister} color="primary">
-          Enviar
+        <Button onClick={() => handleStep(3, 4)} color="primary">
+          Continuar
         </Button>
       </ButtonsWrapper>
     </Form>

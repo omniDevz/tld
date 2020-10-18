@@ -20,7 +20,6 @@ export interface StepThreeProps {
     setAddress: React.Dispatch<React.SetStateAction<string>>;
     setNumberAddress: React.Dispatch<React.SetStateAction<string>>;
   }
-  handleConfirmRegister: function();
   handleStep: function(
     1 | 2 | 3 | 4,
     1 | 2 | 3 | 4

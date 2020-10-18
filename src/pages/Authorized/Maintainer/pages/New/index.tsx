@@ -13,6 +13,9 @@ import imgConfirm from '../../../../../assets/images/confirm.svg';
 
 import { Steps, ConfirmContainer, Image } from './styled';
 import api from '../../../../../services/api';
+import { useAuth } from '../../../../../contexts/auth';
+import util from '../../../../../utils/util';
+import StepFor from './components/StepFor';
 
 function MaintainerNew() {
   const valuesInitials = {
@@ -22,7 +25,7 @@ function MaintainerNew() {
     birthDate: '',
     genre: 'M',
     email: '',
-    typeFone: 'F',
+    typePhone: 'F',
     countryCode: '',
     ddd: '',
     number: '',
@@ -36,6 +39,7 @@ function MaintainerNew() {
   const [neighborhood, setNeighborhood] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [numberAddress, setNumberAddress] = useState<string>('');
+  const [levelAccess, setLevelAccess] = useState(0);
 
   const history = useHistory();
   const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(1);
@@ -43,6 +47,7 @@ function MaintainerNew() {
 
   const { handleChange, values } = useForm(valuesInitials);
   const { addToast } = useToasts();
+  const { user } = useAuth();
 
   function validationStep(stepValidation: number) {
     switch (stepValidation) {
@@ -79,7 +84,7 @@ function MaintainerNew() {
           document.getElementById('id_cpf')?.focus();
           return false;
         }
-        if (values.cpf.length !== 11) {
+        if (util.onlyNumbers(values.cpf).length !== 11) {
           addToast('Informe seu CPF corretamente', {
             appearance: 'warning',
             autoDismiss: true,
@@ -87,12 +92,12 @@ function MaintainerNew() {
           document.getElementById('id_cpf')?.focus();
           return false;
         }
-        if (values.dateOfBirth === '') {
+        if (values.birthDate === '') {
           addToast('Preencha a data de aniversário', {
             appearance: 'warning',
             autoDismiss: true,
           });
-          document.getElementById('id_dateOfBirth')?.focus();
+          document.getElementById('id_birthDate')?.focus();
           return false;
         }
         if (values.genre === '') {
@@ -213,24 +218,6 @@ function MaintainerNew() {
           return false;
         }
         break;
-      case 4:
-        if (values.username === '') {
-          addToast('Preencha o nome de usuário', {
-            appearance: 'warning',
-            autoDismiss: true,
-          });
-          document.getElementById('id_username')?.focus();
-          return false;
-        }
-        if (values.password === '') {
-          addToast('Preencha a senha do usuário', {
-            appearance: 'warning',
-            autoDismiss: true,
-          });
-          document.getElementById('id_password')?.focus();
-          return false;
-        }
-        break;
     }
 
     return true;
@@ -243,14 +230,102 @@ function MaintainerNew() {
     return null;
   }
 
-  function handleSubmitMaintainer() {
+  function handleSetPersonApi() {
+    return {
+      nome: values.firstName,
+      sobrenome: values.lastName,
+      cpf: util.onlyNumbers(values.cpf),
+      dataNascimento: values.birthDate,
+      sexo: values.genre,
+      numero: values.numberAddress,
+      telefone: {
+        codigoDiscagem: values.countryCode,
+        ddd: values.ddd,
+        numeroTelefone: values.number,
+        tipoTelefone: values.typePhone,
+      },
+      endereco: {
+        cep: cep,
+        logradouro: address,
+        bairro: neighborhood,
+        cidade: city,
+        estado: state,
+        pais: country,
+      },
+      email: values.email,
+      ultimoUsuarioAlteracao: user?.personId,
+    };
+  }
+
+  function handleSubmitAdministrator() {
     api
-      .post('/administrador/', {})
-      .then()
+      .post('administrador', {
+        nivelAcesso: levelAccess - 1,
+        ultimoUsuarioAlteracao: user?.personId,
+        pessoa: handleSetPersonApi(),
+      })
+      .then(({ status, data }) => {
+        if (status === 206) {
+          addToast(data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return;
+        }
+
+        addToast(
+          'Cadastro realizado com sucesso, foi enviado um e-mail para finalização do cadastro',
+          {
+            appearance: 'success',
+            autoDismiss: true,
+          }
+        );
+        history.push('/maintainer');
+      })
       .catch((err) => {
         console.log(err);
         addToast(
-          'Houve algum erro inesperado na busca de munícipios, tente novamente mais tarde',
+          'Houve algum erro inesperado no cadastro do mantenedor, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function handleSubmitTeacher() {
+    api
+      .post('professor', {
+        ultimoUsuarioAlteracao: user?.personId,
+        administrador: {
+          nivelAcesso: levelAccess - 1,
+          ultimoUsuarioAlteracao: user?.personId,
+          pessoa: handleSetPersonApi(),
+        },
+      })
+      .then(({ status, data }) => {
+        if (status === 206) {
+          addToast(data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return;
+        }
+
+        addToast(
+          'Cadastro realizado com sucesso, foi enviado um e-mail para finalização do cadastro',
+          {
+            appearance: 'warning',
+            autoDismiss: true,
+          }
+        );
+        history.push('/maintainer');
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado no cadastro do mantenedor, tente novamente mais tarde',
           {
             appearance: 'error',
             autoDismiss: true,
@@ -260,14 +335,15 @@ function MaintainerNew() {
   }
 
   function handleConfirmRegister() {
-    handleSubmitMaintainer();
+    if (levelAccess === 0) {
+      addToast('Selecione um nível de acesso', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      return;
+    }
 
-    setRegisterConfirm(true);
-
-    setTimeout(() => {
-      setRegisterConfirm(false);
-      history.push('/');
-    }, 2200);
+    levelAccess < 2 ? handleSubmitAdministrator() : handleSubmitTeacher();
   }
 
   return (
@@ -284,7 +360,6 @@ function MaintainerNew() {
           values={values}
         />
         <StepThree
-          handleConfirmRegister={handleConfirmRegister}
           handleStep={handleStep}
           values={{
             cep,
@@ -304,6 +379,13 @@ function MaintainerNew() {
             setAddress,
             setNumberAddress,
           }}
+        />
+
+        <StepFor
+          handleStep={handleStep}
+          levelAccess={levelAccess}
+          setLevelAccess={setLevelAccess}
+          handleConfirmRegister={handleConfirmRegister}
         />
       </Steps>
       <ConfirmContainer registerConfirm={registerConfirm}>

@@ -2,7 +2,14 @@ import styled from 'styled-components';
 
 export const ListMaintainers = styled.ul`
   flex: 1;
-  padding: 3.2rem 0;
+  padding-bottom: 3.2rem;
+  overflow-y: auto;
+  margin: 1.6rem 0;
+  max-height: calc(100vh - 37rem);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const ItemMaintainer = styled.li`

@@ -66,8 +66,6 @@ const Account: React.FC = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [levelAccess, setLevelAccess] = useState(0);
 
-  const [personApi, setPersonApi] = useState<IPersonApi>({} as IPersonApi);
-
   const [countries, setCountries] = useState<OptionsSelect>({
     options: [
       {
@@ -337,11 +335,11 @@ const Account: React.FC = () => {
       address.length > 0 &&
       numberAddress.length > 0;
 
-    setPersonApi({
+    const personApi = {
       pessoaId: personId,
       nome: firstName,
       sobrenome: lastName,
-      cpf: cpf,
+      cpf: util.onlyNumbers(cpf),
       dataNascimento: birthDate,
       sexo: genre,
       email: email,
@@ -367,7 +365,9 @@ const Account: React.FC = () => {
       usuario: username,
       senha: password === '' ? passwordBack : password,
       ultimoUsuarioAlteracao: user?.adminId,
-    });
+    } as IPersonApi;
+
+    return personApi;
   }
 
   function handleUpdateTeacher() {
@@ -379,7 +379,7 @@ const Account: React.FC = () => {
           administradorId: user?.adminId,
           nivelAcesso: user?.levelAccess,
           ultimoUsuarioAlteracao: user?.personId,
-          pessoa: personApi,
+          pessoa: handleInstancePersonChangeApi(),
         },
       })
       .then((response) => {
@@ -414,21 +414,7 @@ const Account: React.FC = () => {
         administradorId: user?.adminId,
         nivelAcesso: user?.levelAccess,
         ultimoUsuarioAlteracao: user?.personId,
-        pessoa: {
-          pessoaId: personId,
-          nome: firstName,
-          sobrenome: lastName,
-          cpf: cpf,
-          dataNascimento: birthDate,
-          sexo: genre,
-          email: email,
-          telefone: null,
-          endereco: null,
-          numero: numberAddress,
-          usuario: username,
-          senha: password === '' ? passwordBack : password,
-          ultimoUsuarioAlteracao: user?.personId,
-        },
+        pessoa: handleInstancePersonChangeApi(),
       })
       .then((response) => {
         if (response.status === 206) {
@@ -457,8 +443,6 @@ const Account: React.FC = () => {
   }
 
   function handleUpdate() {
-    handleInstancePersonChangeApi();
-
     functionTeacherOrAdministrator(
       handleUpdateTeacher,
       handleUpdateAdministrator

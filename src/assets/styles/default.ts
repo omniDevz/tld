@@ -54,6 +54,20 @@ button:focus {
   outline: none;
 }
 
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -77,6 +91,14 @@ button:focus {
 
   body {
     line-height: 1.64;
+  }
+}
+
+.react-toast-notifications__toast {
+  flex-direction: row;
+
+  div {
+    display: block;
   }
 }
 `;

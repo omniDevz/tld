@@ -27,6 +27,11 @@ const Header: React.FC<HeaderProps> = ({
     history.goBack();
   }
 
+  function handleLogoff() {
+    signOut();
+    history.push('/');
+  }
+
   return (
     <HeaderContainer>
       {type === 'back' ? (
@@ -34,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({
           <FiArrowLeft />
         </Button>
       ) : type === 'exit' ? (
-        <Button onClick={signOut}>
+        <Button onClick={handleLogoff}>
           <FiLogOut />
         </Button>
       ) : (

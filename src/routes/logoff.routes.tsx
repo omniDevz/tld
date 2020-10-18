@@ -6,7 +6,7 @@ import RecoveryPassword from '../pages/RecoveryPassword';
 import RecoveryPasswordCode from '../pages/RecoveryPassword/pages/Code';
 import RecoveryPasswordNew from '../pages/RecoveryPassword/pages/New';
 
-import FinallyRegister from '../pages/Authorized/FinallyRegister';
+import FinallyRegister from '../pages/FinallyRegister';
 
 import NotFound from '../pages/NotFound';
 

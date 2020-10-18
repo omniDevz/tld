@@ -5,6 +5,8 @@ import RadioButton from '../../../../../../../components/RadioButton';
 
 import backgroundNewRegister from '../../../../../../../assets/images/backgroundNewRegister.svg';
 
+import mask from '../../../../../../../utils/mask';
+
 import { Form, Fieldset, Legend, Button, TwoFields } from './styled';
 
 import { StepOneProps } from './interface';
@@ -41,7 +43,7 @@ const StepOne: React.FC<StepOneProps> = ({
           <FormField
             label="CPF"
             name="cpf"
-            value={values.cpf}
+            value={mask.cpf(values.cpf)}
             onChange={handleChange}
           />
           <FormField
