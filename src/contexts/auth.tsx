@@ -21,9 +21,16 @@ export const AuthProvider: React.FC = ({ children }) => {
       const storiedToken = storage.getTokenJTW();
 
       if (storiedUser && storiedToken) {
-        api.defaults.headers.Authorization = `Bearer ${storiedToken}`;
+        const userJTW = JSON.parse(storiedUser);
+        const entityId =
+          (userJTW?.levelAccess || 0) < 2
+            ? userJTW?.adminId
+            : userJTW?.teacherId;
 
-        setUser(JSON.parse(storiedUser));
+        api.defaults.headers.Authorization = `Bearer ${storiedToken}`;
+        api.defaults.headers.Logged = `${entityId}-${userJTW?.levelAccess}`;
+
+        setUser(userJTW);
       }
       setLoading(false);
     }
@@ -44,7 +51,12 @@ export const AuthProvider: React.FC = ({ children }) => {
       });
     } else {
       setUser(user);
+
+      const entityId =
+        (user?.levelAccess || 0) < 2 ? user?.adminId : user?.teacherId;
       api.defaults.headers.Authorization = `Bearer ${user.token}`;
+      api.defaults.headers.Logged = `${entityId}-${user?.levelAccess}`;
+
       storage.setValuesJTW(user);
 
       addToast('Logado com sucesso', {

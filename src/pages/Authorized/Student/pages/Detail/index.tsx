@@ -9,6 +9,7 @@ import PageAuthorized from '../../../../../components/PageAuthorized';
 import RadioButton from '../../../../../components/RadioButton';
 
 import util from '../../../../../utils/util';
+import { useAuth } from '../../../../../contexts/auth';
 
 import api from '../../../../../services/api';
 
@@ -33,12 +34,13 @@ import { IAddressApi } from '../../../Account/interface';
 
 const MaintainerDetail: React.FC = () => {
   const [student, setStudent] = useState<IStudentDetail>({} as IStudentDetail);
-  const [comments, setComments] = useState('');
+  const [observations, setObservations] = useState('');
 
   const { addToast } = useToasts();
   const history = useHistory();
-
   const route = useParams();
+  const { user } = useAuth();
+
   const { studentId } = route as IParamsStudentDetails;
 
   function handleBack() {
@@ -89,7 +91,7 @@ const MaintainerDetail: React.FC = () => {
           premium: userApi.eAssinante,
         } as IStudentDetail;
 
-        setComments(userApi.observacao || '');
+        setObservations(userApi.observacao || '');
 
         setStudent(getStudent);
       })
@@ -104,6 +106,30 @@ const MaintainerDetail: React.FC = () => {
         );
       });
   }, [studentId, addToast]);
+
+  function handleUpdateObservations() {
+    api
+      .put(`aluno/observacao/${1}`, {
+        observacao: observations,
+        ultimoUsuarioAlteracao: user?.personId,
+      })
+      .then(() => {
+        addToast('Observação do aluno salvo com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado ao obter detalhes do aluno, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
 
   return (
     <PageAuthorized type="back" text="Sobre o aluno">
@@ -245,10 +271,10 @@ const MaintainerDetail: React.FC = () => {
 
         <FormField
           label="Observações"
-          name="comments"
-          value={comments}
+          name="observations"
+          value={observations}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setComments(e.target.value)
+            setObservations(e.target.value)
           }
           type="textarea"
         />
@@ -257,7 +283,7 @@ const MaintainerDetail: React.FC = () => {
         <Button color="primary-outline" onClick={handleBack}>
           Voltar
         </Button>
-        <Button color="primary" onClick={() => {}}>
+        <Button color="primary" onClick={handleUpdateObservations}>
           Salvar observações
         </Button>
       </ButtonsWrapper>

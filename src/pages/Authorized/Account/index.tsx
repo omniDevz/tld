@@ -265,48 +265,6 @@ const Account: React.FC = () => {
     setPasswordBack(person.senha);
   }
 
-  function getDataAdministrator() {
-    api
-      .get(`/administrador/${user?.adminId}`)
-      .then(({ data }) => {
-        const userApi = data as IAdministratorApi;
-
-        handleSetPersonByApi(userApi.pessoa);
-        setLevelAccess(userApi.nivelAcesso);
-      })
-      .catch((err) => {
-        console.log(err);
-        addToast(
-          'Houve algum erro inesperado ao obter seus dados, tente novamente mais tarde',
-          {
-            appearance: 'error',
-            autoDismiss: true,
-          }
-        );
-      });
-  }
-
-  function getDataTeacher() {
-    api
-      .get(`/professor/${user?.teacherId}`)
-      .then(({ data }) => {
-        const userApi = data as ITeacherApi;
-
-        handleSetPersonByApi(userApi.administrador.pessoa);
-        setLevelAccess(userApi.administrador.nivelAcesso);
-      })
-      .catch((err) => {
-        console.log(err);
-        addToast(
-          'Houve algum erro inesperado ao obter seus dados, tente novamente mais tarde',
-          {
-            appearance: 'error',
-            autoDismiss: true,
-          }
-        );
-      });
-  }
-
   function functionTeacherOrAdministrator(
     functionTeacher: () => void,
     functionAdministrator: () => void
@@ -316,8 +274,53 @@ const Account: React.FC = () => {
   }
 
   useEffect(() => {
-    functionTeacherOrAdministrator(getDataTeacher, getDataAdministrator);
-  }, [functionTeacherOrAdministrator, getDataAdministrator, getDataTeacher]);
+    if (!user) return;
+
+    function getDataAdministrator() {
+      api
+        .get(`/administrador/${user?.adminId}`)
+        .then(({ data }) => {
+          const userApi = data as IAdministratorApi;
+
+          handleSetPersonByApi(userApi.pessoa);
+          setLevelAccess(userApi.nivelAcesso);
+        })
+        .catch((err) => {
+          console.log(err);
+          addToast(
+            'Houve algum erro inesperado ao obter seus dados, tente novamente mais tarde',
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
+        });
+    }
+
+    function getDataTeacher() {
+      api
+        .get(`/professor/${user?.teacherId}`)
+        .then(({ data }) => {
+          const userApi = data as ITeacherApi;
+
+          handleSetPersonByApi(userApi.administrador.pessoa);
+          setLevelAccess(userApi.administrador.nivelAcesso);
+        })
+        .catch((err) => {
+          console.log(err);
+          addToast(
+            'Houve algum erro inesperado ao obter seus dados, tente novamente mais tarde',
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
+        });
+    }
+
+    if ((user?.levelAccess || 0) < 2) getDataAdministrator();
+    else getDataTeacher();
+  }, [addToast, user]);
 
   function handleInstancePersonChangeApi() {
     const applySetPhone =
@@ -353,10 +356,10 @@ const Account: React.FC = () => {
       endereco: applySetAddress
         ? {
             cep: Number(cep),
+            logradouro: address,
             bairro: neighborhood,
             cidade: city,
             estado: state,
-            logradouro: address,
             pais: country,
           }
         : null,
@@ -369,7 +372,7 @@ const Account: React.FC = () => {
 
   function handleUpdateTeacher() {
     api
-      .put('/professor/', {
+      .put('professor', {
         professorId: user?.teacherId,
         ultimoUsuarioAlteracao: user?.personId,
         administrador: {
@@ -385,7 +388,7 @@ const Account: React.FC = () => {
             appearance: 'warning',
             autoDismiss: true,
           });
-          return null;
+          return;
         }
 
         addToast('Dados do perfil alterado com sucesso', {
