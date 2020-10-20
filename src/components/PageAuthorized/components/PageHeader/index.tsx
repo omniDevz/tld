@@ -26,7 +26,7 @@ const links = [
     text: 'Autores',
   },
   {
-    route: 'live',
+    route: 'transmissionNotification',
     title: 'Assistir live do professor',
     text: 'Live',
   },

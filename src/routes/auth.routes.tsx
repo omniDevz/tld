@@ -9,6 +9,7 @@ import Article from './article.routes';
 import Student from './student.routes';
 import Maintainer from './maintainer.routes';
 import ConsultingType from './consultingType.routes';
+import TransmissionNotification from './transmissionNotification.routes';
 
 const AuthRoutes: React.FC = () => {
   const routes = [
@@ -20,7 +21,14 @@ const AuthRoutes: React.FC = () => {
       path: '/account',
       component: Account,
     },
-  ].concat(Author, Article, Maintainer, Student, ConsultingType);
+  ].concat(
+    Author,
+    Article,
+    Maintainer,
+    Student,
+    ConsultingType,
+    TransmissionNotification
+  );
 
   return (
     <BrowserRouter>
