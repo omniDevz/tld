@@ -41,6 +41,11 @@ const links = [
     text: 'Turma',
   },
   {
+    route: 'consultingType',
+    title: 'Ir para página de tipo de consultoria',
+    text: 'Tipo de consultoria',
+  },
+  {
     route: 'maintainer',
     title: 'Ir para página de mantenedores',
     text: 'Mantenedores',

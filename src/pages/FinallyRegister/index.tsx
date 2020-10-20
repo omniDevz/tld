@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../components/Button';
@@ -8,6 +8,7 @@ import PageAuthorized from '../../components/PageAuthorized';
 
 import useForm from '../../hooks/useForm';
 import api from '../../services/api';
+import util from '../../utils/util';
 
 import { Form, Fieldset, Legend, Description } from './styled';
 
@@ -22,16 +23,31 @@ const Article: React.FC = () => {
 
   const { handleChange, values } = useForm(valuesInitials);
 
-  const routes = useParams();
+  const { token }: IFinallyRegisterParams = useParams();
   const { addToast } = useToasts();
-
-  const { token } = routes as IFinallyRegisterParams;
+  const history = useHistory();
 
   useEffect(() => {
-    api
-      .get(`/mantenedor/token`)
-      .then((response) => {})
-      .catch((err) => {
+    async function handleValidateToken() {
+      try {
+        const response = await api.get(`finalizarCadastro/${token}`);
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+
+          history.push('/');
+        }
+
+        addToast(
+          'Token válido, finalize seu cadastro informando seus dados de acesso',
+          {
+            appearance: 'success',
+            autoDismiss: true,
+          }
+        );
+      } catch (err) {
         console.log(err);
         addToast(
           'Houve algum erro inesperado na validação do token, tente novamente mais tarde',
@@ -40,8 +56,66 @@ const Article: React.FC = () => {
             autoDismiss: true,
           }
         );
+      }
+    }
+    if (token !== undefined) handleValidateToken();
+  }, [token, addToast, history]);
+
+  function handleFinallyRegister() {
+    if (!util.emptyValue(values.username, 'id_username')) {
+      addToast('Preencha o campo de usuário', {
+        appearance: 'warning',
+        autoDismiss: true,
       });
-  }, [token]);
+    }
+    if (!util.emptyValue(values.password, 'id_password')) {
+      addToast('Preencha o campo de senha', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+    }
+    if (values.password !== values.passwordConfirm) {
+      addToast('A senha e a sua confirmação deve ser iguais', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+    }
+
+    api
+      .put(`finalizarCadastro/${token}`, {
+        usuario: values.username,
+        senha: values.password,
+      })
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+        }
+
+        if (response.status === 200) {
+          addToast(
+            'Cadastro finalizado com sucesso, efetue o login na plataforma',
+            {
+              appearance: 'success',
+              autoDismiss: true,
+            }
+          );
+          history.push('/login');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Ocorreu um erro inesperado na finalização do cadastro, tente novamente mais tarde',
+          {
+            appearance: 'warning',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
 
   return (
     <PageAuthorized type="back" text="Finalizar cadastro">
@@ -69,7 +143,9 @@ const Article: React.FC = () => {
           />
         </Fieldset>
       </Form>
-      <Button color="primary">Finalizar</Button>
+      <Button color="primary" onClick={handleFinallyRegister}>
+        Finalizar
+      </Button>
     </PageAuthorized>
   );
 };

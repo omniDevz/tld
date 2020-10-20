@@ -6,8 +6,9 @@ import NotFound from '../pages/NotFound';
 
 import Author from './author.routes';
 import Article from './article.routes';
-import Maintainer from './maintainer.routes';
 import Student from './student.routes';
+import Maintainer from './maintainer.routes';
+import ConsultingType from './consultingType.routes';
 
 const AuthRoutes: React.FC = () => {
   const routes = [
@@ -19,7 +20,7 @@ const AuthRoutes: React.FC = () => {
       path: '/account',
       component: Account,
     },
-  ].concat(Author, Article, Maintainer, Student);
+  ].concat(Author, Article, Maintainer, Student, ConsultingType);
 
   return (
     <BrowserRouter>

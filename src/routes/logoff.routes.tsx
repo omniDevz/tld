@@ -18,7 +18,7 @@ function LogoffRoutes() {
         <Route path="/recoveryPassword/code" component={RecoveryPasswordCode} />
         <Route path="/recoveryPassword/new" component={RecoveryPasswordNew} />
         <Route path="/recoveryPassword" component={RecoveryPassword} />
-        <Route path="/finallyRegister" component={FinallyRegister} />
+        <Route path="/finallyRegister/:token" component={FinallyRegister} />
 
         <Route path="/home">
           <Redirect to="/" />

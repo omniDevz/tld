@@ -84,7 +84,7 @@ function MaintainerNew() {
           document.getElementById('id_cpf')?.focus();
           return false;
         }
-        if (util.onlyNumbers(values.cpf).length !== 11) {
+        if (values.cpf.length !== 14) {
           addToast('Informe seu CPF corretamente', {
             appearance: 'warning',
             autoDismiss: true,
@@ -245,7 +245,7 @@ function MaintainerNew() {
         tipoTelefone: values.typePhone,
       },
       endereco: {
-        cep: cep,
+        cep: util.onlyNumbers(cep),
         logradouro: address,
         bairro: neighborhood,
         cidade: city,
