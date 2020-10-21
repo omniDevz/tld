@@ -1,23 +1,101 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../../../components/Button';
 import FormField from '../../../../../components/FormField';
 import PageAuthorized from '../../../../../components/PageAuthorized';
 
-import useForm from '../../../../../hooks/useForm';
+import api from '../../../../../services/api';
 
-import { Form } from './styled';
+import { IArticleAuthorSelect } from './interface';
+import { IAuthorApi } from '../../interface';
+
+import { Form, ButtonsWrapper, InputAndButton } from './styled';
+import { FiUserPlus, FiUsers } from 'react-icons/fi';
+import Select from '../../../../../components/Select';
+import { useAuth } from '../../../../../contexts/auth';
 
 const ArticleNew: React.FC = () => {
-  const valuesInitials = {
-    title: '',
-    description: '',
-    link: '',
-    author: '',
-    date: '',
-  };
+  const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [link, setLink] = useState('');
+  const [publishDate, setPublishDate] = useState('');
+  const [authorIdSelected, setAuthorIdSelected] = useState('');
+  const [firstNameAuthor, setFirstNameAuthor] = useState('');
+  const [lastNameAuthor, setLastNameAuthor] = useState('');
+  const [listAuthors, setListAuthors] = useState<IArticleAuthorSelect[]>([]);
+  const [addAuthor, setAddAuthor] = useState(false);
 
-  const { handleChange, values } = useForm(valuesInitials);
+  const history = useHistory();
+  const { addToast } = useToasts();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    api
+      .get('autor')
+      .then(({ data }) => {
+        const authorFromApi: IArticleAuthorSelect[] = data.map(
+          (author: IAuthorApi) => {
+            const newAuthor: IArticleAuthorSelect = {
+              value: String(author.autorId),
+              label: `${author.nome} ${author.sobrenome}`,
+            };
+
+            return newAuthor;
+          }
+        );
+
+        setListAuthors(authorFromApi);
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast('Houve algum erro inesperado, tente novamente mais tarde', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      });
+  }, [addToast]);
+
+  function handleNewArticle() {
+    api
+      .post('/artigo', {
+        titulo: title,
+        subtitulo: subtitle,
+        linkArtigo: link,
+        autorId: authorIdSelected || 0,
+        autor: addAuthor
+          ? {
+              nome: firstNameAuthor,
+              sobrenome: lastNameAuthor,
+            }
+          : null,
+        dataPublicacao: publishDate,
+        ultimoUsuarioAlteracao: user?.personId,
+      })
+      .then(({ status, data }) => {
+        if (status === 206) {
+          addToast(data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return;
+        }
+
+        addToast('Artigo alterado com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        history.push('/article');
+      })
+      .catch((err) => {
+        console.error(err.response);
+        addToast('Houve algum erro inesperado, tente novamente mais tarde', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      });
+  }
 
   return (
     <PageAuthorized type="back" text="Novo artigo">
@@ -25,37 +103,77 @@ const ArticleNew: React.FC = () => {
         <FormField
           label="Título"
           name="title"
-          value={values.title}
-          onChange={handleChange}
+          value={title}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setTitle(e.target.value)
+          }
         />
         <FormField
           label="Descrição"
-          name="description"
-          value={values.description}
-          onChange={handleChange}
+          name="subtitle"
+          value={subtitle}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSubtitle(e.target.value)
+          }
         />
         <FormField
           label="Link"
           name="link"
-          value={values.link}
-          onChange={handleChange}
+          value={link}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setLink(e.target.value)
+          }
           type="url"
         />
+        <InputAndButton>
+          {addAuthor ? (
+            <FormField
+              label="Nome Autor"
+              name="firstNameAuthor"
+              value={firstNameAuthor}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setFirstNameAuthor(e.target.value);
+              }}
+            />
+          ) : (
+            <Select
+              name="authorId"
+              label="Autor"
+              onChange={(e: any) => setAuthorIdSelected(e.value)}
+              value={String(authorIdSelected)}
+              options={listAuthors}
+            />
+          )}
+
+          <Button color="secondary" onClick={() => setAddAuthor(!addAuthor)}>
+            {addAuthor ? <FiUserPlus /> : <FiUsers />}
+          </Button>
+        </InputAndButton>
+        {addAuthor && (
+          <FormField
+            label="Sobrenome Autor"
+            name="lastNameAuthor"
+            value={lastNameAuthor}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setLastNameAuthor(e.target.value);
+            }}
+          />
+        )}
         <FormField
-          label="Autor"
-          name="author"
-          value={values.author}
-          onChange={handleChange}
-        />
-        <FormField
-          label="Data de publicação"
+          label="Data publicação"
           name="date"
-          value={values.date}
-          onChange={handleChange}
+          value={publishDate}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPublishDate(e.target.value)
+          }
           type="date"
         />
       </Form>
-      <Button color="primary">Salvar</Button>
+      <ButtonsWrapper>
+        <Button color="primary" onClick={handleNewArticle}>
+          Cadastrar artigo
+        </Button>
+      </ButtonsWrapper>
     </PageAuthorized>
   );
 };

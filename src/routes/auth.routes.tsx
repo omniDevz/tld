@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import Account from '../pages/Authorized/Account';
+import ArticlePage from '../pages/Authorized/Article';
 import NotFound from '../pages/NotFound';
 
 import Author from './author.routes';
@@ -15,7 +16,7 @@ const AuthRoutes: React.FC = () => {
   const routes = [
     {
       path: '/',
-      component: Account,
+      component: ArticlePage,
     },
     {
       path: '/account',

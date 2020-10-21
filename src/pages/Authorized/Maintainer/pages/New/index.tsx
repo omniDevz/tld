@@ -84,14 +84,6 @@ function MaintainerNew() {
           document.getElementById('id_cpf')?.focus();
           return false;
         }
-        if (values.cpf.length !== 14) {
-          addToast('Informe seu CPF corretamente', {
-            appearance: 'warning',
-            autoDismiss: true,
-          });
-          document.getElementById('id_cpf')?.focus();
-          return false;
-        }
         if (values.birthDate === '') {
           addToast('Preencha a data de aniversário', {
             appearance: 'warning',
@@ -274,7 +266,7 @@ function MaintainerNew() {
         }
 
         addToast(
-          'Cadastro realizado com sucesso, foi enviado um e-mail para finalização do cadastro',
+          'Cadastro realizado com sucesso, foi enviado um e-mail para finalização',
           {
             appearance: 'success',
             autoDismiss: true,

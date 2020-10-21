@@ -16,7 +16,7 @@ export const Menu = styled.div`
   z-index: 1;
   display: flex;
   flex-direction: column;
-  z-index: 99;
+  z-index: 9999;
 
   width: 100%;
   padding: 0 24px;
