@@ -23,6 +23,14 @@ export const FieldSetWrapper = styled.fieldset`
   }
 `;
 
+export const Image = styled.img`
+  padding: 0 24px 8px;
+
+  @media (min-width: 700px) {
+    display: none;
+  }
+`;
+
 export const Button = styled(ButtonStyled)`
   margin-left: auto;
   margin-right: 24px;

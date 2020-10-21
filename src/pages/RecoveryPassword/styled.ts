@@ -28,6 +28,14 @@ export const Description = styled.p`
   margin-bottom: 8px;
 `;
 
+export const Image = styled.img`
+  padding: 8px 24px;
+
+  @media (min-width: 700px) {
+    display: none;
+  }
+`;
+
 export const Button = styled(ButtonStyled)`
   margin-top: auto;
   margin-left: auto;

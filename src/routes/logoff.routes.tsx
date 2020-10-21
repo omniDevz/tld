@@ -3,7 +3,6 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Login from '../pages/Login';
 import RecoveryPassword from '../pages/RecoveryPassword';
-import RecoveryPasswordCode from '../pages/RecoveryPassword/pages/Code';
 import RecoveryPasswordNew from '../pages/RecoveryPassword/pages/New';
 
 import FinallyRegister from '../pages/FinallyRegister';
@@ -15,8 +14,10 @@ function LogoffRoutes() {
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Login} />
-        <Route path="/recoveryPassword/code" component={RecoveryPasswordCode} />
-        <Route path="/recoveryPassword/new" component={RecoveryPasswordNew} />
+        <Route
+          path="/recoveryPassword/new/:token"
+          component={RecoveryPasswordNew}
+        />
         <Route path="/recoveryPassword" component={RecoveryPassword} />
         <Route path="/finallyRegister/:token" component={FinallyRegister} />
 
