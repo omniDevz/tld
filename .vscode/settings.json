@@ -1,0 +1,19 @@
+{
+  "sqltools.connections": [
+    {
+      "mssqlOptions": {
+        "appName": "SQLTools",
+        "useUTC": true,
+        "encrypt": true
+      },
+      "previewLimit": 50,
+      "server": "52.252.50.196\\SQLEXPRESS",
+      "port": 1433,
+      "driver": "MSSQL",
+      "name": "TLP",
+      "database": "estagio",
+      "username": "sa",
+      "password": "y7cip&W#"
+    }
+  ]
+}

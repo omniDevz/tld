@@ -43,7 +43,7 @@ function MaintainerNew() {
 
   const history = useHistory();
   const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(1);
-  const [registerConfirm, setRegisterConfirm] = useState<Boolean>(false);
+  const [registerConfirm] = useState<Boolean>(false);
 
   const { handleChange, values } = useForm(valuesInitials);
   const { addToast } = useToasts();
