@@ -21,4 +21,5 @@ export interface FormFieldProps {
   onChange?: FunctionComponentElement;
   type?: 'textarea' | 'text' | 'number' | 'date' | string;
   prefix?: string;
+  maxlength?: number;
 }
