@@ -7,11 +7,11 @@ import usePersistedState from './hooks/usePersistedState';
 import { AuthProvider } from './contexts/auth';
 import Routes from './routes';
 
-import dark from './assets/styles/themes/dark';
+import light from './assets/styles/themes/light';
 import DefaultStyles from './assets/styles/default';
 
 function App() {
-  const [theme] = usePersistedState<DefaultTheme>('@TLD:theme', dark);
+  const [theme] = usePersistedState<DefaultTheme>('@TLD:theme', light);
 
   return (
     <ThemeProvider theme={theme}>

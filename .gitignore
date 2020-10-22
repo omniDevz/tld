@@ -24,3 +24,5 @@ yarn-error.log*
 
 
 TLP.session.sql
+
+.vscode
