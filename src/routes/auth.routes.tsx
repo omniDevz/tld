@@ -8,6 +8,7 @@ import NotFound from '../pages/NotFound';
 import Author from './author.routes';
 import Article from './article.routes';
 import Student from './student.routes';
+import Classes from './classes.routes';
 import Maintainer from './maintainer.routes';
 import ConsultingType from './consultingType.routes';
 import TransmissionNotification from './transmissionNotification.routes';
@@ -28,7 +29,8 @@ const AuthRoutes: React.FC = () => {
     Maintainer,
     Student,
     ConsultingType,
-    TransmissionNotification
+    TransmissionNotification,
+    Classes
   );
 
   return (

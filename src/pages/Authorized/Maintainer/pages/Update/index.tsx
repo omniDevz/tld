@@ -8,59 +8,70 @@ import PageAuthorized from '../../../../../components/PageAuthorized';
 import RadioButton from '../../../../../components/RadioButton';
 import Select from '../../../../../components/Select';
 
-import useForm from '../../../../../hooks/useForm';
 import util from '../../../../../utils/util';
 
-import {
+import api, {
   apiCountries,
   apiLocations,
   apiViaCep,
 } from '../../../../../services/api';
 
 import {
-  Form,
-  TwoFields,
-  ThreeFields,
-  Fieldset,
   ButtonsWrapper,
-  ButtonsAccessWrapper,
   HalfContainer,
   CEPContainer,
+  ThreeFields,
+  LevelAccess,
+  TwoFields,
+  Fieldset,
+  Form,
 } from './styled';
 
 import {
-  AllCitiesProps,
   AllCountriesProps,
+  IAdministratorApi,
+  AllCitiesProps,
   AllStatesProps,
   OptionsSelect,
+  ITeacherApi,
+  IPersonApi,
+  ParamsProps,
 } from './interface';
 
+import { useAuth } from '../../../../../contexts/auth';
+import mask from '../../../../../utils/mask';
+import { useParams } from 'react-router-dom';
+
 const MaintainerUpdate: React.FC = () => {
-  const valuesInitials = {
-    firstName: '',
-    lastName: '',
-    cpf: '',
-    birthDate: '',
-    genre: 'M',
-    email: '',
-    typeFone: 'F',
-    countryCode: '',
-    ddd: '',
-    number: '',
-    username: '',
-    password: '',
-    passwordNew: '',
-    passwordConfirm: '',
-  };
-  const [cep, setCep] = useState<string>('');
-  const [country, setCountry] = useState<string>('');
-  const [state, setState] = useState<string>('');
-  const [city, setCity] = useState<string>('');
-  const [neighborhood, setNeighborhood] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
-  const [numberAddress, setNumberAddress] = useState<string>('');
+  const [personId, setPersonId] = useState(0);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [genre, setGenre] = useState('M');
+  const [email, setEmail] = useState('');
+  const [typePhone, setTypePhone] = useState('F');
+  const [countryCode, setCountryCode] = useState('');
+  const [ddd, setDdd] = useState('');
+  const [phone, setPhone] = useState('');
+  const [cep, setCep] = useState('');
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [address, setAddress] = useState('');
+  const [numberAddress, setNumberAddress] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [levelAccess, setLevelAccess] = useState(0);
+
   const [countries, setCountries] = useState<OptionsSelect>({
-    options: [],
+    options: [
+      {
+        label: '',
+        value: '',
+      },
+    ],
   });
 
   const [states, setStates] = useState<OptionsSelect>({
@@ -81,17 +92,19 @@ const MaintainerUpdate: React.FC = () => {
     ],
   });
 
-  const { handleChange, values } = useForm(valuesInitials);
   const { addToast } = useToasts();
 
+  const { user, signOut } = useAuth();
+  const { maintainerId, levelAccessMaintainer } = useParams() as ParamsProps;
+
   function handleCep() {
-    if (values.cep.length < 8) {
+    if (cep.length < 8) {
       alert('Informe o CEP corretamente');
       return null;
     }
 
     apiViaCep
-      .get(`/${values.cep.replace('-', '')}/json`)
+      .get(`/${cep.replace('-', '')}/json`)
       .then(({ data }) => {
         if (data.erro) {
           alert('Confirme o campo de cep, algo está incorreto');
@@ -116,11 +129,15 @@ const MaintainerUpdate: React.FC = () => {
 
         document.getElementById('id_numberAddress')?.focus();
       })
-      .catch(() => {
-        addToast('Informe o CEP corretamente', {
-          appearance: 'error',
-          autoDismiss: true,
-        });
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na busca por CEP, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
       });
   }
 
@@ -139,13 +156,20 @@ const MaintainerUpdate: React.FC = () => {
           options: optionsCountries,
         });
       })
-      .catch(({ response }) => {
-        console.error(response);
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na busca de países, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
       });
-  }, []);
+  }, [addToast]);
 
   useEffect(() => {
-    if (values.country !== 'Brasil') return;
+    if (country !== 'Brasil') return;
 
     apiLocations
       .get('/estados')
@@ -163,16 +187,23 @@ const MaintainerUpdate: React.FC = () => {
           options: optionsStates,
         });
       })
-      .catch(({ response }) => {
-        console.error(response);
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na busca de estados, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
       });
-  }, [values.country]);
+  }, [country, addToast]);
 
   useEffect(() => {
-    if (values.country !== 'Brasil') return;
+    if (country !== 'Brasil') return;
 
     apiLocations
-      .get(`/estados/${values.state}/municipios`)
+      .get(`/estados/${state}/municipios`)
       .then(({ data }) => {
         const optionsCities = data.map((city: AllCitiesProps) => {
           const optionsNameCity = {
@@ -187,42 +218,354 @@ const MaintainerUpdate: React.FC = () => {
           options: optionsCities,
         });
       })
-      .catch(({ response }) => {
-        console.error(response);
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na busca de munícipios, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
       });
-  }, [values.state, values.country]);
+  }, [state, country, addToast]);
+
+  function handleSetPersonByApi(person: IPersonApi) {
+    setPersonId(person.pessoaId);
+    setFirstName(person.nome);
+    setLastName(person.sobrenome);
+    setCpf(mask.cpf(person.cpf));
+    setBirthDate(util.removeHoursDateTimeApi(person.dataNascimento));
+    setGenre(person.sexo);
+    setEmail(person.email);
+
+    if (person.telefone) {
+      const { telefone: phone } = person;
+      setTypePhone(phone.tipoTelefone);
+      setCountryCode(String(phone.codigoDiscagem));
+      setDdd(String(phone.ddd));
+      setPhone(String(phone.numeroTelefone));
+    }
+
+    if (person.endereco) {
+      const { endereco: addressApi } = person;
+
+      setCep(String(addressApi.cep));
+      setAddress(addressApi.logradouro);
+      setNeighborhood(addressApi.bairro);
+      setCity(addressApi.cidade);
+      setState(addressApi.estado);
+      setCountry(addressApi.pais);
+      setNumberAddress(String(person.numero));
+    }
+
+    setUsername(person.usuario);
+    setPassword(person.senha);
+  }
+
+  function functionTeacherOrAdministrator(
+    functionTeacher: () => void,
+    functionAdministrator: () => void
+  ) {
+    if ((Number(levelAccessMaintainer) || 0) < 2) functionAdministrator();
+    else functionTeacher();
+  }
+
+  useEffect(() => {
+    if (!user) return;
+
+    function getDataAdministrator() {
+      api
+        .get(`/administrador/${maintainerId}`)
+        .then(({ data }) => {
+          const userApi = data as IAdministratorApi;
+
+          handleSetPersonByApi(userApi.pessoa);
+          setLevelAccess(userApi.nivelAcesso);
+        })
+        .catch((err) => {
+          console.log(err);
+          addToast(
+            'Houve algum erro inesperado ao obter seus dados, tente novamente mais tarde',
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
+        });
+    }
+
+    function getDataTeacher() {
+      api
+        .get(`/professor/${maintainerId}`)
+        .then(({ data }) => {
+          const userApi = data as ITeacherApi;
+
+          handleSetPersonByApi(userApi.administrador.pessoa);
+          setLevelAccess(userApi.administrador.nivelAcesso);
+        })
+        .catch((err) => {
+          console.log(err);
+          addToast(
+            'Houve algum erro inesperado ao obter seus dados, tente novamente mais tarde',
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
+        });
+    }
+
+    if (Number(levelAccessMaintainer || 0) < 2) getDataAdministrator();
+    else getDataTeacher();
+  }, [addToast, user, levelAccessMaintainer, maintainerId]);
+
+  function handleInstancePersonChangeApi() {
+    const applySetPhone =
+      countryCode.length > 0 &&
+      typePhone.length > 0 &&
+      ddd.length > 0 &&
+      phone.length > 0;
+
+    const applySetAddress =
+      cep.length > 0 &&
+      country.length > 0 &&
+      state.length > 0 &&
+      city.length > 0 &&
+      address.length > 0 &&
+      numberAddress.length > 0;
+
+    const personApi = {
+      pessoaId: personId,
+      nome: firstName,
+      sobrenome: lastName,
+      cpf: util.onlyNumbers(cpf),
+      dataNascimento: birthDate,
+      sexo: genre,
+      email: email,
+      telefone: applySetPhone
+        ? {
+            codigoDiscagem: Number(countryCode),
+            ddd: Number(ddd),
+            numeroTelefone: Number(phone),
+            tipoTelefone: typePhone,
+          }
+        : null,
+      endereco: applySetAddress
+        ? {
+            cep: Number(cep),
+            logradouro: address,
+            bairro: neighborhood,
+            cidade: city,
+            estado: state,
+            pais: country,
+          }
+        : null,
+      numero: Number(numberAddress),
+      usuario: username,
+      senha: password,
+      ultimoUsuarioAlteracao: user?.personId,
+    } as IPersonApi;
+
+    return personApi;
+  }
+
+  function handleUpdateTeacher() {
+    api
+      .put('professor', {
+        professorId: maintainerId,
+        ultimoUsuarioAlteracao: user?.personId,
+        administrador: {
+          administradorId: maintainerId,
+          nivelAcesso: user?.levelAccess,
+          ultimoUsuarioAlteracao: user?.personId,
+          pessoa: handleInstancePersonChangeApi(),
+        },
+      })
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return;
+        }
+
+        addToast('Dados do mantenedor alterado com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na atualização do professor, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function handleUpdateAdministrator() {
+    api
+      .put('/administrador/', {
+        administradorId: maintainerId,
+        nivelAcesso: user?.levelAccess,
+        ultimoUsuarioAlteracao: user?.personId,
+        pessoa: handleInstancePersonChangeApi(),
+      })
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return null;
+        }
+
+        addToast('Dados do mantenedor alterado com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na atualização do administrador, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function handleUpdate() {
+    functionTeacherOrAdministrator(
+      handleUpdateTeacher,
+      handleUpdateAdministrator
+    );
+  }
+
+  function handleDeleteTeacher() {
+    api
+      .delete(`/professor/${maintainerId}`)
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return null;
+        }
+
+        addToast('A conta do mantenedor foi removida com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        signOut();
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na remoção da conta, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function handleDeleteAdministrator() {
+    api
+      .delete(`/administrador/${maintainerId}`)
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return null;
+        }
+
+        addToast('A conta do mantenedor foi removida com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        signOut();
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado na remoção da conta, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
+  function handleDelete() {
+    if (!window.confirm('Realmente deseja remover sua conta?')) {
+      return;
+    }
+
+    functionTeacherOrAdministrator(
+      handleDeleteTeacher,
+      handleDeleteAdministrator
+    );
+  }
 
   return (
-    <PageAuthorized type="back" text="Alterar mantenedor">
+    <PageAuthorized type="back" text="Dados do mantenedor">
       <Form>
+        <LevelAccess>
+          Nível de acesso:
+          <b>{levelAccess < 2 ? 'Administrador' : 'Professor'}</b>
+        </LevelAccess>
         <Collapse label="Dados pessoais">
           <Fieldset>
             <TwoFields>
               <FormField
                 label="Nome"
                 name="firstName"
-                value={values.firstName}
-                onChange={handleChange}
+                value={firstName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setFirstName(e.target.value)
+                }
               />
               <FormField
                 label="Sobrenome"
                 name="lastName"
-                value={values.lastName}
-                onChange={handleChange}
+                value={lastName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setLastName(e.target.value)
+                }
               />
             </TwoFields>
             <TwoFields>
               <FormField
                 label="CPF"
                 name="cpf"
-                value={values.cpf}
-                onChange={handleChange}
+                value={cpf}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setCpf(mask.cpf(e.target.value))
+                }
               />
               <FormField
                 label="Data nascimento"
                 name="birthDate"
-                value={values.birthDate}
-                onChange={handleChange}
+                value={birthDate}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setBirthDate(e.target.value)
+                }
+                type="date"
               />
             </TwoFields>
             <RadioButton
@@ -241,14 +584,18 @@ const MaintainerUpdate: React.FC = () => {
                 },
               ]}
               name="genre"
-              value={values.genre}
-              onChange={handleChange}
+              value={genre}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setGenre(e.target.value)
+              }
             />
             <FormField
               label="E-mail"
               name="email"
-              value={values.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
             />
           </Fieldset>
         </Collapse>
@@ -266,31 +613,39 @@ const MaintainerUpdate: React.FC = () => {
                     value: 'C',
                   },
                 ]}
-                name="typeFone"
-                value={values.typeFone}
-                onChange={handleChange}
+                name="typePhone"
+                value={typePhone}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setTypePhone(e.target.value)
+                }
               />
             </HalfContainer>
             <ThreeFields>
               <FormField
                 label=""
                 name="countryCode"
-                value={values.countryCode}
-                onChange={handleChange}
+                value={countryCode}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setCountryCode(e.target.value)
+                }
                 prefix="+"
               />
               <FormField
                 label=""
                 name="ddd"
-                value={values.ddd}
-                onChange={handleChange}
+                value={ddd}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setDdd(e.target.value)
+                }
                 prefix="0"
               />
               <FormField
                 label="Número"
                 name="number"
-                value={values.number}
-                onChange={handleChange}
+                value={phone}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPhone(e.target.value)
+                }
               />
             </ThreeFields>
           </Fieldset>
@@ -312,16 +667,16 @@ const MaintainerUpdate: React.FC = () => {
             </CEPContainer>
             <TwoFields>
               <Select
-                name="country"
                 label="País"
+                name="country"
                 onChange={(e: any) => setCountry(e.value)}
                 value={country}
                 options={countries.options}
               />
               {country === 'Brasil' ? (
                 <Select
-                  name="state"
                   label="UF"
+                  name="state"
                   onChange={(e: any) => setState(e.value)}
                   value={state}
                   options={states.options}
@@ -383,47 +738,14 @@ const MaintainerUpdate: React.FC = () => {
             </TwoFields>
           </Fieldset>
         </Collapse>
-
-        <Collapse label="Dados de acesso">
-          <Fieldset>
-            <FormField
-              label="Usuário"
-              name="username"
-              value={values.username}
-              onChange={handleChange}
-            />
-          </Fieldset>
-          <ButtonsAccessWrapper>
-            <Button color="primary-outline">Trocar usuário</Button>
-          </ButtonsAccessWrapper>
-          <Fieldset>
-            <FormField
-              label="Senha atual"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-            />
-            <FormField
-              label="Nova senha"
-              name="passwordNew"
-              value={values.passwordNew}
-              onChange={handleChange}
-            />
-            <FormField
-              label="Confirmar senha"
-              name="passwordConfirm"
-              value={values.passwordConfirm}
-              onChange={handleChange}
-            />
-          </Fieldset>
-          <ButtonsAccessWrapper>
-            <Button color="primary-outline">Trocar usuário</Button>
-          </ButtonsAccessWrapper>
-        </Collapse>
       </Form>
       <ButtonsWrapper>
-        <Button color="primary-outline">Excluir</Button>
-        <Button color="primary">Salvar</Button>
+        <Button color="primary-outline" onClick={handleDelete}>
+          Excluir
+        </Button>
+        <Button color="primary" onClick={handleUpdate}>
+          Salvar
+        </Button>
       </ButtonsWrapper>
     </PageAuthorized>
   );

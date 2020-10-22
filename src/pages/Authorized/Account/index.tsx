@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
+import Collapse from '../../../components/Collapse';
 
 import Button from '../../../components/Button';
-import Collapse from '../../../components/Collapse';
 import FormField from '../../../components/FormField';
 import PageAuthorized from '../../../components/PageAuthorized';
 import RadioButton from '../../../components/RadioButton';
@@ -443,6 +443,31 @@ const Account: React.FC = () => {
   }
 
   function handleUpdate() {
+    const hasChangePassword =
+      passwordNew.length > 0 || passwordConfirm.length > 0;
+    const differenceInNewPassword = passwordNew !== passwordConfirm;
+    const differenceInOldPassword = password !== passwordBack;
+
+    if (hasChangePassword && differenceInOldPassword) {
+      addToast('Informe sua senha se acesso corretamente', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_password')?.focus();
+
+      return;
+    }
+
+    if (hasChangePassword && differenceInNewPassword) {
+      addToast('A nova senha e a confirmação deve ser igual', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_passwordNew')?.focus();
+
+      return;
+    }
+
     functionTeacherOrAdministrator(
       handleUpdateTeacher,
       handleUpdateAdministrator

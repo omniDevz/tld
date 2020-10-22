@@ -34,7 +34,9 @@ const List: React.FC<ListProps> = ({ list }) => {
                 <Infos>
                   {levelAccessLogged >= levelAccess && (
                     <Link
-                      to={`/maintainer/update/${adminId}`}
+                      to={`/maintainer/update/${
+                        levelAccess < 2 ? adminId : adminId
+                      }/`}
                       title={`Editar dados de ${name}`}
                     >
                       <FiEdit />

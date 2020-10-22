@@ -4,7 +4,7 @@ import Maintainer from '../pages/Authorized/Maintainer';
 
 const MaintainerRoutes = [
   {
-    path: '/maintainer/update/:maintainerId',
+    path: '/maintainer/update/:maintainerId/:levelAccessMaintainer',
     component: Update,
   },
   {

@@ -19,7 +19,7 @@ export const Form = styled.form`
 export const Fieldset = styled.div`
   display: grid;
   flex-direction: column;
-  row-gap: 0.8rem;
+  row-gap: 1.2rem;
 `;
 
 export const CEPContainer = styled.div`
@@ -57,4 +57,11 @@ export const ButtonsWrapper = styled.div`
   margin: 2.4rem 0;
   display: flex;
   column-gap: 1.6rem;
+`;
+
+export const LevelAccess = styled.p`
+  padding-bottom: 0.8rem;
+  text-align: right;
+  font-size: 1.8rem;
+  width: 100%;
 `;
