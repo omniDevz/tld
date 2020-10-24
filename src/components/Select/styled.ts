@@ -145,26 +145,28 @@ export const SelectWrapper = styled.div<SelectWrapperProps>`
     hasValue &&
     css`
       ${Text} {
-        color: ${(props) => props.theme.colors.secondary};
+        color: ${(props) => props.theme.colors.secondaryOpacity64};
         left: 0.2rem;
         top: 0;
         transform: scale(0.8) translateY(-1.5rem);
 
         &:before {
           transform: scaleX(1);
+        border-color: ${(props) => props.theme.colors.secondaryOpacity64};
         }
       }
     `}
 
   &:focus-within {
     ${Text} {
-      color: ${(props) => props.theme.colors.secondary};
+      color: ${(props) => props.theme.colors.secondaryOpacity64};
       left: 1.6rem;
       top: 0;
       transform: scale(0.8) translateY(-1.5rem);
 
       &:before {
         transform: scaleX(1);
+        border-color: ${(props) => props.theme.colors.secondaryOpacity64};
       }
     }
   }

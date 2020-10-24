@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Button from '../../../../../components/Button';
 import Collapse from '../../../../../components/Collapse';
 import FormField from '../../../../../components/FormField';
 import PageAuthorized from '../../../../../components/PageAuthorized';
-import RadioButton from '../../../../../components/RadioButton';
 import Select from '../../../../../components/Select';
 
 import util from '../../../../../utils/util';
+import mask from '../../../../../utils/mask';
 
+import { useAuth } from '../../../../../contexts/auth';
 import api, {
   apiCountries,
   apiLocations,
@@ -17,6 +19,7 @@ import api, {
 } from '../../../../../services/api';
 
 import {
+  LevelAccessWrapper,
   ButtonsWrapper,
   HalfContainer,
   CEPContainer,
@@ -37,10 +40,7 @@ import {
   IPersonApi,
   ParamsProps,
 } from './interface';
-
-import { useAuth } from '../../../../../contexts/auth';
-import mask from '../../../../../utils/mask';
-import { useParams } from 'react-router-dom';
+import RadioButton from '../../../../../components/RadioButton';
 
 const MaintainerUpdate: React.FC = () => {
   const [personId, setPersonId] = useState(0);
@@ -64,6 +64,8 @@ const MaintainerUpdate: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [levelAccess, setLevelAccess] = useState(0);
+  const [newLevelAccess, setNewLevelAccess] = useState(0);
+  const [adminId, setAdminId] = useState(0);
 
   const [countries, setCountries] = useState<OptionsSelect>({
     options: [
@@ -93,8 +95,9 @@ const MaintainerUpdate: React.FC = () => {
   });
 
   const { addToast } = useToasts();
+  const history = useHistory();
 
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { maintainerId, levelAccessMaintainer } = useParams() as ParamsProps;
 
   function handleCep() {
@@ -256,7 +259,7 @@ const MaintainerUpdate: React.FC = () => {
       setCity(addressApi.cidade);
       setState(addressApi.estado);
       setCountry(addressApi.pais);
-      setNumberAddress(String(person.numero));
+      setNumberAddress(String(person.numero || ''));
     }
 
     setUsername(person.usuario);
@@ -276,12 +279,13 @@ const MaintainerUpdate: React.FC = () => {
 
     function getDataAdministrator() {
       api
-        .get(`/administrador/${maintainerId}`)
+        .get(`administrador/${maintainerId}`)
         .then(({ data }) => {
           const userApi = data as IAdministratorApi;
 
           handleSetPersonByApi(userApi.pessoa);
           setLevelAccess(userApi.nivelAcesso);
+          setNewLevelAccess(userApi.nivelAcesso);
         })
         .catch((err) => {
           console.log(err);
@@ -297,12 +301,14 @@ const MaintainerUpdate: React.FC = () => {
 
     function getDataTeacher() {
       api
-        .get(`/professor/${maintainerId}`)
+        .get(`professor/${maintainerId}`)
         .then(({ data }) => {
           const userApi = data as ITeacherApi;
 
           handleSetPersonByApi(userApi.administrador.pessoa);
+          setAdminId(userApi.administrador.administradorId);
           setLevelAccess(userApi.administrador.nivelAcesso);
+          setNewLevelAccess(userApi.administrador.nivelAcesso);
         })
         .catch((err) => {
           console.log(err);
@@ -376,8 +382,8 @@ const MaintainerUpdate: React.FC = () => {
         professorId: maintainerId,
         ultimoUsuarioAlteracao: user?.personId,
         administrador: {
-          administradorId: maintainerId,
-          nivelAcesso: user?.levelAccess,
+          administradorId: adminId,
+          nivelAcesso: newLevelAccess,
           ultimoUsuarioAlteracao: user?.personId,
           pessoa: handleInstancePersonChangeApi(),
         },
@@ -410,9 +416,9 @@ const MaintainerUpdate: React.FC = () => {
 
   function handleUpdateAdministrator() {
     api
-      .put('/administrador/', {
+      .put('administrador', {
         administradorId: maintainerId,
-        nivelAcesso: user?.levelAccess,
+        nivelAcesso: newLevelAccess,
         ultimoUsuarioAlteracao: user?.personId,
         pessoa: handleInstancePersonChangeApi(),
       })
@@ -451,7 +457,7 @@ const MaintainerUpdate: React.FC = () => {
 
   function handleDeleteTeacher() {
     api
-      .delete(`/professor/${maintainerId}`)
+      .delete(`professor/${maintainerId}`)
       .then((response) => {
         if (response.status === 206) {
           addToast(response.data, {
@@ -466,7 +472,7 @@ const MaintainerUpdate: React.FC = () => {
           autoDismiss: true,
         });
 
-        signOut();
+        history.push('/maintainer');
       })
       .catch((err) => {
         console.log(err);
@@ -482,7 +488,7 @@ const MaintainerUpdate: React.FC = () => {
 
   function handleDeleteAdministrator() {
     api
-      .delete(`/administrador/${maintainerId}`)
+      .delete(`administrador/${maintainerId}`)
       .then((response) => {
         if (response.status === 206) {
           addToast(response.data, {
@@ -497,7 +503,7 @@ const MaintainerUpdate: React.FC = () => {
           autoDismiss: true,
         });
 
-        signOut();
+        history.push('/maintainer');
       })
       .catch((err) => {
         console.log(err);
@@ -512,7 +518,7 @@ const MaintainerUpdate: React.FC = () => {
   }
 
   function handleDelete() {
-    if (!window.confirm('Realmente deseja remover sua conta?')) {
+    if (!window.confirm('Realmente deseja a conta do mantenedor?')) {
       return;
     }
 
@@ -738,15 +744,44 @@ const MaintainerUpdate: React.FC = () => {
             </TwoFields>
           </Fieldset>
         </Collapse>
+        {levelAccess < 2 && (
+          <Collapse label="Nível de acesso">
+            <LevelAccessWrapper>
+              <RadioButton
+                options={[
+                  {
+                    label: 'Administrador',
+                    value: '0',
+                  },
+                  {
+                    label: 'Administrador Pro',
+                    value: '1',
+                  },
+                ]}
+                name="newLevelAccess"
+                value={String(newLevelAccess)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setNewLevelAccess(
+                    newLevelAccess > Number(levelAccessMaintainer)
+                      ? newLevelAccess
+                      : Number(e.target.value)
+                  )
+                }
+              />
+            </LevelAccessWrapper>
+          </Collapse>
+        )}
       </Form>
-      <ButtonsWrapper>
-        <Button color="primary-outline" onClick={handleDelete}>
-          Excluir
-        </Button>
-        <Button color="primary" onClick={handleUpdate}>
-          Salvar
-        </Button>
-      </ButtonsWrapper>
+      {levelAccess <= Number(levelAccessMaintainer) && (
+        <ButtonsWrapper>
+          <Button color="primary-outline" onClick={handleDelete}>
+            Excluir
+          </Button>
+          <Button color="primary" onClick={handleUpdate}>
+            Salvar
+          </Button>
+        </ButtonsWrapper>
+      )}
     </PageAuthorized>
   );
 };

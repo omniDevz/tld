@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../components/Button';
 import FormField from '../../../components/FormField';
+import RadioButton from '../../../components/RadioButton';
 import PageAuthorized from '../../../components/PageAuthorized';
 import List from './components/List';
 
+import util from '../../../utils/util';
 import useForm from '../../../hooks/useForm';
+import api from '../../../services/api';
 
 import { Form, RadioButtonWrapper } from './styled';
 
-import { IMaintainer, IMaintainerApi } from './interface';
-import RadioButton from '../../../components/RadioButton';
-import api from '../../../services/api';
-import util from '../../../utils/util';
+import { IMaintainer, IAdminApi, ITeacherApi } from './interface';
 
 const Maintainer: React.FC = () => {
   const valuesInitials = {
@@ -24,38 +23,49 @@ const Maintainer: React.FC = () => {
   const [listMaintainers, setListMaintainers] = useState<IMaintainer[]>([]);
   const [typeFilter, setTypeFilter] = useState('');
 
-  const { addToast } = useToasts();
+  async function handleGetListMaintainers() {
+    const responseAdm = await api.get('administrador');
 
-  function handleGetListAdministrators() {
-    api
-      .get('administrador')
-      .then(({ data }) => {
-        const maintainersFromApi = data.map((maintainerApi: IMaintainerApi) => {
-          const maintainer: IMaintainer = {
-            adminId: maintainerApi.administradorId,
-            email: maintainerApi.pessoa.email,
-            name: `${maintainerApi.pessoa.nome} ${maintainerApi.pessoa.sobrenome}`,
-            levelAccess: Number(maintainerApi.nivelAcesso) || 0,
-          };
+    const administratorsFromApi = responseAdm.data.map(
+      (adminApi: IAdminApi) => {
+        const maintainer: IMaintainer = {
+          adminId: adminApi.administradorId,
+          email: adminApi.pessoa.email,
+          name: `${adminApi.pessoa.nome} ${adminApi.pessoa.sobrenome}`,
+          levelAccess: Number(adminApi.nivelAcesso) || 0,
+          teacherId: 0,
+        };
 
-          return maintainer;
-        });
+        return maintainer;
+      }
+    );
 
-        setListMaintainers(maintainersFromApi);
-      })
-      .catch((err) => {
-        console.log(err);
-        addToast(
-          'Houve algum erro inesperado na busca por mantenedores, tente novamente mais tarde',
-          {
-            appearance: 'error',
-            autoDismiss: true,
-          }
-        );
-      });
+    const responseTeacher = await api.get('professor');
+
+    const teacherFromApi = responseTeacher.data.map(
+      (teacherApi: ITeacherApi) => {
+        const { pessoa } = teacherApi.administrador;
+
+        const maintainer: IMaintainer = {
+          adminId: teacherApi.administrador.administradorId,
+          email: pessoa.email,
+          name: `${pessoa.nome} ${pessoa.sobrenome}`,
+          levelAccess: Number(teacherApi.administrador.nivelAcesso) || 0,
+          teacherId: teacherApi.professorId,
+        };
+
+        return maintainer;
+      }
+    );
+
+    const maintainersFromApi = administratorsFromApi.concat(teacherFromApi);
+
+    setListMaintainers(maintainersFromApi);
   }
 
-  useEffect(handleGetListAdministrators, []);
+  useEffect(() => {
+    handleGetListMaintainers();
+  }, []);
 
   function handleFilterMaintainer(maintainer: IMaintainer) {
     return util.includesToArray(
@@ -84,7 +94,7 @@ const Maintainer: React.FC = () => {
           value={values.search}
           onChange={handleChange}
         />
-        <Button color="secondary-outline" onClick={handleGetListAdministrators}>
+        <Button color="secondary-outline" onClick={handleGetListMaintainers}>
           Filtrar
         </Button>
       </Form>

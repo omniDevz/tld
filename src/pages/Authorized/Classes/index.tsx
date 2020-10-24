@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiSearch, FiUsers } from 'react-icons/fi';
+import { FiUsers } from 'react-icons/fi';
 import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../components/Button';

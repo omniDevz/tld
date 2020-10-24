@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { FormFieldWrapper } from '../../../../../components/FormField/styled';
+import { RadioButtonWrapper } from '../../../../../components/RadioButton/styled';
 
 export const Form = styled.form`
   margin-top: 3.2rem;
@@ -64,4 +65,12 @@ export const LevelAccess = styled.p`
   text-align: right;
   font-size: 1.8rem;
   width: 100%;
+`;
+
+
+export const LevelAccessWrapper = styled.div`
+    ${RadioButtonWrapper} {
+      flex-direction: column;
+      grid-gap: .8rem;
+    }
 `;

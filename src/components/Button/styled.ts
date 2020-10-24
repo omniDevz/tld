@@ -11,6 +11,7 @@ export const ButtonStyled = styled.button<ButtonProps>`
   margin: 0 auto;
   transform: scale(1);
   transition: all 260ms ease-in-out;
+  height: 4.2rem;
 
   ${(props) => {
     if (Boolean(props.to?.length)) {
