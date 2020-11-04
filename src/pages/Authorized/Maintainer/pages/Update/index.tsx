@@ -38,9 +38,9 @@ import {
   AllCitiesProps,
   AllStatesProps,
   OptionsSelect,
+  ParamsProps,
   ITeacherApi,
   IPersonApi,
-  ParamsProps,
 } from './interface';
 
 const MaintainerUpdate: React.FC = () => {
@@ -257,7 +257,7 @@ const MaintainerUpdate: React.FC = () => {
     if (person.endereco) {
       const { endereco: addressApi } = person;
 
-      setCep(String(addressApi.cep));
+      setCep(mask.cep(String(addressApi.cep)));
       setAddress(addressApi.logradouro);
       setNeighborhood(addressApi.bairro);
       setCity(addressApi.cidade);
@@ -715,7 +715,7 @@ const MaintainerUpdate: React.FC = () => {
                 name="cep"
                 value={cep}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCep(e.target.value)
+                  setCep(mask.cep(e.target.value))
                 }
               />
               <Button color="secondary" onClick={handleCep}>
