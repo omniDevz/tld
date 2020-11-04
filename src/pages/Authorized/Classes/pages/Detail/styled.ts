@@ -75,7 +75,10 @@ export const HeaderStudent = styled.div`
 
 export const Info = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
+  height: 100%;
 `;
 
 export const NameStudent = styled.p`
