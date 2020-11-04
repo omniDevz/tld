@@ -80,6 +80,13 @@ const StepOne: React.FC<StepOneProps> = ({
           onChange={handleChange}
           type="email"
         />
+        <FormField
+          label="Confirme seu e-mail"
+          name="emailConfirm"
+          value={values.emailConfirm}
+          onChange={handleChange}
+          type="email"
+        />
       </Fieldset>
       <Button onClick={() => handleStep(1, 2)} color="primary">
         Continuar

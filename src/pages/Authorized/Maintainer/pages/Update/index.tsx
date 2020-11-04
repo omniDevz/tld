@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 import { useHistory, useParams } from 'react-router-dom';
 
+import Select from '../../../../../components/Select';
 import Button from '../../../../../components/Button';
 import Collapse from '../../../../../components/Collapse';
 import FormField from '../../../../../components/FormField';
+import RadioButton from '../../../../../components/RadioButton';
 import PageAuthorized from '../../../../../components/PageAuthorized';
-import Select from '../../../../../components/Select';
 
 import util from '../../../../../utils/util';
 import mask from '../../../../../utils/mask';
+import validation from '../../../../../utils/validation';
 
 import { useAuth } from '../../../../../contexts/auth';
 import api, {
@@ -40,7 +42,6 @@ import {
   IPersonApi,
   ParamsProps,
 } from './interface';
-import RadioButton from '../../../../../components/RadioButton';
 
 const MaintainerUpdate: React.FC = () => {
   const [personId, setPersonId] = useState(0);
@@ -50,6 +51,8 @@ const MaintainerUpdate: React.FC = () => {
   const [birthDate, setBirthDate] = useState('');
   const [genre, setGenre] = useState('M');
   const [email, setEmail] = useState('');
+  const [emailBack, setEmailBack] = useState('');
+  const [emailConfirm, setEmailConfirm] = useState('');
   const [typePhone, setTypePhone] = useState('F');
   const [countryCode, setCountryCode] = useState('');
   const [ddd, setDdd] = useState('');
@@ -241,6 +244,7 @@ const MaintainerUpdate: React.FC = () => {
     setBirthDate(util.removeHoursDateTimeApi(person.dataNascimento));
     setGenre(person.sexo);
     setEmail(person.email);
+    setEmailBack(person.email);
 
     if (person.telefone) {
       const { telefone: phone } = person;
@@ -325,6 +329,43 @@ const MaintainerUpdate: React.FC = () => {
     if (Number(levelAccessMaintainer || 0) < 2) getDataAdministrator();
     else getDataTeacher();
   }, [addToast, user, levelAccessMaintainer, maintainerId]);
+
+  function validationFields() {
+    if (email === '') {
+      addToast('Preencha o e-mail', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_email')?.focus();
+      return false;
+    }
+    if (!validation.email(email)) {
+      addToast('Preencha um e-mail válido', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_email')?.focus();
+      return false;
+    }
+    if (email !== emailBack && emailConfirm === '') {
+      addToast('Preencha a confirmação do e-mail', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_emailConfirm')?.focus();
+      return false;
+    }
+    if (email !== emailBack && emailConfirm !== email) {
+      addToast('O e-mail e sua confirmação devem ser iguais', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_emailConfirm')?.focus();
+      return false;
+    }
+
+    return true;
+  }
 
   function handleInstancePersonChangeApi() {
     const applySetPhone =
@@ -449,6 +490,8 @@ const MaintainerUpdate: React.FC = () => {
   }
 
   function handleUpdate() {
+    if (!validationFields()) return;
+
     functionTeacherOrAdministrator(
       handleUpdateTeacher,
       handleUpdateAdministrator
@@ -601,6 +644,14 @@ const MaintainerUpdate: React.FC = () => {
               value={email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setEmail(e.target.value)
+              }
+            />
+            <FormField
+              label="Confirme seu e-mail"
+              name="emailConfirm"
+              value={emailConfirm}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEmailConfirm(e.target.value)
               }
             />
           </Fieldset>

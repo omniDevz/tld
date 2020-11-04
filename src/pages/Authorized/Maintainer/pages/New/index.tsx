@@ -16,6 +16,7 @@ import api from '../../../../../services/api';
 import { useAuth } from '../../../../../contexts/auth';
 import util from '../../../../../utils/util';
 import StepFor from './components/StepFor';
+import validation from '../../../../../utils/validation';
 
 function MaintainerNew() {
   const valuesInitials = {
@@ -25,6 +26,7 @@ function MaintainerNew() {
     birthDate: '',
     genre: 'M',
     email: '',
+    emailConfirm: '',
     typePhone: 'F',
     countryCode: '',
     ddd: '',
@@ -105,6 +107,30 @@ function MaintainerNew() {
             autoDismiss: true,
           });
           document.getElementById('id_email')?.focus();
+          return false;
+        }
+        if (!validation.email(values.email)) {
+          addToast('Preencha um e-mail válido', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_email')?.focus();
+          return false;
+        }
+        if (values.emailConfirm === '') {
+          addToast('Preencha a confirmação do e-mail', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_emailConfirm')?.focus();
+          return false;
+        }
+        if (values.emailConfirm !== values.email) {
+          addToast('O e-mail e sua confirmação devem ser iguais', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_emailConfirm')?.focus();
           return false;
         }
         break;
