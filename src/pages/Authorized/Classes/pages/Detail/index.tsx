@@ -76,7 +76,7 @@ const ClassesUpdate: React.FC = () => {
                     ? {
                         countryCode: student.pessoa.telefone.codigoDiscagem,
                         ddd: student.pessoa.telefone.ddd,
-                        number: student.pessoa.telefone.numero,
+                        number: student.pessoa.telefone.numeroTelefone,
                         typeFone: student.pessoa.telefone.tipoTelefone,
                       }
                     : null,
@@ -131,12 +131,9 @@ const ClassesUpdate: React.FC = () => {
   }
 
   function handleListStudents(student: StudentProps) {
-    if (listStudents.length <= 0) return false;
-
-    return (
-      util.includesToLowerCase(student.person.firstName, values.search) ||
-      util.includesToLowerCase(student.person.lastName, values.search) ||
-      util.includesToLowerCase(student.person.email, values.search)
+    return util.includesToArray(
+      [student.person.firstName, student.person.lastName, student.person.email],
+      values.search
     );
   }
 
@@ -191,7 +188,7 @@ const ClassesUpdate: React.FC = () => {
                       |{' '}
                       <ContactItem>
                         +{Student.person.phone.countryCode} (0
-                        {Student.person.phone.ddd}) Student.person.phone.number
+                        {Student.person.phone.ddd}){Student.person.phone.number}
                       </ContactItem>
                     </>
                   )}

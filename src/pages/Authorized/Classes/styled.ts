@@ -18,8 +18,7 @@ export const ListClass = styled.ul`
 `;
 
 export const ItemClass = styled.li`
-  border: 2.5px solid ${(props) => props.theme.colors.primary};
-  border-radius: 3.2rem;
+  border: 3px solid ${(props) => props.theme.colors.secondary};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,7 +28,7 @@ export const ItemClass = styled.li`
   svg {
     width: 7.2rem;
     height: 7.2rem;
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.secondary};
     stroke-width: 2px;
   }
 
@@ -44,6 +43,7 @@ export const TwoColumns = styled.div`
 `;
 
 export const Name = styled.h5`
+  color: ${(props) => props.theme.colors.primary};
   font-size: 2.4rem;
   font-weight: 600;
 `;

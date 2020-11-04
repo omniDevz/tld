@@ -6,10 +6,12 @@ export const Form = styled.form`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding: 20vh 24px 0;
+  padding: 20vh 0 0;
 `;
 
 export const Fieldset = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   width: 100%;
   justify-content: center;
@@ -18,7 +20,8 @@ export const Fieldset = styled.div`
 `;
 
 export const ButtonsWrapper = styled.div`
+  display: flex;
   width: 100%;
-  row-gap: 1.6rem;
+  column-gap: 1.6rem;
   margin-bottom: 3.2rem;
 `;

@@ -57,7 +57,7 @@ const ClassesUpdate: React.FC = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-        history.push(`/teacher/classes/${idClass}`);
+        history.goBack();
       })
       .catch((err) => {
         console.error(err);
@@ -80,9 +80,10 @@ const ClassesUpdate: React.FC = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-        history.push('/classes');
+        history.goBack();
       })
-      .catch(({ response }) => {
+      .catch((err) => {
+        console.error(err);
         addToast('Houve algum erro inesperado, tente novamente mais tarde', {
           appearance: 'error',
           autoDismiss: true,

@@ -96,9 +96,9 @@ input[type=number] {
 
 .react-toast-notifications__toast {
   flex-direction: row;
+  height: 100%;
 
   div {
-    display: block;
     height: 100%;
   }
 }
