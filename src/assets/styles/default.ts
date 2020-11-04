@@ -12,7 +12,7 @@ export default createGlobalStyle`
 }
 
 html, body, #root {
-  min-height: 100vh;
+  height: 100%;
 }
 
 body {
@@ -99,6 +99,7 @@ input[type=number] {
 
   div {
     display: block;
+    height: 100%;
   }
 }
 `;

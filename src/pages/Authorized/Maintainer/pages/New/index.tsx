@@ -335,7 +335,7 @@ function MaintainerNew() {
       return;
     }
 
-    levelAccess < 2 ? handleSubmitAdministrator() : handleSubmitTeacher();
+    levelAccess < 3 ? handleSubmitAdministrator() : handleSubmitTeacher();
   }
 
   return (

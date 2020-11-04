@@ -47,7 +47,7 @@ const StepOne: React.FC<StepOneProps> = ({
             onChange={handleChange}
           />
           <FormField
-            label="Data de nascimento"
+            label="Aniversário"
             name="birthDate"
             value={values.birthDate}
             onChange={handleChange}

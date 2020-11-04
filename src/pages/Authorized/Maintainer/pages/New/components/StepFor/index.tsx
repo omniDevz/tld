@@ -2,6 +2,8 @@ import React from 'react';
 
 import Button from '../../../../../../../components/Button';
 
+import { useAuth } from '../../../../../../../contexts/auth';
+
 import {
   Form,
   Legend,
@@ -18,6 +20,8 @@ const StepFor: React.FC<StepForProps> = ({
   setLevelAccess,
   handleConfirmRegister,
 }) => {
+  const { user } = useAuth();
+
   function handleClassNameButtonActive(
     level: number
   ): 'secondary-outline' | 'secondary' {
@@ -35,18 +39,23 @@ const StepFor: React.FC<StepForProps> = ({
           >
             Administrador
           </Button>
-          <Button
-            color={handleClassNameButtonActive(2)}
-            onClick={() => setLevelAccess(2)}
-          >
-            Administrador Pro
-          </Button>
-          <Button
-            color={handleClassNameButtonActive(3)}
-            onClick={() => setLevelAccess(3)}
-          >
-            Professor
-          </Button>
+          {(user?.levelAccess || 0) >= 1 && (
+            <Button
+              color={handleClassNameButtonActive(2)}
+              onClick={() => setLevelAccess(2)}
+            >
+              Administrador Pro
+            </Button>
+          )}
+
+          {(user?.levelAccess || 0) >= 2 && (
+            <Button
+              color={handleClassNameButtonActive(3)}
+              onClick={() => setLevelAccess(3)}
+            >
+              Professor
+            </Button>
+          )}
         </LevelAccessWrapper>
       </Fieldset>
       <ButtonsWrapper>
