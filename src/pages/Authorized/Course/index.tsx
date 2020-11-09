@@ -53,6 +53,8 @@ const Course: React.FC = () => {
         <CardCourse />
         <CardCourse />
       </ListCard>
+
+      <Button color="primary">Novo curso</Button>
     </PageAuthorized>
   );
 };

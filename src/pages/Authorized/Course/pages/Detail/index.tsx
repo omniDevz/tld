@@ -16,7 +16,7 @@ const Detail: React.FC = () => {
   console.log('idCourse =>>', idCourse);
 
   return (
-    <PageAuthorized type="back" text="Detalhe curso">
+    <PageAuthorized type="back" text="Nome do curso">
       <ClassesWrapper>
         <CardClass />
         <CardClass />

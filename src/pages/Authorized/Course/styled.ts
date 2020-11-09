@@ -13,4 +13,5 @@ export const HeaderFilter = styled.div`
 
 export const ListCard = styled.ul`
   padding: 1.6rem 0;
+  height: calc(100% - 16rem);
 `;
