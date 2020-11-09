@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import Button from '../../../components/Button';
 import FormField from '../../../components/FormField';
-
 import PageAuthorized from '../../../components/PageAuthorized';
 import RadioButton from '../../../components/RadioButton';
+
 import CardCourse from './components/CardCourse';
 
 import { HeaderFilter, ListCard } from './styled';
@@ -11,6 +13,12 @@ import { HeaderFilter, ListCard } from './styled';
 const Course: React.FC = () => {
   const [search, setSearch] = useState('');
   const [typeSearch, setTypeSearch] = useState('');
+
+  const history = useHistory();
+
+  function handleNewCourse() {
+    history.push('/course/new');
+  }
 
   return (
     <PageAuthorized type="back" text="Cursos">
@@ -54,7 +62,9 @@ const Course: React.FC = () => {
         <CardCourse />
       </ListCard>
 
-      <Button color="primary">Novo curso</Button>
+      <Button color="primary" onClick={handleNewCourse}>
+        Novo curso
+      </Button>
     </PageAuthorized>
   );
 };
