@@ -1,6 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import util from '../../../../../utils/util';
+
 import {
   CardCourseWrapper,
   Description,
@@ -11,21 +13,25 @@ import {
   Edit,
 } from './styled';
 
-const CardCourse: React.FC = () => {
+import { ICardCourse } from './interface';
+
+const CardCourse: React.FC<ICardCourse> = ({ course }) => {
   const history = useHistory();
 
   function handleGoDetailCourse() {
     history.push(`/course/${2}`);
   }
 
+  const priceCourse = util.formatPrice(course.price * 100);
+
   return (
     <CardCourseWrapper>
       <Infos>
-        <Title>Nome do curso</Title>
-        <Description>15 horas | 15 aulas</Description>
+        <Title>{course.name}</Title>
+        <Description>{course.durationMinute} minutos</Description>
       </Infos>
       <Props>
-        <Price>R$ 90,00</Price>
+        <Price>{priceCourse}</Price>
         <Edit onClick={handleGoDetailCourse} />
       </Props>
     </CardCourseWrapper>
