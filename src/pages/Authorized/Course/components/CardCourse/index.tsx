@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiEdit } from 'react-icons/fi';
+import { useHistory } from 'react-router-dom';
 
 import {
   CardCourseWrapper,
@@ -12,6 +12,12 @@ import {
 } from './styled';
 
 const CardCourse: React.FC = () => {
+  const history = useHistory();
+
+  function handleGoDetailCourse() {
+    history.push(`/course/${2}`);
+  }
+
   return (
     <CardCourseWrapper>
       <Infos>
@@ -20,7 +26,7 @@ const CardCourse: React.FC = () => {
       </Infos>
       <Props>
         <Price>R$ 90,00</Price>
-        <Edit />
+        <Edit onClick={handleGoDetailCourse} />
       </Props>
     </CardCourseWrapper>
   );
