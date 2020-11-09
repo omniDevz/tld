@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Button from '../../../../../components/Button';
 import PageAuthorized from '../../../../../components/PageAuthorized';
@@ -15,6 +15,16 @@ const Detail: React.FC = () => {
 
   console.log('idCourse =>>', idCourse);
 
+  const history = useHistory();
+
+  function handleEditCourse() {
+    history.push(`/course/edit/${idCourse}`);
+  }
+
+  function handleNewClass() {
+    history.push(`/course/${idCourse}/new/class`);
+  }
+
   return (
     <PageAuthorized type="back" text="Nome do curso">
       <ClassesWrapper>
@@ -23,8 +33,12 @@ const Detail: React.FC = () => {
         <CardClass />
       </ClassesWrapper>
       <ButtonsWrapper>
-        <Button color="primary-outline">Alterar curso</Button>
-        <Button color="primary">Adicionar aula</Button>
+        <Button color="primary-outline" onClick={handleEditCourse}>
+          Alterar curso
+        </Button>
+        <Button color="primary" onClick={handleNewClass}>
+          Adicionar aula
+        </Button>
       </ButtonsWrapper>
     </PageAuthorized>
   );
