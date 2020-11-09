@@ -9,7 +9,7 @@ import { ButtonsWrapper, PriceWrapper, Fields } from './styled';
 
 import { ICourseEditParams } from './interface';
 
-const EditCourse: React.FC = () => {
+const CourseEdit: React.FC = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
@@ -58,4 +58,4 @@ const EditCourse: React.FC = () => {
   );
 };
 
-export default EditCourse;
+export default CourseEdit;

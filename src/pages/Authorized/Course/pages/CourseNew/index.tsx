@@ -6,7 +6,7 @@ import PageAuthorized from '../../../../../components/PageAuthorized';
 
 import { PriceWrapper, Fields } from './styled';
 
-const NewCourse: React.FC = () => {
+const CourseNew: React.FC = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
@@ -48,4 +48,4 @@ const NewCourse: React.FC = () => {
   );
 };
 
-export default NewCourse;
+export default CourseNew;
