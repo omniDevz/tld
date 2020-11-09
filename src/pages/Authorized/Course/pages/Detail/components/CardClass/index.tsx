@@ -13,8 +13,8 @@ import {
 const CardCourse: React.FC = () => {
   const history = useHistory();
 
-  function handleGoDetailCourse() {
-    history.push(`/course/${2}`);
+  function handleGoClassEdit() {
+    history.push(`/course/${2}/edit/class/${2}`);
   }
 
   return (
@@ -24,7 +24,7 @@ const CardCourse: React.FC = () => {
         <Description>40 minutos</Description>
       </Infos>
       <Props>
-        <Edit onClick={handleGoDetailCourse} />
+        <Edit onClick={handleGoClassEdit} />
       </Props>
     </CardClassWrapper>
   );

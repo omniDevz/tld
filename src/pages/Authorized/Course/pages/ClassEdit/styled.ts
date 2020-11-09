@@ -34,3 +34,8 @@ export const NameCourse = styled.div`
   font-size: 1.8rem;
   font-weight: 500;
 `;
+
+export const ButtonsWrapper = styled.div`
+  display: flex;
+  grid-gap: .8rem;
+`;
