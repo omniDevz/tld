@@ -1,5 +1,16 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const HeaderFilter = styled.div`
+  display: flex;
+  grid-gap: .8rem;
+  margin-bottom: .8rem;
+  margin-top: 2.4rem;
 
+  > button {
+    width: 43.5%;
+  }
+`;
+
+export const ListCard = styled.ul`
+  padding: 1.6rem 0;
 `;
