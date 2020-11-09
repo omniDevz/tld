@@ -1,6 +1,6 @@
-import Update from '../pages/Authorized/Maintainer/pages/Update';
-import New from '../pages/Authorized/Maintainer/pages/New';
-import Maintainer from '../pages/Authorized/Maintainer';
+import Update from '../../pages/Authorized/Maintainer/pages/Update';
+import New from '../../pages/Authorized/Maintainer/pages/New';
+import Maintainer from '../../pages/Authorized/Maintainer';
 
 const MaintainerRoutes = [
   {

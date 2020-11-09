@@ -1,5 +1,5 @@
-import TransmissionNotificationLive from '../pages/Authorized/TransmissionNotification/pages/Live';
-import TransmissionNotification from '../pages/Authorized/TransmissionNotification';
+import TransmissionNotificationLive from '../../pages/Authorized/TransmissionNotification/pages/Live';
+import TransmissionNotification from '../../pages/Authorized/TransmissionNotification';
 
 const TransmissionNotificationRoutes = [
   {
