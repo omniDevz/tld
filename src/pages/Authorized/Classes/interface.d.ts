@@ -1,22 +1,18 @@
 export interface ClassProps {
   classId?: string;
   name: string;
-  students?: number;
-  quizzes?: number;
   description: string;
   code?: string;
+  students?: number;
 }
 
-export interface IClass {
-  turmaId: string;
-  nome: string;
-  descricao: string;
-  codigo: string;
-}
-
-export interface ClassApiProps {
-  turma: IClass;
-  quantidadeQuizRealizados: number;
+export interface IClassApi {
+  turma: {
+    turmaId: string;
+    nome: string;
+    descricao: string;
+    codigo: string;
+  };
   quantidadeAlunos: number;
   alunos: IStudent[];
 }

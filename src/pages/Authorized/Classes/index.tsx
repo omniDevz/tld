@@ -13,14 +13,13 @@ import {
   ButtonWrapper,
   Descriptions,
   Information,
-  TwoColumns,
   ListClass,
   ItemClass,
   Form,
   Name,
 } from './styled';
 
-import { ClassApiProps, ClassProps } from './interface';
+import { IClassApi, ClassProps } from './interface';
 import util from '../../../utils/util';
 import { useAuth } from '../../../contexts/auth';
 
@@ -37,13 +36,12 @@ const Classes: React.FC = () => {
       .get(`movAlunoTurma/professorId/${user?.teacherId}`)
       .then(({ data }) => {
         console.log(data);
-        const classFromApi: ClassProps[] = data.map((c: ClassApiProps) => {
+        const classFromApi: ClassProps[] = data.map((c: IClassApi) => {
           const newClass: ClassProps = {
             classId: c.turma.turmaId,
             name: c.turma.nome,
             description: c.turma.descricao,
-            quizzes: c.quantidadeQuizRealizados,
-            students: c.quantidadeAlunos,
+            students: !c.alunos ? 0 : c.alunos.length,
           };
 
           return newClass;
@@ -83,20 +81,14 @@ const Classes: React.FC = () => {
         {listClasses &&
           listClasses
             .filter((className) => handleFilterClasses(className))
-            .map(({ classId, name, description, quizzes, students }) => (
+            .map(({ classId, name, description, students }) => (
               <ItemClass key={classId}>
                 <Descriptions>
                   <Name>{name}</Name>
                   <Information>{description}</Information>
-                  <TwoColumns>
-                    <Information>
-                      <b>{quizzes}</b> quizzes realizados
-                    </Information>
-                    |
-                    <Information>
-                      <b>{students}</b> alunos
-                    </Information>
-                  </TwoColumns>
+                  <Information>
+                    <b>{students}</b> alunos
+                  </Information>
                 </Descriptions>
                 <Link to={`/classes/${classId}`} title="Detalhes da turma">
                   <FiUsers />

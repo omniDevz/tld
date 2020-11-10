@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { FiEdit, FiTrash, FiUser, FiSearch } from 'react-icons/fi';
+import { FiEdit, FiTrash, FiUser } from 'react-icons/fi';
+import { useToasts } from 'react-toast-notifications';
 
 import FormField from '../../../../../components/FormField';
 import PageAuthorized from '../../../../../components/PageAuthorized';
 
-import useForm from '../../../../../hooks/useForm';
-
 import api from '../../../../../services/api';
+import util from '../../../../../utils/util';
 
 import {
   FormFieldWrapper,
@@ -29,15 +29,9 @@ import {
 
 import { ClassProps } from '../../interface';
 import { ParamsProps, StudentProps, IStudent } from './interface';
-import { useToasts } from 'react-toast-notifications';
-import util from '../../../../../utils/util';
 
 const ClassesUpdate: React.FC = () => {
-  const valuesInitials = {
-    search: '',
-  };
-
-  const { handleChange, values } = useForm(valuesInitials);
+  const [search, setSearch] = useState('');
   const [listStudents, setListStudents] = useState<StudentProps[]>([]);
   const [classDetail, setClassDetail] = useState<ClassProps>({
     description: '',
@@ -51,7 +45,7 @@ const ClassesUpdate: React.FC = () => {
 
   useEffect(() => {
     api
-      .get(`/movAlunoTurma/turmaId/${idClass}`)
+      .get(`movAlunoTurma/turmaId/${idClass}`)
       .then(({ data }) => {
         const classFromApi: ClassProps = {
           name: data.turma.nome,
@@ -131,13 +125,9 @@ const ClassesUpdate: React.FC = () => {
   }
 
   function handleListStudents(student: StudentProps) {
-    if (listStudents.length <= 0) return false;
+    const { firstName, lastName, email } = student.person;
 
-    return (
-      util.includesToLowerCase(student.person.firstName, values.search) ||
-      util.includesToLowerCase(student.person.lastName, values.search) ||
-      util.includesToLowerCase(student.person.email, values.search)
-    );
+    return util.includesToArray([firstName, lastName, email], search);
   }
 
   return (
@@ -157,11 +147,11 @@ const ClassesUpdate: React.FC = () => {
         <FormField
           label="Pesquisar"
           name="search"
-          value={values.search}
-          onChange={handleChange}
-        >
-          <FiSearch />
-        </FormField>
+          value={search}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearch(e.target.value)
+          }
+        />
       </FormFieldWrapper>
 
       <StudentsList>

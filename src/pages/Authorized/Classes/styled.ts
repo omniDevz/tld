@@ -18,34 +18,29 @@ export const ListClass = styled.ul`
 `;
 
 export const ItemClass = styled.li`
-  border: 2.5px solid ${(props) => props.theme.colors.primary};
-  border-radius: 3.2rem;
+  border: 2.5px solid ${(props) => props.theme.colors.secondary};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.6rem;
-  margin-bottom: 1.6rem;
+  padding: 1.2rem 1.6rem;
 
   svg {
-    width: 7.2rem;
-    height: 7.2rem;
+    width: 4rem;
+    height: 4rem;
     color: ${(props) => props.theme.colors.primary};
     stroke-width: 2px;
   }
 
-  &:last-child {
-    margin-bottom: 0;
+  &:not(:last-child) {
+    margin-bottom: 1.6rem;
   }
 `;
 
-export const TwoColumns = styled.div`
-  flex-direction: row;
-  grid-gap: 1.2rem;
-`;
 
 export const Name = styled.h5`
-  font-size: 2.4rem;
-  font-weight: 600;
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.primary}
 `;
 
 export const Information = styled.p`
@@ -58,10 +53,6 @@ export const Information = styled.p`
 
 export const Descriptions = styled.div`
   align-items: flex-start;
-
-  > ${Information}:nth-child(2) {
-    margin-bottom: 1.6rem;
-  }
 `;
 
 export const ButtonWrapper = styled.div`
