@@ -16,6 +16,11 @@ const links = [
     text: 'Home',
   },
   {
+    route: 'course',
+    title: 'Ir para página de cursos',
+    text: 'Cursos',
+  },
+  {
     route: 'article',
     title: 'Ir para página de artigos recomendados',
     text: 'Artigos',

@@ -44,13 +44,9 @@ export const Navigation = styled.nav`
 
 export const LinkList = styled.div`
   flex-direction: column;
-  row-gap: 1.6rem;
+  row-gap: 1.2rem;
 
-  ${ButtonStyled} {
-    margin-bottom: 1.6rem;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+  ${ButtonStyled}:not(:last-child) {
+    margin-bottom: 0.8rem;
   }
 `;

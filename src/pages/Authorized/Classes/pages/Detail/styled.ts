@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Header = styled.div`
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 1.6rem 24px;
@@ -42,8 +43,7 @@ export const StudentsList = styled.ul`
 `;
 
 export const StudentItem = styled.li`
-  background: ${({ theme }) => theme.colors.secondary};
-  border-radius: 3.2rem;
+  border: 2px solid ${({ theme }) => theme.colors.secondary};
   padding: 0.8rem;
   margin-bottom: 1.6rem;
 
@@ -63,6 +63,7 @@ export const HeaderStudent = styled.div`
     &:nth-child(1) {
       height: 6.4rem;
       width: 6.4rem;
+      color: ${({ theme }) => theme.colors.secondary};
     }
 
     &:nth-child(3) {
@@ -73,7 +74,11 @@ export const HeaderStudent = styled.div`
 `;
 
 export const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
+  height: 100%;
 `;
 
 export const NameStudent = styled.p`
@@ -86,6 +91,7 @@ export const BirthDate = styled.p`
 `;
 
 export const Contact = styled.div`
+  display: flex;
   flex-direction: row;
   align-items: center;
   grid-gap: 1.2rem;

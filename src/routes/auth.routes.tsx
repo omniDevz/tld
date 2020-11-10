@@ -5,13 +5,14 @@ import Account from '../pages/Authorized/Account';
 import ArticlePage from '../pages/Authorized/Article';
 import NotFound from '../pages/NotFound';
 
-import Author from './author.routes';
-import Article from './article.routes';
-import Student from './student.routes';
-import Classes from './classes.routes';
-import Maintainer from './maintainer.routes';
-import ConsultingType from './consultingType.routes';
-import TransmissionNotification from './transmissionNotification.routes';
+import Author from './auth/author.routes';
+import Course from './auth/course.routes';
+import Article from './auth/article.routes';
+import Student from './auth/student.routes';
+import Classes from './auth/classes.routes';
+import Maintainer from './auth/maintainer.routes';
+import ConsultingType from './auth/consultingType.routes';
+import TransmissionNotification from './auth/transmissionNotification.routes';
 
 const AuthRoutes: React.FC = () => {
   const routes = [
@@ -30,7 +31,8 @@ const AuthRoutes: React.FC = () => {
     Student,
     ConsultingType,
     TransmissionNotification,
-    Classes
+    Classes,
+    Course
   );
 
   return (

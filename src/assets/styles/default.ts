@@ -12,12 +12,13 @@ export default createGlobalStyle`
 }
 
 html, body, #root {
-  min-height: 100vh;
+  height: 100%;
 }
 
 body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.2;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -96,9 +97,10 @@ input[type=number] {
 
 .react-toast-notifications__toast {
   flex-direction: row;
+  height: 100%;
 
   div {
-    display: block;
+    height: 100%;
   }
 }
 `;

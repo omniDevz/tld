@@ -1,5 +1,5 @@
-import Detail from '../pages/Authorized/Student/pages/Detail';
-import Student from '../pages/Authorized/Student';
+import Detail from '../../pages/Authorized/Student/pages/Detail';
+import Student from '../../pages/Authorized/Student';
 
 const StudentRoutes = [
   {

@@ -36,7 +36,6 @@ export const ItemClass = styled.li`
   }
 `;
 
-
 export const Name = styled.h5`
   font-size: 2.2rem;
   font-weight: 500;

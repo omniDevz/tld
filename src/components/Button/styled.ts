@@ -17,12 +17,12 @@ export const ButtonStyled = styled.button<ButtonProps>`
     if (Boolean(props.to?.length)) {
       return css`
         a {
-          padding: 1rem 2.4rem;
+          padding: 1rem 1.6rem;
         }
       `;
     } else {
       return css`
-        padding: 1rem 2.4rem;
+        padding: 1rem 1.6rem;
       `;
     }
   }}

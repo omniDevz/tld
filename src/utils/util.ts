@@ -28,6 +28,12 @@ const util = {
     document.getElementById(id)?.focus();
     return false;
   },
+  formatPrice(price: number) {
+    return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL' // R$
+    }).format(price / 100);
+}
 };
 
 export default util;

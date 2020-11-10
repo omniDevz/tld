@@ -8,6 +8,7 @@ export interface StepOneProps {
     cpf: string;
     genre: string;
     email: string;
+    emailConfirm: string;
   };
   handleChange: FunctionComponentElement;
   handleStep: function(

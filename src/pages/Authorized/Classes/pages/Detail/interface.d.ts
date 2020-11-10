@@ -30,7 +30,7 @@ export interface IStudent {
     telefone: {
       codigoDiscagem: number;
       ddd: number;
-      numero: number;
+      numeroTelefone: number;
       tipoTelefone: string;
     } | null;
   };

@@ -11,6 +11,9 @@ import {
   apiLocations,
 } from '../../../../../../../services/api';
 
+import util from '../../../../../../../utils/util';
+import mask from '../../../../../../../utils/mask';
+
 import {
   Form,
   Fieldset,
@@ -27,7 +30,6 @@ import {
   AllCitiesProps,
   OptionsSelect,
 } from './interface';
-import util from '../../../../../../../utils/util';
 
 const StepThree: React.FC<StepThreeProps> = ({
   handleStep,
@@ -175,7 +177,7 @@ const StepThree: React.FC<StepThreeProps> = ({
             name="cep"
             value={values.cep}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setValues.setCep(e.target.value)
+              setValues.setCep(mask.cep(e.target.value))
             }
           />
           <Button color="secondary" onClick={handleCep}>

@@ -1,6 +1,6 @@
-import Update from '../pages/Authorized/ConsultingType/pages/Update';
-import New from '../pages/Authorized/ConsultingType/pages/New';
-import ConsultingType from '../pages/Authorized/ConsultingType';
+import Update from '../../pages/Authorized/ConsultingType/pages/Update';
+import New from '../../pages/Authorized/ConsultingType/pages/New';
+import ConsultingType from '../../pages/Authorized/ConsultingType';
 
 const ConsultingTypeRoutes = [
   {

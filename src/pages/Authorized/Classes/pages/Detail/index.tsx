@@ -70,7 +70,7 @@ const ClassesUpdate: React.FC = () => {
                     ? {
                         countryCode: student.pessoa.telefone.codigoDiscagem,
                         ddd: student.pessoa.telefone.ddd,
-                        number: student.pessoa.telefone.numero,
+                        number: student.pessoa.telefone.numeroTelefone,
                         typeFone: student.pessoa.telefone.tipoTelefone,
                       }
                     : null,
@@ -181,7 +181,7 @@ const ClassesUpdate: React.FC = () => {
                       |{' '}
                       <ContactItem>
                         +{Student.person.phone.countryCode} (0
-                        {Student.person.phone.ddd}) Student.person.phone.number
+                        {Student.person.phone.ddd}){Student.person.phone.number}
                       </ContactItem>
                     </>
                   )}
