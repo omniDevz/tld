@@ -43,9 +43,9 @@ const Course: React.FC = () => {
           return;
         }
 
-        const cousesApi = response.data as ICourseApi[];
+        const coursesApi = response.data as ICourseApi[];
 
-        const courses: ICourse[] = cousesApi.map((courseApi) => {
+        const courses: ICourse[] = coursesApi.map((courseApi) => {
           return {
             courseId: courseApi.cursoId,
             description: courseApi.descricao,

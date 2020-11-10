@@ -19,7 +19,7 @@ const CardCourse: React.FC<ICardCourse> = ({ course }) => {
   const history = useHistory();
 
   function handleGoDetailCourse() {
-    history.push(`/course/${2}`);
+    history.push(`/course/${course.courseId}`);
   }
 
   const priceCourse = util.formatPrice(course.price * 100);
