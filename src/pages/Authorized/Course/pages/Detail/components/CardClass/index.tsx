@@ -10,18 +10,22 @@ import {
   Edit,
 } from './styled';
 
-const CardCourse: React.FC = () => {
+import { ICardClass } from './interface';
+
+const CardCourse: React.FC<ICardClass> = ({ classRoom }) => {
   const history = useHistory();
 
   function handleGoClassEdit() {
-    history.push(`/course/${2}/edit/class/${2}`);
+    history.push(
+      `/course/${classRoom.courseId}/edit/class/${classRoom.classId}`
+    );
   }
 
   return (
     <CardClassWrapper>
       <Infos>
-        <Title>Nome da aula</Title>
-        <Description>40 minutos</Description>
+        <Title>{classRoom.name}</Title>
+        <Description>{classRoom.timeMinutes} minutos</Description>
       </Infos>
       <Props>
         <Edit onClick={handleGoClassEdit} />

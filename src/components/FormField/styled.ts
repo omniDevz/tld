@@ -124,7 +124,7 @@ export const Input = styled.input<InputProps>`
 `;
 
 export const Textarea = styled.textarea<InputProps>`
-  color: ${(props) => props.theme.colors.secondaryOpacity64};
+  color: ${(props) => props.theme.colors.secondary};
   font-size: 2rem;
   font-weight: 600;
   padding-top: 0.8rem;
@@ -153,7 +153,7 @@ export const Textarea = styled.textarea<InputProps>`
     hasValue &&
     css`
       + ${Text} {
-        color: ${(props) => props.theme.colors.secondary};
+        color: ${(props) => props.theme.colors.secondaryOpacity64};
         z-index: 1;
         left: 0;
         top: 0;

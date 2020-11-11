@@ -9,12 +9,18 @@ import CardClass from './components/CardClass';
 
 import { ClassesWrapper, ButtonsWrapper } from './styled';
 
-import { ICourseDetailParams } from './interface';
+import {
+  IClass,
+  ICourseDetailParams,
+  ICourseDetail,
+  ICourseApiDetail,
+} from './interface';
 import api from '../../../../../services/api';
 import { ICourse, ICourseApi } from '../../interface';
 
 const Detail: React.FC = () => {
-  const [course, setCourse] = useState<ICourse>({} as ICourse);
+  const [course, setCourse] = useState<ICourseDetail>({} as ICourseDetail);
+  const [listClass, setListClass] = useState<IClass[]>([]);
 
   const { idCourse } = useParams() as ICourseDetailParams;
   const { addToast } = useToasts();
@@ -31,7 +37,7 @@ const Detail: React.FC = () => {
 
   function handleGetCourseFromApi() {
     api
-      .get('curso')
+      .get(`curso/byId/${idCourse}`)
       .then((response) => {
         if (response.status === 206) {
           addToast(response.data, {
@@ -41,7 +47,19 @@ const Detail: React.FC = () => {
           return;
         }
 
-        const courseApi = response.data as ICourseApi;
+        const courseApi = response.data as ICourseApiDetail;
+
+        const classes = courseApi.aulas.map((classApi) => {
+          return {
+            classId: classApi.aulaId,
+            courseId: classApi.cursoId,
+            description: classApi.descricao,
+            link: classApi.linkVideo,
+            name: classApi.nome,
+            numberClass: classApi.numeroAula,
+            timeMinutes: classApi.duracaoMinutos,
+          } as IClass;
+        });
 
         setCourse({
           courseId: courseApi.cursoId,
@@ -51,6 +69,8 @@ const Detail: React.FC = () => {
           name: courseApi.nome,
           price: courseApi.valor,
         });
+
+        setListClass(classes);
       })
       .catch((err) => {
         console.log(err);
@@ -69,9 +89,8 @@ const Detail: React.FC = () => {
   return (
     <PageAuthorized type="back" text={course.name}>
       <ClassesWrapper>
-        <CardClass />
-        <CardClass />
-        <CardClass />
+        {!!listClass.length &&
+          listClass.map((c) => <CardClass key={c.classId} classRoom={c} />)}
       </ClassesWrapper>
       <ButtonsWrapper>
         <Button color="primary-outline" onClick={handleEditCourse}>
