@@ -13,6 +13,9 @@ export const CardCourseWrapper = styled.li`
 `;
 
 export const Infos = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: .8rem;
 `;
 
 export const Props = styled.div`

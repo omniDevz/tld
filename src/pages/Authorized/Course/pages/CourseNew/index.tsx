@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useToasts } from 'react-toast-notifications';
 
 import Button from '../../../../../components/Button';
 import FormField from '../../../../../components/FormField';
 import PageAuthorized from '../../../../../components/PageAuthorized';
+
+import api from '../../../../../services/api';
 
 import { PriceWrapper, Fields } from './styled';
 
@@ -10,6 +14,44 @@ const CourseNew: React.FC = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
+
+  const { addToast } = useToasts();
+  const history = useHistory();
+
+  function handleNewCourse() {
+    api
+      .post('curso', {
+        nome: name,
+        descricao: description,
+        eGratuito: !price,
+        valor: Number(price),
+      })
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return;
+        }
+
+        addToast('Curso cadastrado com sucesso', {
+          appearance: 'info',
+          autoDismiss: true,
+        });
+        history.goBack();
+      })
+      .catch((err) => {
+        console.error(err.response);
+        addToast(
+          'Houve algum erro inesperado ao cadastrar, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
 
   return (
     <PageAuthorized type="back" text="Novo curso">
@@ -43,7 +85,9 @@ const CourseNew: React.FC = () => {
         </PriceWrapper>
       </Fields>
 
-      <Button color="primary">Salvar</Button>
+      <Button color="primary" onClick={handleNewCourse}>
+        Salvar
+      </Button>
     </PageAuthorized>
   );
 };

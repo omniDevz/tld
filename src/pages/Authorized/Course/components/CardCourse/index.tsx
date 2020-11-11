@@ -28,6 +28,7 @@ const CardCourse: React.FC<ICardCourse> = ({ course }) => {
     <CardCourseWrapper>
       <Infos>
         <Title>{course.name}</Title>
+        <Description>{course.description}</Description>
         <Description>{course.durationMinute} minutos</Description>
       </Infos>
       <Props>
