@@ -34,3 +34,9 @@ export const NameCourse = styled.div`
   font-size: 1.8rem;
   font-weight: 500;
 `;
+
+export const RowFields = styled.div`
+  display: flex;
+  flex-direction: row;
+  grid-gap: .8rem;
+`;
