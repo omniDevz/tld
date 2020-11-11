@@ -91,6 +91,36 @@ const CourseEdit: React.FC = () => {
       });
   }
 
+  function handleDeleteCourse() {
+    api
+      .delete(`curso/${idCourse}`)
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return;
+        }
+
+        addToast('Curso removido com sucesso', {
+          appearance: 'info',
+          autoDismiss: true,
+        });
+        history.push('/course');
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast(
+          'Houve algum erro inesperado ao remover curso, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
   return (
     <PageAuthorized type="back" text="Alterar curso">
       <Fields>
@@ -124,7 +154,9 @@ const CourseEdit: React.FC = () => {
       </Fields>
 
       <ButtonsWrapper>
-        <Button color="primary-outline">Remover</Button>
+        <Button color="primary-outline" onClick={handleDeleteCourse}>
+          Remover
+        </Button>
         <Button color="primary" onClick={handleUpdateCourse}>
           Salvar
         </Button>
