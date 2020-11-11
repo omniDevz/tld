@@ -16,7 +16,6 @@ import {
   ICourseApiDetail,
 } from './interface';
 import api from '../../../../../services/api';
-import { ICourse, ICourseApi } from '../../interface';
 
 const Detail: React.FC = () => {
   const [course, setCourse] = useState<ICourseDetail>({} as ICourseDetail);

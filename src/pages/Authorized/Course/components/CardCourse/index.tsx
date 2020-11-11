@@ -22,7 +22,8 @@ const CardCourse: React.FC<ICardCourse> = ({ course }) => {
     history.push(`/course/${course.courseId}`);
   }
 
-  const priceCourse = util.formatPrice(course.price * 100);
+  const priceCourse =
+    course.price === 0 ? 'Grátis' : util.formatPrice(course.price * 100);
 
   return (
     <CardCourseWrapper>

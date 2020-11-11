@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Button from '../../../../../components/Button';
 import FormField from '../../../../../components/FormField';
 import PageAuthorized from '../../../../../components/PageAuthorized';
 
+import util from '../../../../../utils/util';
 import api from '../../../../../services/api';
 
 import { ButtonsWrapper, PriceWrapper, Fields } from './styled';
 
 import { ICourseEditParams } from './interface';
-import { ICourseApi, ICourse } from '../../interface';
-import util from '../../../../../utils/util';
+import { ICourseApi } from '../../interface';
 
 const CourseEdit: React.FC = () => {
   const [name, setName] = useState('');
@@ -21,6 +21,7 @@ const CourseEdit: React.FC = () => {
 
   const { idCourse } = useParams() as ICourseEditParams;
   const { addToast } = useToasts();
+  const history = useHistory();
 
   function handleGetCourseFromApi() {
     api
@@ -53,6 +54,42 @@ const CourseEdit: React.FC = () => {
   }
 
   useEffect(handleGetCourseFromApi, []);
+
+  function handleUpdateCourse() {
+    api
+      .put('curso', {
+        cursoId: idCourse,
+        nome: name,
+        descricao: description,
+        eGratuito: !price,
+        valor: Number(price),
+      })
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return;
+        }
+
+        addToast('Curso alterado com sucesso', {
+          appearance: 'info',
+          autoDismiss: true,
+        });
+        history.goBack();
+      })
+      .catch((err) => {
+        console.error(err.response);
+        addToast(
+          'Houve algum erro inesperado ao salvar curso, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
 
   return (
     <PageAuthorized type="back" text="Alterar curso">
@@ -88,7 +125,9 @@ const CourseEdit: React.FC = () => {
 
       <ButtonsWrapper>
         <Button color="primary-outline">Remover</Button>
-        <Button color="primary">Salvar</Button>
+        <Button color="primary" onClick={handleUpdateCourse}>
+          Salvar
+        </Button>
       </ButtonsWrapper>
     </PageAuthorized>
   );
