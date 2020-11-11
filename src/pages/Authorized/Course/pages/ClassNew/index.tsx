@@ -42,7 +42,7 @@ const ClassNew: React.FC = () => {
           return;
         }
 
-        addToast('Curso cadastrado com sucesso', {
+        addToast('Aula cadastrado com sucesso', {
           appearance: 'info',
           autoDismiss: true,
         });

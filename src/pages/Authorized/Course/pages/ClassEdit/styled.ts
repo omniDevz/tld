@@ -39,3 +39,9 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   grid-gap: .8rem;
 `;
+
+export const RowFields = styled.div`
+  display: flex;
+  flex-direction: row;
+  grid-gap: .8rem;
+`;
