@@ -65,6 +65,7 @@ const Login = () => {
                 name="username"
                 value={values.username}
                 onChange={handleChange}
+                maxlength={15}
               />
               <FormField
                 label="Senha"
@@ -72,6 +73,7 @@ const Login = () => {
                 value={values.password}
                 onChange={handleChange}
                 type="password"
+                maxlength={32}
               />
             </FieldSetWrapper>
           </Form>

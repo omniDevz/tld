@@ -128,18 +128,21 @@ const Article: React.FC = () => {
             name="username"
             value={values.username}
             onChange={handleChange}
+            maxlength={15}
           />
           <FormField
             label="Nova senha"
             name="password"
             value={values.password}
             onChange={handleChange}
+            maxlength={32}
           />
           <FormField
             label="Confirme a senha"
             name="passwordConfirm"
             value={values.passwordConfirm}
             onChange={handleChange}
+            maxlength={32}
           />
         </Fieldset>
       </Form>
