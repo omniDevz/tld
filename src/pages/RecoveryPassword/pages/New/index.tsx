@@ -131,6 +131,7 @@ function RecoveryPasswordNew() {
             value={values.newPassword}
             onChange={handleChange}
             type="password"
+            maxlength={32}
           />
           <FormField
             label="Confirme a senha"
@@ -138,6 +139,7 @@ function RecoveryPasswordNew() {
             value={values.confirmPassword}
             onChange={handleChange}
             type="password"
+            maxlength={32}
           />
         </FieldSetWrapper>
       </Form>

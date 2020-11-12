@@ -62,6 +62,7 @@ function RecoveryPassword() {
           name="recovery"
           value={values.recovery}
           onChange={handleChange}
+          maxlength={254}
         />
         <Description>
           Será enviado um link para seu e-mail, verifique seu spam
