@@ -47,6 +47,7 @@ const ClassesUpdate: React.FC = () => {
     api
       .get(`movAlunoTurma/turmaId/${idClass}`)
       .then(({ data }) => {
+        console.log(data);
         const classFromApi: ClassProps = {
           name: data.turma.nome,
           description: data.turma.descricao,

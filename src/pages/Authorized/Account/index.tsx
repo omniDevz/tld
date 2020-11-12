@@ -39,6 +39,7 @@ import {
 
 import { useAuth } from '../../../contexts/auth';
 import mask from '../../../utils/mask';
+import validation from '../../../utils/validation';
 
 const Account: React.FC = () => {
   const [personId, setPersonId] = useState(0);
@@ -443,6 +444,58 @@ const Account: React.FC = () => {
   }
 
   function handleUpdate() {
+    if (!util.emptyValue(firstName, 'id_firstName')) {
+      addToast('Preencha o primeiro nome', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      return;
+    }
+    if (!util.emptyValue(lastName, 'id_lastName')) {
+      addToast('Preencha o sobrenome', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      return;
+    }
+    if (!util.emptyValue(birthDate, 'id_birthDate')) {
+      addToast('Preencha a data de aniversário', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      return;
+    }
+    if (!validation.dateMinToDay(birthDate)) {
+      addToast('A data deve ser inferior ao dia de hoje', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_birthDate')?.focus();
+      return;
+    }
+    if (!util.emptyValue(email, 'id_email')) {
+      addToast('Preencha o e-mail', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      return;
+    }
+    if (!validation.email(email)) {
+      addToast('Preencha o e-mail corretamente', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      util.onFocus('id_email');
+      return;
+    }
+    if (!util.emptyValue(username, 'id_username')) {
+      addToast('Preencha o nome de usuário', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      return;
+    }
+
     const hasChangePassword =
       passwordNew.length > 0 || passwordConfirm.length > 0;
     const differenceInNewPassword = passwordNew !== passwordConfirm;
@@ -507,7 +560,7 @@ const Account: React.FC = () => {
 
   function handleDeleteAdministrator() {
     api
-      .delete(`/administrador/${user?.adminId}`)
+      .delete(`administrador/${user?.adminId}`)
       .then((response) => {
         if (response.status === 206) {
           addToast(response.data, {

@@ -28,12 +28,15 @@ const util = {
     document.getElementById(id)?.focus();
     return false;
   },
+  onFocus(id: string) {
+    document.getElementById(id)?.focus();
+  },
   formatPrice(price: number) {
     return new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL' // R$
     }).format(price / 100);
-}
+  },
 };
 
 export default util;

@@ -94,6 +94,14 @@ function MaintainerNew() {
           document.getElementById('id_birthDate')?.focus();
           return false;
         }
+        if (!validation.dateMinToDay(values.birthDate)) {
+          addToast('A data deve ser inferior ao dia de hoje', {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          document.getElementById('id_birthDate')?.focus();
+          return;
+        }
         if (values.genre === '') {
           addToast('Selecione seu gênero sexual', {
             appearance: 'warning',

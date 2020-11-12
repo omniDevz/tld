@@ -331,6 +331,61 @@ const MaintainerUpdate: React.FC = () => {
   }, [addToast, user, levelAccessMaintainer, maintainerId]);
 
   function validationFields() {
+    if (firstName === '') {
+      addToast('Preencha o primeiro nome', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_firstName')?.focus();
+      return false;
+    }
+    if (firstName.length <= 2) {
+      addToast('Primeiro nome deve conter no mínimo três caracteres', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_firstName')?.focus();
+      return false;
+    }
+    if (lastName === '') {
+      addToast('Preencha o sobrenome', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_lastName')?.focus();
+      return false;
+    }
+    if (cpf === '') {
+      addToast('Preencha o CPF', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_cpf')?.focus();
+      return false;
+    }
+    if (birthDate === '') {
+      addToast('Preencha a data de aniversário', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_birthDate')?.focus();
+      return false;
+    }
+    if (!validation.dateMinToDay(birthDate)) {
+      addToast('A data deve ser inferior ao dia de hoje', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_birthDate')?.focus();
+      return;
+    }
+    if (genre === '') {
+      addToast('Selecione seu gênero sexual', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      return false;
+    }
     if (email === '') {
       addToast('Preencha o e-mail', {
         appearance: 'warning',
@@ -361,6 +416,103 @@ const MaintainerUpdate: React.FC = () => {
         autoDismiss: true,
       });
       document.getElementById('id_emailConfirm')?.focus();
+      return false;
+    }
+    const anyFieldHasValueInFone = Boolean(ddd.length + phone.length);
+
+    if (!anyFieldHasValueInFone) return true;
+
+    if (countryCode === '') {
+      addToast('Preencha p código de discagem', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_countryCode')?.focus();
+      return false;
+    }
+    if (ddd === '') {
+      addToast('Preencha o DDD', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_ddd')?.focus();
+      return false;
+    }
+    if (phone === '') {
+      addToast('Preencha o número de telefone', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_phone')?.focus();
+      return false;
+    }
+
+    const anyFieldContainValueInAddress = Boolean(
+      cep.length +
+        country.length +
+        state.length +
+        city.length +
+        neighborhood.length +
+        address.length +
+        numberAddress.length
+    );
+
+    if (!anyFieldContainValueInAddress) return true;
+
+    if (cep === '') {
+      addToast('Preencha o CEP', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_cep')?.focus();
+      return false;
+    }
+    if (country === '') {
+      addToast('Preencha o país', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_country')?.focus();
+      return false;
+    }
+    if (state === '') {
+      addToast('Preencha o estado', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_state')?.focus();
+      return false;
+    }
+    if (city === '') {
+      addToast('Preencha a cidade', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_city')?.focus();
+      return false;
+    }
+    if (neighborhood === '') {
+      addToast('Preencha o bairro', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_neighborhood')?.focus();
+      return false;
+    }
+    if (address === '') {
+      addToast('Preencha o endereço', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_address')?.focus();
+      return false;
+    }
+    if (numberAddress === '') {
+      addToast('Preencha o número de endereço', {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+      document.getElementById('id_numberAddress')?.focus();
       return false;
     }
 
