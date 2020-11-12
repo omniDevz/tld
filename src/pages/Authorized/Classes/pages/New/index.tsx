@@ -64,12 +64,14 @@ const ClassesNew: React.FC = () => {
           name="name"
           value={values.name}
           onChange={handleChange}
+          maxlength={50}
         />
         <FormField
           label="Descrição"
           name="description"
           value={values.description}
           onChange={handleChange}
+          maxlength={100}
         />
         <Button color="primary" onClick={handleSubmitClass}>
           Cadastrar turma

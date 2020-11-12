@@ -30,12 +30,14 @@ const StepOne: React.FC<StepOneProps> = ({
             name="firstName"
             value={values.firstName}
             onChange={handleChange}
+            maxlength={40}
           />
           <FormField
             label="Sobrenome"
             name="lastName"
             value={values.lastName}
             onChange={handleChange}
+            maxlength={40}
           />
         </TwoFields>
 
@@ -79,6 +81,7 @@ const StepOne: React.FC<StepOneProps> = ({
           value={values.email}
           onChange={handleChange}
           type="email"
+          maxlength={254}
         />
         <FormField
           label="Confirme seu e-mail"
@@ -86,6 +89,7 @@ const StepOne: React.FC<StepOneProps> = ({
           value={values.emailConfirm}
           onChange={handleChange}
           type="email"
+          maxlength={254}
         />
       </Fieldset>
       <Button onClick={() => handleStep(1, 2)} color="primary">

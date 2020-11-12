@@ -61,6 +61,7 @@ const ConsultingTypeNew: React.FC = () => {
           name="description"
           value={values.description}
           onChange={handleChange}
+          maxlength={50}
         />
       </Form>
       <Button color="primary" onClick={handleRegisterAuthor}>

@@ -740,6 +740,7 @@ const MaintainerUpdate: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFirstName(e.target.value)
                 }
+                maxlength={40}
               />
               <FormField
                 label="Sobrenome"
@@ -748,6 +749,7 @@ const MaintainerUpdate: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setLastName(e.target.value)
                 }
+                maxlength={40}
               />
             </TwoFields>
             <TwoFields>
@@ -758,6 +760,7 @@ const MaintainerUpdate: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setCpf(mask.cpf(e.target.value))
                 }
+                maxlength={14}
               />
               <FormField
                 label="Data nascimento"
@@ -797,6 +800,8 @@ const MaintainerUpdate: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setEmail(e.target.value)
               }
+              maxlength={254}
+              type="email"
             />
             <FormField
               label="Confirme seu e-mail"
@@ -805,6 +810,8 @@ const MaintainerUpdate: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setEmailConfirm(e.target.value)
               }
+              maxlength={254}
+              type="email"
             />
           </Fieldset>
         </Collapse>
@@ -838,6 +845,8 @@ const MaintainerUpdate: React.FC = () => {
                   setCountryCode(e.target.value)
                 }
                 prefix="+"
+                maxlength={2}
+                type="number"
               />
               <FormField
                 label=""
@@ -847,6 +856,8 @@ const MaintainerUpdate: React.FC = () => {
                   setDdd(e.target.value)
                 }
                 prefix="0"
+                maxlength={2}
+                type="number"
               />
               <FormField
                 label="Número"
@@ -855,6 +866,8 @@ const MaintainerUpdate: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setPhone(e.target.value)
                 }
+                maxlength={9}
+                type="number"
               />
             </ThreeFields>
           </Fieldset>
@@ -898,6 +911,7 @@ const MaintainerUpdate: React.FC = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setState(e.target.value)
                   }
+                  maxlength={2}
                 />
               )}
             </TwoFields>
@@ -917,6 +931,7 @@ const MaintainerUpdate: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setCity(e.target.value)
                 }
+                maxlength={50}
               />
             )}
             <FormField
@@ -926,6 +941,7 @@ const MaintainerUpdate: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setNeighborhood(e.target.value)
               }
+              maxlength={50}
             />
             <TwoFields>
               <FormField
@@ -935,6 +951,7 @@ const MaintainerUpdate: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setAddress(e.target.value)
                 }
+                maxlength={80}
               />
               <FormField
                 label="Nº"
@@ -943,6 +960,7 @@ const MaintainerUpdate: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setNumberAddress(e.target.value)
                 }
+                maxlength={7}
               />
             </TwoFields>
           </Fieldset>

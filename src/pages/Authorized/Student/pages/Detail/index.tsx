@@ -49,7 +49,7 @@ const MaintainerDetail: React.FC = () => {
 
   useEffect(() => {
     api
-      .get(`/aluno/${studentId}`)
+      .get(`aluno/${studentId}`)
       .then(({ data }) => {
         const userApi = data as IStudentDetailApi;
 
@@ -276,6 +276,7 @@ const MaintainerDetail: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setObservations(e.target.value)
           }
+          maxlength={1000}
           type="textarea"
         />
       </Form>

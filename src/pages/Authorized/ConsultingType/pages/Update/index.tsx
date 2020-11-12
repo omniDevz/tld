@@ -104,6 +104,7 @@ const ConsultingTypeUpdate: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setDescription(e.target.value)
           }
+          maxlength={50}
         />
       </Form>
       <ButtonsWrapper>

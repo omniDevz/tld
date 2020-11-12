@@ -131,6 +131,7 @@ const CourseEdit: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setName(e.target.value)
           }
+          maxlength={50}
         />
         <FormField
           label="Descrição"
@@ -140,6 +141,7 @@ const CourseEdit: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setDescription(e.target.value)
           }
+          maxlength={500}
         />
         <PriceWrapper>
           <FormField
@@ -149,6 +151,7 @@ const CourseEdit: React.FC = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPrice(Number(util.onlyNumbers(e.target.value)))
             }
+            type="number"
           />
         </PriceWrapper>
       </Fields>

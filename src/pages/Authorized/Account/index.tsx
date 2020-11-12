@@ -646,6 +646,7 @@ const Account: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFirstName(e.target.value)
                 }
+                maxlength={40}
               />
               <FormField
                 label="Sobrenome"
@@ -654,6 +655,7 @@ const Account: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setLastName(e.target.value)
                 }
+                maxlength={40}
               />
             </TwoFields>
             <TwoFields>
@@ -704,6 +706,7 @@ const Account: React.FC = () => {
                 setEmail(e.target.value)
               }
               type="email"
+              maxlength={254}
             />
             <FormField
               label="Confirme o e-mail"
@@ -713,6 +716,7 @@ const Account: React.FC = () => {
                 setEmailConfirmation(e.target.value)
               }
               type="email"
+              maxlength={254}
             />
           </Fieldset>
         </Collapse>
@@ -746,6 +750,8 @@ const Account: React.FC = () => {
                   setCountryCode(e.target.value)
                 }
                 prefix="+"
+                type="number"
+                maxlength={2}
               />
               <FormField
                 label=""
@@ -755,6 +761,8 @@ const Account: React.FC = () => {
                   setDdd(e.target.value)
                 }
                 prefix="0"
+                type="number"
+                maxlength={2}
               />
               <FormField
                 label="Número"
@@ -763,6 +771,7 @@ const Account: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setPhone(e.target.value)
                 }
+                maxlength={9}
               />
             </ThreeFields>
           </Fieldset>
@@ -806,6 +815,7 @@ const Account: React.FC = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setState(e.target.value)
                   }
+                  maxlength={2}
                 />
               )}
             </TwoFields>
@@ -825,6 +835,7 @@ const Account: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setCity(e.target.value)
                 }
+                maxlength={50}
               />
             )}
             <FormField
@@ -834,6 +845,7 @@ const Account: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setNeighborhood(e.target.value)
               }
+              maxlength={50}
             />
             <TwoFields>
               <FormField
@@ -843,6 +855,7 @@ const Account: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setAddress(e.target.value)
                 }
+                maxlength={80}
               />
               <FormField
                 label="Nº"
@@ -851,6 +864,7 @@ const Account: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setNumberAddress(e.target.value)
                 }
+                maxlength={7}
               />
             </TwoFields>
           </Fieldset>
@@ -865,6 +879,7 @@ const Account: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setUsername(e.target.value)
               }
+              maxlength={15}
             />
 
             <FormField
@@ -875,6 +890,7 @@ const Account: React.FC = () => {
                 setPassword(e.target.value)
               }
               type="password"
+              maxlength={32}
             />
             <FormField
               label="Nova senha"
@@ -884,6 +900,7 @@ const Account: React.FC = () => {
                 setPasswordNew(e.target.value)
               }
               type="password"
+              maxlength={32}
             />
             <FormField
               label="Confirmar senha"
@@ -893,6 +910,7 @@ const Account: React.FC = () => {
                 setPasswordConfirm(e.target.value)
               }
               type="password"
+              maxlength={32}
             />
           </Fieldset>
         </Collapse>

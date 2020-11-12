@@ -65,12 +65,14 @@ const TransmissionNotification: React.FC = () => {
             name="description"
             value={values.description}
             onChange={handleChange}
+            maxlength={250}
           />
           <FormField
             label="Link"
             name="link"
             value={values.link}
             onChange={handleChange}
+            maxlength={2500}
             type="url"
           />
         </FieldsWrapper>

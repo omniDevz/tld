@@ -208,6 +208,7 @@ const StepThree: React.FC<StepThreeProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setValues.setState(e.target.value)
               }
+              maxlength={2}
             />
           )}
         </TwoFields>
@@ -227,6 +228,7 @@ const StepThree: React.FC<StepThreeProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setValues.setCity(e.target.value)
             }
+            maxlength={50}
           />
         )}
         <FormField
@@ -236,6 +238,7 @@ const StepThree: React.FC<StepThreeProps> = ({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setValues.setNeighborhood(e.target.value)
           }
+          maxlength={50}
         />
         <TwoFields>
           <FormField
@@ -245,6 +248,7 @@ const StepThree: React.FC<StepThreeProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setValues.setAddress(e.target.value)
             }
+            maxlength={80}
           />
           <FormField
             label="Nº"
@@ -253,6 +257,7 @@ const StepThree: React.FC<StepThreeProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setValues.setNumberAddress(e.target.value)
             }
+            maxlength={7}
           />
         </TwoFields>
       </Fieldset>

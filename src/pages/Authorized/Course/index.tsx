@@ -27,6 +27,15 @@ const Course: React.FC = () => {
     history.push('/course/new');
   }
 
+  function handleFilterCoursesByPrice(course: ICourse) {
+    if (!typeSearch) return true;
+
+    return (
+      (typeSearch === 'P' && !course.hasFree) ||
+      (typeSearch === 'G' && course.hasFree)
+    );
+  }
+
   function handleFilterCourses(course: ICourse) {
     return util.includesToArray([course.name, course.description], search);
   }
@@ -113,6 +122,7 @@ const Course: React.FC = () => {
       <ListCard>
         {!!listCourse.length &&
           listCourse
+            .filter(handleFilterCoursesByPrice)
             .filter(handleFilterCourses)
             .map((course) => (
               <CardCourse key={course.courseId} course={course} />

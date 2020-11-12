@@ -102,6 +102,7 @@ const ClassesUpdate: React.FC = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setName(e.target.value)
             }
+            maxlength={50}
           />
           <FormField
             label="Descrição"
@@ -110,6 +111,7 @@ const ClassesUpdate: React.FC = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setDescription(e.target.value)
             }
+            maxlength={100}
           />
         </Fieldset>
         <ButtonsWrapper>

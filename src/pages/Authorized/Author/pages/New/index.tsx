@@ -61,12 +61,14 @@ const AuthorNew: React.FC = () => {
           name="firstName"
           value={values.firstName}
           onChange={handleChange}
+          maxlength={50}
         />
         <FormField
           label="Sobrenome"
           name="lastName"
           value={values.lastName}
           onChange={handleChange}
+          maxlength={50}
         />
       </Form>
       <Button color="primary" onClick={handleRegisterAuthor}>

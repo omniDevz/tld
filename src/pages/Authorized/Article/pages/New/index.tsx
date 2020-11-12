@@ -107,6 +107,7 @@ const ArticleNew: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setTitle(e.target.value)
           }
+          maxlength={50}
         />
         <FormField
           label="Descrição"
@@ -115,6 +116,7 @@ const ArticleNew: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setSubtitle(e.target.value)
           }
+          maxlength={50}
         />
         <FormField
           label="Link"
@@ -124,6 +126,7 @@ const ArticleNew: React.FC = () => {
             setLink(e.target.value)
           }
           type="url"
+          maxlength={500}
         />
         <InputAndButton>
           {addAuthor ? (
@@ -134,6 +137,7 @@ const ArticleNew: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setFirstNameAuthor(e.target.value);
               }}
+              maxlength={50}
             />
           ) : (
             <Select
@@ -157,6 +161,7 @@ const ArticleNew: React.FC = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setLastNameAuthor(e.target.value);
             }}
+            maxlength={50}
           />
         )}
         <FormField

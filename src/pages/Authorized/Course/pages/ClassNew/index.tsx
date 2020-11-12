@@ -70,6 +70,7 @@ const ClassNew: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setName(e.target.value)
           }
+          maxlength={100}
         />
         <FormField
           label="Descrição"
@@ -78,6 +79,7 @@ const ClassNew: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setDescription(e.target.value)
           }
+          maxlength={500}
         />
         <FormField
           label="Link"
@@ -87,6 +89,7 @@ const ClassNew: React.FC = () => {
             setLink(e.target.value)
           }
           type="url"
+          maxlength={500}
         />
         <RowFields>
           <FormField
@@ -106,6 +109,7 @@ const ClassNew: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setMinutes(e.target.value)
               }
+              type="number"
             />
           </MinutesWrapper>
         </RowFields>

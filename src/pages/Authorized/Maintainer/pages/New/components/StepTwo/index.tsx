@@ -54,6 +54,8 @@ const StepTwo: React.FC<StepTwoProps> = ({
             value={values.countryCode}
             onChange={handleChange}
             prefix="+"
+            type="number"
+            maxlength={2}
           />
           <FormField
             label=""
@@ -61,6 +63,7 @@ const StepTwo: React.FC<StepTwoProps> = ({
             value={values.ddd}
             onChange={handleChange}
             type="number"
+            maxlength={2}
             prefix="0"
           />
           <FormField
@@ -68,6 +71,7 @@ const StepTwo: React.FC<StepTwoProps> = ({
             name="number"
             value={values.number}
             onChange={handleChange}
+            maxlength={9}
             type="number"
           />
         </ThreeColumns>
