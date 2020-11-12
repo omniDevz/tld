@@ -35,7 +35,6 @@ const Classes: React.FC = () => {
     api
       .get(`movAlunoTurma/professorId/${user?.teacherId}`)
       .then(({ data }) => {
-        console.log(data);
         const classFromApi: ClassProps[] = data.map((c: IClassApi) => {
           const newClass: ClassProps = {
             classId: c.turma.turmaId,

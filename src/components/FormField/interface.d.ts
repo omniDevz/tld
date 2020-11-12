@@ -19,7 +19,7 @@ export interface FormFieldProps {
   name: string;
   label: string;
   onChange?: FunctionComponentElement;
-  type?: 'textarea' | 'text' | 'number' | 'date' | string;
+  type?: 'textarea' | 'text' | 'number' | 'date' | 'email' | string;
   prefix?: string;
   maxlength?: number;
 }
