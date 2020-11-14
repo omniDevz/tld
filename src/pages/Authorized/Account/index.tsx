@@ -16,6 +16,8 @@ import api, {
   apiViaCep,
 } from '../../../services/api';
 
+import alertRemoveAccount from '../../../assets/images/alertRemoveAccount.svg';
+
 import {
   ButtonsWrapper,
   HalfContainer,
@@ -40,6 +42,7 @@ import {
 import { useAuth } from '../../../contexts/auth';
 import mask from '../../../utils/mask';
 import validation from '../../../utils/validation';
+import ModalConfirmation from '../../../components/ModalConfirmation';
 
 const Account: React.FC = () => {
   const [personId, setPersonId] = useState(0);
@@ -68,6 +71,8 @@ const Account: React.FC = () => {
   const [passwordBack, setPasswordBack] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [levelAccess, setLevelAccess] = useState(0);
+  const [callModalRemoveAccount, setCallModalRemoveAccount] = useState(false);
+  const [removeAccount, setRemoveAccount] = useState(false);
 
   const [countries, setCountries] = useState<OptionsSelect>({
     options: [
@@ -618,8 +623,12 @@ const Account: React.FC = () => {
       });
   }
 
+  function handleShowModalConfirmation() {
+    setCallModalRemoveAccount(true);
+  }
+
   function handleDelete() {
-    if (!window.confirm('Realmente deseja remover sua conta?')) {
+    if (!removeAccount) {
       return;
     }
 
@@ -629,8 +638,17 @@ const Account: React.FC = () => {
     );
   }
 
+  useEffect(handleDelete, [api, removeAccount]);
+
   return (
     <PageAuthorized type="back" text="Meu perfil">
+      <ModalConfirmation
+        showModal={callModalRemoveAccount}
+        title="Deseja remover sua conta?"
+        image={alertRemoveAccount}
+        setValue={setRemoveAccount}
+        setCloseModal={setCallModalRemoveAccount}
+      />
       <Form>
         <LevelAccess>
           Nível de acesso:
@@ -916,7 +934,7 @@ const Account: React.FC = () => {
         </Collapse>
       </Form>
       <ButtonsWrapper>
-        <Button color="primary-outline" onClick={handleDelete}>
+        <Button color="primary-outline" onClick={handleShowModalConfirmation}>
           Excluir
         </Button>
         <Button color="primary" onClick={handleUpdate}>

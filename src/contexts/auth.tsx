@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { useToasts } from 'react-toast-notifications';
 import * as auth from '../services/auth';
@@ -14,6 +15,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<UserProps | null>(null);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToasts();
+  const history = useHistory();
 
   useEffect(() => {
     async function loadStoriedData() {
@@ -69,6 +71,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   function signOut() {
     storage.removeValuesJTW();
     setUser(null);
+    history.push('/');
   }
 
   return (
