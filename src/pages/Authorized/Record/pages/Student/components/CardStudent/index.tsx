@@ -1,5 +1,7 @@
 import React from 'react';
 
+import util from '../../../../../../../utils/util';
+
 import {
   CardStudentWrapper,
   CreateAccount,
@@ -8,14 +10,16 @@ import {
   Bold,
 } from './styled';
 
-const CardStudent: React.FC = () => {
+import { ICardStudent } from './interface';
+
+const CardStudent: React.FC<ICardStudent> = ({ student }) => {
   return (
     <CardStudentWrapper>
-      <NameStudent>Nome aluno</NameStudent>
-      <Contact>E-mail</Contact>
-      <Contact>Telefone</Contact>
+      <NameStudent>{student.nameStudent}</NameStudent>
+      <Contact>{student.emailStudent}</Contact>
+      <Contact>{student.phone}</Contact>
       <CreateAccount>
-        Cadastrado em: <Bold>18/11/2020</Bold>
+        Cadastrado em: <Bold>{util.getFormatDate(student.registerDate)}</Bold>
       </CreateAccount>
     </CardStudentWrapper>
   );

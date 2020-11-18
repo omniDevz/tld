@@ -17,7 +17,7 @@ const util = {
   getFormatDate(value: string) {
     const date = new Date(util.removeHoursDateTimeApi(value));
 
-    const day = `0${date.getDate()}`.slice(-2);
+    const day = `0${date.getDate() + 1}`.slice(-2);
     const month = `0${date.getMonth() + 1}`.slice(-2);
 
     return `${day}/${month}/${date.getFullYear()}`;
