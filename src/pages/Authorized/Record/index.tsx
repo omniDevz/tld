@@ -13,10 +13,15 @@ const Record: React.FC = () => {
     history.push('/record/student');
   }
 
+  function handleRedirectToRecordRevenue() {
+    history.push('/record/revenue');
+  }
+
   return (
     <PageAuthorized type="back" text="Relatórios">
       <TypesRecord>
         <Button onClick={handleRedirectToRecordStudent}>Alunos</Button>
+        <Button onClick={handleRedirectToRecordRevenue}>Faturamento</Button>
       </TypesRecord>
     </PageAuthorized>
   );
