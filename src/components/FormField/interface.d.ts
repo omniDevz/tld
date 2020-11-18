@@ -22,4 +22,8 @@ export interface FormFieldProps {
   type?: 'textarea' | 'text' | 'number' | 'date' | 'email' | string;
   prefix?: string;
   maxlength?: number;
+  handleListInPressKey?: Array<{
+    handleFunction: () => void,
+    key: 'Enter' | string,
+  }>;
 }

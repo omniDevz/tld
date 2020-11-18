@@ -19,12 +19,25 @@ const FormField: React.FC<FormFieldProps> = ({
   type = 'text',
   prefix,
   maxlength,
+  handleListInPressKey,
 }) => {
   const fieldId = `id_${name}`;
-  const hasValue = Boolean(value !== undefined && value.length);
-  const hasLabel = Boolean(label.length);
+  const hasValue = !!value?.length;
+  const hasLabel = !!label?.length;
   const isTextarea = type === 'textarea';
   const hasPrefix = prefix !== undefined;
+
+  function handleKeyPress(
+    event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) {
+    if (!handleListInPressKey) return;
+
+    for (const { key, handleFunction } of handleListInPressKey) {
+      if (event.key === key) {
+        handleFunction();
+      }
+    }
+  }
 
   return (
     <FormFieldWrapper>
@@ -34,12 +47,13 @@ const FormField: React.FC<FormFieldProps> = ({
           <Textarea
             id={fieldId}
             hasValue={hasValue}
-            hasChildren={Boolean(children)}
+            hasChildren={!!children}
             value={value}
             name={name}
             onChange={onChange}
             autoComplete="off"
             maxLength={maxlength}
+            onKeyPress={handleKeyPress}
           />
         ) : (
           <Input
@@ -52,6 +66,7 @@ const FormField: React.FC<FormFieldProps> = ({
             type={type}
             autoComplete="off"
             maxLength={maxlength}
+            onKeyPress={handleKeyPress}
           />
         )}
 

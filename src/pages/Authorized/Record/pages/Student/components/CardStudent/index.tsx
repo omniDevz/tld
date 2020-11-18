@@ -11,13 +11,14 @@ import {
 } from './styled';
 
 import { ICardStudent } from './interface';
+import mask from '../../../../../../../utils/mask';
 
 const CardStudent: React.FC<ICardStudent> = ({ student }) => {
   return (
     <CardStudentWrapper>
       <NameStudent>{student.nameStudent}</NameStudent>
       <Contact>{student.emailStudent}</Contact>
-      <Contact>{student.phone}</Contact>
+      <Contact>{mask.phoneComplete(student.phone)}</Contact>
       <CreateAccount>
         Cadastrado em: <Bold>{util.getFormatDate(student.registerDate)}</Bold>
       </CreateAccount>

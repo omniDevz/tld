@@ -6,6 +6,8 @@ import PageAuthorized from '../../../../../components/PageAuthorized';
 import api from '../../../../../services/api';
 import CardStudent from './components/CardStudent';
 
+import util from '../../../../../utils/util';
+
 import {
   RecordStudentWrapper,
   SearchRecord,
@@ -21,6 +23,20 @@ const RecordStudent: React.FC = () => {
   const [dateEnd, setDateEnd] = useState('');
 
   const { addToast } = useToasts();
+
+  const handlePressEnterAction = () => {
+    if (!dateInit.length) {
+      util.onFocus('id_dateInit');
+      return;
+    }
+
+    if (!dateEnd.length) {
+      util.onFocus('id_dateEnd');
+      return;
+    }
+
+    handleSearchRecordStudent();
+  };
 
   const handleSearchRecordStudent = () => {
     api
@@ -67,22 +83,34 @@ const RecordStudent: React.FC = () => {
       <RecordStudentWrapper>
         <Fields>
           <FormField
-            label="Data inicio"
+            label="Data começo"
             name="dateInit"
             value={dateInit}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setDateInit(e.target.value)
             }
             type="date"
+            handleListInPressKey={[
+              {
+                handleFunction: handlePressEnterAction,
+                key: 'Enter',
+              },
+            ]}
           />
           <FormField
-            label="Data fim"
+            label="Data termino"
             name="dateEnd"
             value={dateEnd}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setDateEnd(e.target.value)
             }
             type="date"
+            handleListInPressKey={[
+              {
+                handleFunction: handlePressEnterAction,
+                key: 'Enter',
+              },
+            ]}
           />
         </Fields>
         <SearchRecord color="secondary" onClick={handleSearchRecordStudent}>
@@ -90,7 +118,9 @@ const RecordStudent: React.FC = () => {
         </SearchRecord>
         <ListStudents>
           {!!listStudents &&
-            listStudents.map((student) => <CardStudent student={student} />)}
+            listStudents.map((student) => (
+              <CardStudent key={student.studentId} student={student} />
+            ))}
         </ListStudents>
       </RecordStudentWrapper>
     </PageAuthorized>
