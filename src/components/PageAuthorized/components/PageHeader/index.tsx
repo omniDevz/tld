@@ -56,6 +56,11 @@ const links = [
     text: 'Mantenedores',
   },
   {
+    route: 'record',
+    title: 'Ir para página de relatórios',
+    text: 'Relatórios',
+  },
+  {
     route: 'account',
     title: 'Ir para página de perfil',
     text: 'Perfil',

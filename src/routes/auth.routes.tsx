@@ -7,6 +7,7 @@ import NotFound from '../pages/NotFound';
 
 import Author from './auth/author.routes';
 import Course from './auth/course.routes';
+import Record from './auth/record.routes';
 import Article from './auth/article.routes';
 import Student from './auth/student.routes';
 import Classes from './auth/classes.routes';
@@ -32,7 +33,8 @@ const AuthRoutes: React.FC = () => {
     ConsultingType,
     TransmissionNotification,
     Classes,
-    Course
+    Course,
+    Record
   );
 
   return (

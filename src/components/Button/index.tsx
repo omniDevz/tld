@@ -7,12 +7,12 @@ import { ButtonProps } from './interface';
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  color,
+  color = 'primary',
   onClick,
   to = '',
   title,
 }) => {
-  const hasLink = Boolean(to?.length);
+  const hasLink = !!to?.length;
 
   return (
     <ButtonStyled type="button" onClick={onClick} color={color} to={to}>
