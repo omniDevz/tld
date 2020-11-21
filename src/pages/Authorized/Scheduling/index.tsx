@@ -3,7 +3,13 @@ import React from 'react';
 import PageAuthorized from '../../../components/PageAuthorized';
 import Button from '../../../components/Button';
 
-import { SchedulingWrapper, ButtonWrapper } from './styled';
+import {
+  SchedulingWrapper,
+  ButtonWrapper,
+  MoreToday,
+  Header,
+  Today,
+} from './styled';
 
 const Scheduling: React.FC = () => {
   return (
@@ -11,7 +17,12 @@ const Scheduling: React.FC = () => {
       <ButtonWrapper>
         <Button color="secondary-outline">Abrir calendário</Button>
       </ButtonWrapper>
-      <SchedulingWrapper></SchedulingWrapper>
+      <SchedulingWrapper>
+        <Header>
+          <Today>09 de Junho de 2020</Today>
+          <MoreToday />
+        </Header>
+      </SchedulingWrapper>
     </PageAuthorized>
   );
 };
