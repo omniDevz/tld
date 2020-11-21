@@ -10,12 +10,13 @@ const PageAuthorized: React.FC<PageAuthorizedProps> = ({
   children,
   type,
   text,
+  footer = true,
 }) => {
   return (
     <>
       <PageHeader teacherOn={true} type={type} text={text} />
       <Main>{children}</Main>
-      <Footer>&copy; copyright 2020</Footer>
+      {footer && <Footer>&copy; copyright 2020</Footer>}
     </>
   );
 };

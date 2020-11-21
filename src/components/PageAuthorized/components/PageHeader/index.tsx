@@ -21,6 +21,11 @@ const links = [
     text: 'Cursos',
   },
   {
+    route: 'scheduling',
+    title: 'Ir para página de agendamentos',
+    text: 'Agendamento',
+  },
+  {
     route: 'article',
     title: 'Ir para página de artigos recomendados',
     text: 'Artigos',

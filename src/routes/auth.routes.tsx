@@ -11,6 +11,7 @@ import Record from './auth/record.routes';
 import Article from './auth/article.routes';
 import Student from './auth/student.routes';
 import Classes from './auth/classes.routes';
+import Scheduling from './auth/scheduling.routes';
 import Maintainer from './auth/maintainer.routes';
 import ConsultingType from './auth/consultingType.routes';
 import TransmissionNotification from './auth/transmissionNotification.routes';
@@ -34,7 +35,8 @@ const AuthRoutes: React.FC = () => {
     TransmissionNotification,
     Classes,
     Course,
-    Record
+    Record,
+    Scheduling
   );
 
   return (
