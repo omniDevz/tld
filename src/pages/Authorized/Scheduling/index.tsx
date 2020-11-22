@@ -1,8 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import PageAuthorized from '../../../components/PageAuthorized';
 import Button from '../../../components/Button';
 import Day from './components/Day';
+
+import util from '../../../utils/util';
 
 import {
   SchedulingWrapper,
@@ -21,8 +24,16 @@ const Scheduling: React.FC = () => {
       </ButtonWrapper>
       <SchedulingWrapper>
         <Header>
-          <Today>09 de Junho de 2020</Today>
-          <MoreToday />
+          <Today>{util.getFormatDateNameMountNow()}</Today>
+          <Link
+            to={`/scheduling/new/${util.getFormatDateApi(
+              new Date().toString(),
+              '-'
+            )}`}
+            title="Novo agendamento"
+          >
+            <MoreToday />
+          </Link>
         </Header>
         <ListDays>
           <Day />

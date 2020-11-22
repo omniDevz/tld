@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const DayWrapper = styled.li`
+export const DayWrapper = styled.ul`
   position: relative;
   padding: .8rem;
   padding-left: 4rem;

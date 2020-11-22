@@ -36,4 +36,4 @@ export const MoreToday = styled(FiX)`
   }
 `;
 
-export const ListDays = styled.ul``;
+export const ListDays = styled.div``;
