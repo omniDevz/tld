@@ -68,19 +68,21 @@ export const SelectStyled = styled(ReactSelect)`
 
   .react-select__menu {
     background: ${(props) => props.theme.colors.tertiary};
-    padding-top: 6rem;
+    padding-top: 1.8rem;
     padding-bottom: 0.8rem;
-    margin-top: -4.2rem;
+    margin-top: -2.5px;
     border: 2.5px solid ${(props) => props.theme.colors.secondary};
     border-radius: 0;
     box-shadow: var(--box-shadow);
-    z-index: 9;
+    z-index: 9999;
 
     .react-select__menu-list {
       flex-direction: column;
       padding: 0 0.8rem;
       border-radius: 0;
       width: 100%;
+      position: relative;
+      z-index: 9999;
 
       .react-select__option {
         color: ${(props) => props.theme.colors.secondary};
@@ -106,7 +108,7 @@ export const Text = styled.label`
   top: 50%;
   left: 0.6rem;
   transform: translateY(-50%);
-  z-index: 999;
+  z-index: 99;
 
   display: flex;
   align-items: center;
