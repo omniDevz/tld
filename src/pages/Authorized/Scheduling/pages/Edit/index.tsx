@@ -13,6 +13,7 @@ import util from '../../../../../utils/util';
 
 import {
   SchedulingEditWrapper,
+  ConfirmWrapper,
   Description,
   DateCreate,
   Fields,
@@ -199,18 +200,20 @@ const SchedulingEdit: React.FC = () => {
               setObservations(e.target.value)
             }
           />
-          <CheckButton
-            label="Confirmado"
-            name="confirmation"
-            setValue={setConfirmation}
-            value={confirmation}
-          />
-          <CheckButton
-            label="Realizado"
-            name="realized"
-            setValue={setRealized}
-            value={realized}
-          />
+          <ConfirmWrapper>
+            <CheckButton
+              label="Confirmado"
+              name="confirmation"
+              setValue={setConfirmation}
+              value={confirmation}
+            />
+            <CheckButton
+              label="Realizado"
+              name="realized"
+              setValue={setRealized}
+              value={realized}
+            />
+          </ConfirmWrapper>
         </Fields>
         <Button>Salvar</Button>
       </SchedulingEditWrapper>

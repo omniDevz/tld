@@ -51,3 +51,9 @@ export const Description = styled.label`
   margin-left: .4rem;
   font-weight: 500;
 `;
+
+export const ConfirmWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1.6rem;
+`;

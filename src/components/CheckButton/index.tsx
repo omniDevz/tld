@@ -5,10 +5,10 @@ import { CheckButtonWrapper, CheckButtonStyled, Label, Icon } from './styled';
 import { CheckButtonProps } from './interface';
 
 const CheckButton: React.FC<CheckButtonProps> = ({
+  setValue,
   label,
   value,
   name,
-  setValue,
 }) => {
   const id = `id_${name}`;
 
