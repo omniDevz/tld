@@ -37,12 +37,24 @@ export const Calendar = styled.div`
 export const BackMount = styled(FiArrowLeft)`
   width: 4rem;
   height: 4rem;
+  transform: scale(1);
+  transition: all 260ms ease-in-out;
   cursor: pointer;
+
+  &:hover {
+    transform: scale(.92);
+  }
 `;
 export const NextMount = styled(FiArrowRight)`
   width: 4rem;
   height: 4rem;
+  transform: scale(1);
+  transition: all 260ms ease-in-out;
   cursor: pointer;
+
+  &:hover {
+    transform: scale(.92);
+  }
 `;
 
 export const Mount = styled.p`

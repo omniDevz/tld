@@ -44,8 +44,8 @@ const util = {
         currency: 'BRL' // R$
     }).format(price / 100);
   },
-  getFormatDateNameMount(value: string) {
-    const months = [
+  getMonthsNames(): string[] {
+    return [
       "Janeiro",
       "Fevereiro",
       "Março",
@@ -59,6 +59,9 @@ const util = {
       "Novembro",
       "Dezembro"
     ];
+  },
+  getFormatDateNameMount(value: string) {
+    const months = util.getMonthsNames();
 
     const date = new Date(value);
 

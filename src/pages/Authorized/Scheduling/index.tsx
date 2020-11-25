@@ -33,9 +33,12 @@ const Scheduling: React.FC = () => {
     }[]
   >([]);
   const [openCalendar, setOpenCalendar] = useState(false);
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [year, setYear] = useState(new Date().getFullYear());
+  const months = util.getMonthsNames();
 
-  function handleGetDaysInMonth(month: number = 0, year: number = 0) {
-    const daysInMonth = (iMonth: number = 0, iYear: number = 0) => {
+  function handleGetDaysInMonth() {
+    const daysInMonth = (iMonth: number = month, iYear: number = year) => {
       return 32 - new Date(iYear, iMonth, 32).getDate();
     };
 
@@ -56,7 +59,7 @@ const Scheduling: React.FC = () => {
 
       for (let j = 0; j < 7; j++) {
         if (i === 0 && j < firstDay) {
-          weekDay.days.push(-1);
+          weekDay.days.push(Math.random() * 10 + 32);
         } else if (date > daysInMonth(month, year)) {
           break;
         } else {
@@ -72,7 +75,7 @@ const Scheduling: React.FC = () => {
     setDays([...weeksDays]);
   }
 
-  useEffect(handleGetDaysInMonth, []);
+  useEffect(handleGetDaysInMonth, [month, year]);
 
   function handleGetByDay(day: number) {
     console.log(day);
@@ -80,6 +83,16 @@ const Scheduling: React.FC = () => {
 
   function handleCalendar() {
     setOpenCalendar(!openCalendar);
+  }
+
+  function handlePrevMonth() {
+    setMonth(month === 0 ? 11 : month - 1);
+    setYear(month === 0 ? year - 1 : year);
+  }
+
+  function handleNextMonth() {
+    setMonth(month === 11 ? 0 : month + 1);
+    setYear(month === 11 ? year + 1 : year);
   }
 
   return (
@@ -94,13 +107,14 @@ const Scheduling: React.FC = () => {
       {!!openCalendar && (
         <CalendarWrapper>
           <YearWrapper>
-            2020 <CloseCalendar onClick={handleCalendar} />
+            {year}
+            <CloseCalendar onClick={handleCalendar} />
           </YearWrapper>
           <Calendar>
             <Mount>
-              <BackMount />
-              Junho
-              <NextMount />
+              <BackMount onClick={handlePrevMonth} />
+              {months[month]}
+              <NextMount onClick={handleNextMonth} />
             </Mount>
             <DaysOfTheWeek>
               <DayOfTheWeek>D</DayOfTheWeek>
@@ -118,7 +132,7 @@ const Scheduling: React.FC = () => {
                     <tr key={`tr_${day.days[0]}`}>
                       {!!day.days &&
                         day.days.map((d) =>
-                          d === -1 ? (
+                          d > 31 ? (
                             <td key={d} />
                           ) : (
                             <td onClick={() => handleGetByDay(d)} key={d}>
