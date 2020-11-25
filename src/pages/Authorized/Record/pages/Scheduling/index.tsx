@@ -82,7 +82,7 @@ const RecordScheduling: React.FC = () => {
   };
 
   return (
-    <PageAuthorized type="back" text="Relatório de alunos">
+    <PageAuthorized type="back" text="Relatório de agendamento">
       <RecordSchedulingWrapper>
         <Fields>
           <FormField
