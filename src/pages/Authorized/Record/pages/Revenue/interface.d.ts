@@ -5,6 +5,7 @@ export interface IRecordRevenueApi {
   email: string;
   numeroTelefone: string;
   dataHora: string;
+  valorVenda: number;
 }
 
 export interface IRecordRevenue {
@@ -14,4 +15,5 @@ export interface IRecordRevenue {
   email: string;
   phone: string;
   salesDate: string;
+  amount: number;
 }

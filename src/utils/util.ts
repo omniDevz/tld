@@ -14,8 +14,8 @@ const util = {
     }
     return false;
   },
-  getFormatDateApi(value: string, separator: string = '-') {
-    const date = new Date(value);
+  getFormatDateApi(value: string = '', separator: string = '-') {
+    const date = !!value?.length ? new Date(value) : new Date();
 
     const month = `${date.getMonth() + 1}`;
 

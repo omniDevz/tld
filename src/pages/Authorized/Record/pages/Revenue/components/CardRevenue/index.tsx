@@ -9,6 +9,7 @@ import {
   NameCourse,
   SmallText,
   Contact,
+  Amount,
   Bold,
 } from './styled';
 
@@ -16,6 +17,9 @@ import { ICardRevenue } from './interface';
 import mask from '../../../../../../../utils/mask';
 
 const CardRevenue: React.FC<ICardRevenue> = ({ revenue }) => {
+  const priceCourse =
+    revenue.amount === 0 ? 'Grátis' : util.formatPrice(revenue.amount * 100);
+
   return (
     <CardRevenueWrapper>
       <NameStudent>
@@ -28,6 +32,10 @@ const CardRevenue: React.FC<ICardRevenue> = ({ revenue }) => {
       </NameCourse>
       <Contact>{revenue.email}</Contact>
       <Contact>{mask.phoneComplete(revenue.phone)}</Contact>
+      <Amount>
+        <SmallText>Valor: </SmallText>
+        {priceCourse}
+      </Amount>
       <CreateAccount>
         Cadastrado em: <Bold>{util.getFormatDate(revenue.salesDate)}</Bold>
       </CreateAccount>

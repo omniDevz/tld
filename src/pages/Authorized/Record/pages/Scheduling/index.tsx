@@ -4,21 +4,23 @@ import { useToasts } from 'react-toast-notifications';
 import FormField from '../../../../../components/FormField';
 import PageAuthorized from '../../../../../components/PageAuthorized';
 import api from '../../../../../services/api';
-import CardRevenue from './components/CardRevenue';
+import CardScheduling from './components/CardScheduling';
 
 import util from '../../../../../utils/util';
 
 import {
-  RecordRevenueWrapper,
+  RecordSchedulingWrapper,
+  ListSchedulings,
   SearchRecord,
-  ListRevenues,
   Fields,
 } from './styled';
 
-import { IRecordRevenueApi, IRecordRevenue } from './interface';
+import { IRecordSchedulingApi, IRecordScheduling } from './interface';
 
-const RecordRevenue: React.FC = () => {
-  const [listRevenues, setListRevenues] = useState<IRecordRevenue[]>([]);
+const RecordScheduling: React.FC = () => {
+  const [listSchedulings, setListSchedulings] = useState<IRecordScheduling[]>(
+    []
+  );
   const [dateInit, setDateInit] = useState('');
   const [dateEnd, setDateEnd] = useState('');
 
@@ -35,12 +37,12 @@ const RecordRevenue: React.FC = () => {
       return;
     }
 
-    handleSearchRecordRevenue();
+    handleSearchRecordScheduling();
   };
 
-  const handleSearchRecordRevenue = () => {
+  const handleSearchRecordScheduling = () => {
     api
-      .get(`vwFaturamento/dataInicio=${dateInit}&dataFim=${dateEnd}`)
+      .get(`VWAgendamentos/dataInicio=${dateInit}&dataFim=${dateEnd}`)
       .then((response) => {
         if (response.status === 206) {
           addToast(response.data, {
@@ -50,23 +52,22 @@ const RecordRevenue: React.FC = () => {
           return;
         }
 
-        const RevenuesApi: IRecordRevenueApi[] = response.data;
+        const SchedulingsApi: IRecordSchedulingApi[] = response.data;
 
-        const Revenues = RevenuesApi.map((RevenueApi) => {
-          const Revenue: IRecordRevenue = {
-            email: RevenueApi.email,
-            nameStudent: RevenueApi.nomeAluno,
-            nameCourse: RevenueApi.nomeCurso,
-            phone: RevenueApi.numeroTelefone,
-            salesDate: RevenueApi.dataHora,
-            salesID: RevenueApi.vandaId,
-            amount: RevenueApi.valorVenda,
+        console.log(SchedulingsApi);
+
+        const Schedulings = SchedulingsApi.map((SchedulingApi) => {
+          const scheduling: IRecordScheduling = {
+            confirm: SchedulingApi.confirmado,
+            dateTime: SchedulingApi.dataHora,
+            nameStudent: SchedulingApi.nomeAluno,
+            schedulingId: SchedulingApi.agendamentoId,
           };
 
-          return Revenue;
+          return scheduling;
         });
 
-        setListRevenues([...Revenues]);
+        setListSchedulings([...Schedulings]);
       })
       .catch((err) => {
         console.log(err);
@@ -81,8 +82,8 @@ const RecordRevenue: React.FC = () => {
   };
 
   return (
-    <PageAuthorized type="back" text="Relatório de faturamento">
-      <RecordRevenueWrapper>
+    <PageAuthorized type="back" text="Relatório de alunos">
+      <RecordSchedulingWrapper>
         <Fields>
           <FormField
             label="Data começo"
@@ -115,18 +116,21 @@ const RecordRevenue: React.FC = () => {
             ]}
           />
         </Fields>
-        <SearchRecord color="secondary" onClick={handleSearchRecordRevenue}>
+        <SearchRecord color="secondary" onClick={handleSearchRecordScheduling}>
           Pesquisar
         </SearchRecord>
-        <ListRevenues>
-          {!!listRevenues &&
-            listRevenues.map((Revenue) => (
-              <CardRevenue key={Revenue.salesID} revenue={Revenue} />
+        <ListSchedulings>
+          {!!listSchedulings &&
+            listSchedulings.map((scheduling) => (
+              <CardScheduling
+                key={scheduling.schedulingId}
+                scheduling={scheduling}
+              />
             ))}
-        </ListRevenues>
-      </RecordRevenueWrapper>
+        </ListSchedulings>
+      </RecordSchedulingWrapper>
     </PageAuthorized>
   );
 };
 
-export default RecordRevenue;
+export default RecordScheduling;

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import PageAuthorized from '../../../../../components/PageAuthorized';
 import FormField from '../../../../../components/FormField';
 import Button from '../../../../../components/Button';
+import Select from '../../../../../components/Select';
 
+import { useAuth } from '../../../../../contexts/auth';
 import api from '../../../../../services/api';
 import util from '../../../../../utils/util';
 
@@ -24,7 +26,6 @@ import {
   IStudentApi,
   IStudent,
 } from './interface';
-import Select from '../../../../../components/Select';
 
 const SchedulingNew: React.FC = () => {
   const [hours, setHours] = useState('');
@@ -38,8 +39,11 @@ const SchedulingNew: React.FC = () => {
   >([]);
   const [observations, setObservations] = useState('');
 
+  const history = useHistory();
+
   const { date } = useParams<INewSchedulingParams>();
   const { addToast } = useToasts();
+  const { user } = useAuth();
 
   function handleGetStudents() {
     api
@@ -122,6 +126,46 @@ const SchedulingNew: React.FC = () => {
 
   useEffect(handleGetTypeConsulting, []);
 
+  function handleNewScheduling() {
+    const dateTime = `${util?.getFormatDateApi()} ${hours}:${minutes}:00`;
+
+    api
+      .post('agendamento', {
+        AlunoId: student,
+        ProfessorId: user?.teacherId,
+        TipoConsultoriaId: typeConsulting,
+        Descricao: description,
+        DataHora: dateTime,
+        Observacao: observations,
+        UltimoUsuarioAlteracao: user?.personId,
+      })
+      .then((response) => {
+        if (response.status === 206) {
+          addToast(response.data, {
+            appearance: 'warning',
+            autoDismiss: true,
+          });
+          return;
+        }
+
+        addToast('Agendamento cadastrado com sucesso', {
+          appearance: 'info',
+          autoDismiss: true,
+        });
+        history.goBack();
+      })
+      .catch((err) => {
+        console.error(err.response);
+        addToast(
+          'Houve algum erro inesperado ao cadastrar, tente novamente mais tarde',
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
+      });
+  }
+
   return (
     <PageAuthorized type="back" text="Novo agendamento">
       <SchedulingNewWrapper>
@@ -168,7 +212,7 @@ const SchedulingNew: React.FC = () => {
               };
             })}
             value={student}
-            onChange={setStudent}
+            onChange={(e: any) => setStudent(e.value)}
           />
           <Select
             label="Tipo de consultoria"
@@ -180,7 +224,7 @@ const SchedulingNew: React.FC = () => {
               };
             })}
             value={typeConsulting}
-            onChange={setTypeConsulting}
+            onChange={(e: any) => setTypeConsulting(e.value)}
           />
           <FormField
             label="Observações"
@@ -193,7 +237,7 @@ const SchedulingNew: React.FC = () => {
             }
           />
         </Fields>
-        <Button>Salvar</Button>
+        <Button onClick={handleNewScheduling}>Salvar</Button>
       </SchedulingNewWrapper>
     </PageAuthorized>
   );
