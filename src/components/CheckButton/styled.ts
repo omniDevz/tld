@@ -6,6 +6,13 @@ export const CheckButtonWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 4rem;
+  cursor: pointer;
+  transform: scale(1);
+  transition: all 240ms ease-in-out;
+
+  &:hover {
+    transform: scale(.96);
+  }
 `;
 
 export const Label = styled.label`
